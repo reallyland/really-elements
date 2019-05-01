@@ -1,0 +1,61 @@
+{
+  "name": "@reallyland/really-elements",
+  "version": "0.0.0",
+  "description": "A collection of opinionated custom elements for the web",
+  "keywords": [
+    "elements",
+    "code-snippet",
+    "demo",
+    "lit-element",
+    "lit-html",
+    "polymer",
+    "really",
+    "really-elements",
+    "typescript",
+    "web-components"
+  ],
+  "homepage": "https://github.com/reallyland/really-elements",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reallyland/really-elements.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Rong Sen Ng (motss)",
+    "email": "wes.ngrongsen@gmail.com",
+    "url": "https://github.com/motss"
+  },
+  "scripts": {
+    "build": "npm run ts -- -p tsconfig.prod.json",
+    "clean": "rm -rf dist/",
+    "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
+    "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
+    "prepublishOnly": "rm -rf dist/ && npm run build",
+    "test": "npm run lint && npm run ts && npm run gulp && wct --skip-selenium-install --config-file wct.config.json",
+    "test:ci": "wct --config-file wct.config.ci.json",
+    "test:sl": "wct --config-file wct.config.sl.json",
+    "ts": "tsc",
+    "gulp": "gulp",
+    "watch": "npm run ts -- --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@reallyland/tslint-config": "^1.0.0",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "chai": "^4.2.0",
+    "esm": "^3.2.22",
+    "gulp": "^4.0.1",
+    "mocha": "^5.2.0",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.5",
+    "wct-mocha": "^1.0.0"
+  },
+  "engines": {
+    "node": ">= 8.16.0",
+    "npm": ">= 6.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

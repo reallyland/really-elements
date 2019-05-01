@@ -1,0 +1,53 @@
+{
+  "name": "@reallyland/really-code-configurator",
+  "version": "0.2.0",
+  "description": "Configure and generate code snippet for custom element",
+  "keywords": [
+    "code-configurator",
+    "code-snippet",
+    "demo",
+    "lit-element",
+    "lit-html",
+    "polymer",
+    "really",
+    "really-code-configurator",
+    "typescript",
+    "web-components"
+  ],
+  "homepage": "https://github.com/reallyland/really-code-configurator",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:reallyland/really-code-configurator.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Rong Sen Ng (motss)",
+    "email": "wes.ngrongsen@gmail.com",
+    "url": "https://github.com/motss"
+  },
+  "files": [
+    "dist/really-code-configurator/*.d.ts.map",
+    "dist/really-code-configurator/*.d.ts",
+    "dist/really-code-configurator/*.js.map",
+    "dist/really-code-configurator/*.js"
+  ],
+  "main": "./dist/really-code-configurator/really-code-configurator.js",
+  "module": "./dist/really-code-configurator/really-code-configurator.js",
+  "typings": "./dist/really-code-configurator/really-code-configurator.d.ts",
+  "scripts": {},
+  "dependencies": {
+    "@material/mwc-button": "^0.5.0",
+    "@types/prismjs": "^1.16.0",
+    "lit-element": "^2.1.0",
+    "lit-html": "^1.0.0",
+    "prismjs": "^1.16.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 8.16.0",
+    "npm": ">= 6.4.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
