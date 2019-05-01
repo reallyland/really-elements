@@ -4,8 +4,6 @@
   "description": "A collection of opinionated custom elements for the web",
   "keywords": [
     "elements",
-    "code-snippet",
-    "demo",
     "lit-element",
     "lit-html",
     "polymer",
@@ -28,6 +26,8 @@
   "scripts": {
     "build": "npm run ts -- -p tsconfig.prod.json",
     "clean": "rm -rf dist/",
+    "gulp": "gulp",
+    "install:deps": "sh ./src/scripts/npm-install.sh",
     "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
     "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
     "prepublishOnly": "rm -rf dist/ && npm run build",
@@ -35,7 +35,6 @@
     "test:ci": "wct --config-file wct.config.ci.json",
     "test:sl": "wct --config-file wct.config.sl.json",
     "ts": "tsc",
-    "gulp": "gulp",
     "watch": "npm run ts -- --watch"
   },
   "dependencies": {},

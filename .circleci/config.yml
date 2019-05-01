@@ -29,6 +29,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm ci --quiet
+      - run:
+          name: Install Dependencies of All Modules
+          command: npm run install:deps
       - save_cache: *save-cache-deps
       - run:
           name: Versions
