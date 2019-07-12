@@ -41,7 +41,7 @@
   "devDependencies": {
     "@reallyland/tslint-config": "^1.0.0",
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
+    "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "esm": "^3.2.22",
     "gulp": "^4.0.1",
