@@ -25,7 +25,8 @@
 
 ## Available elements
 
-* [code-configurator][]
+* [code-configurator]
+* [clipboard-copy]
 
 ## Browser compatibility
 
@@ -75,6 +76,7 @@
 
 <!-- Elements:link -->
 [code-configurator]: /src/code-configurator
+[clipboard-copy]: /src/clipboard-copy
 
 <!-- Elements:npm-badge -->
 [really-code-configurator-npm-badge]: https://flat.badgen.net/npm/v/@reallyland/really-code-configurator?icon=npm
