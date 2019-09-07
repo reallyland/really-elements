@@ -1,7 +1,7 @@
-import { ReallyCodeConfigurator } from '../really-code-configurator.js';
+import { ReallyCodeConfigurator } from '../code-configurator.js';
 
 import { getTestName } from '../../test/test-helpers.js';
-import '../really-code-configurator.js';
+import '../code-configurator.js';
 import { cssProperties, properties } from './properties.config.js';
 
 const { strictEqual, deepStrictEqual, isTrue } = chai.assert;

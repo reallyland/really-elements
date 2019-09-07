@@ -25,7 +25,7 @@
 
 ## Available elements
 
-* [really-code-configurator][]
+* [code-configurator][]
 
 ## Browser compatibility
 
@@ -74,7 +74,7 @@
 [mit-license-url]: /LICENSE
 
 <!-- Elements:link -->
-[really-code-configurator]: /src/really-code-configurator
+[code-configurator]: /src/code-configurator
 
 <!-- Elements:npm-badge -->
 [really-code-configurator-npm-badge]: https://flat.badgen.net/npm/v/@reallyland/really-code-configurator?icon=npm

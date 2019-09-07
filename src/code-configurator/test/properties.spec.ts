@@ -1,14 +1,14 @@
-import { ReallyCodeConfigurator } from '../really-code-configurator.js';
+import { ReallyCodeConfigurator } from '../code-configurator.js';
 
 import { getTestName } from '../../test/test-helpers.js';
-import '../really-code-configurator.js';
+import '../code-configurator.js';
 import { cssProperties, properties } from './properties.config.js';
 
 const { strictEqual, deepStrictEqual, isTrue } = chai.assert;
 let el: ReallyCodeConfigurator;
 
 describe(getTestName('really-code-configurator'), () => {
-  describe('attributes', () => {
+  describe('properties', () => {
     const getAssignedNodes = (node: HTMLElement) => {
       const slotEl = node.shadowRoot!.querySelector('slot') as HTMLSlotElement;
       const assignedNodes = Array.from(slotEl.assignedNodes()).filter(
@@ -46,23 +46,16 @@ describe(getTestName('really-code-configurator'), () => {
       document.body.removeChild(el);
     });
 
-    it(`renders with initial attributes`, () => {
+    it(`renders with initial properties`, () => {
       strictEqual(el.properties, void 0, `'properties' not matched`);
       strictEqual(el.cssProperties, void 0, `'cssProperties' not matched`);
       strictEqual(el.customElement, void 0, `'customElement' not matched`);
-
-      strictEqual(
-        el.getAttribute('properties'), null, `Expected no 'properties' attribute set`);
-      strictEqual(
-        el.getAttribute('cssproperties'), null, `Expected no 'cssproperties' attribute set`);
-      strictEqual(
-        el.getAttribute('customelement'), null, `Expected no 'customelement' attribute set`);
     });
 
-    it(`renders with attributes set`, async () => {
-      el.setAttribute('properties', JSON.stringify(properties));
-      el.setAttribute('cssproperties', JSON.stringify(cssProperties));
-      el.setAttribute('customelement', 'test-property');
+    it(`renders with properties set`, async () => {
+      el.properties = properties;
+      el.cssProperties = cssProperties;
+      el.customElement = 'test-property';
       await el.updateComplete;
 
       const clonedProperties = JSON.parse(JSON.stringify(properties));

@@ -1,1 +1,1 @@
-import '../really-code-configurator/test/really-code-configurator.spec.js';
+import '../code-configurator/test/code-configurator.spec.js';

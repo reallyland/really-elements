@@ -1,1 +1,1 @@
-import './really-code-configurator/really-code-configurator.js';
+import './code-configurator/code-configurator.js';

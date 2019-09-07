@@ -1,4 +1,4 @@
-import { PropertyValue } from '../really-code-configurator';
+import { PropertyValue } from '../code-configurator';
 
 const properties: PropertyValue[] = [
   {
