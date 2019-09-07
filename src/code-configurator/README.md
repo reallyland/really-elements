@@ -110,7 +110,7 @@ _Coming soon_
 [MIT License](https://motss.mit-license.org/) © Rong Sen Ng (motss)
 
 <!-- References -->
-[ReallyCodeConfigurator]: /API_REFERENCES.md#reallycodeconfigurator
+[ReallyCodeConfigurator]: ./API_REFERENCES.md#reallycodeconfigurator
 
 <!-- Badges -->
 [mit-license-badge]: https://flat.badgen.net/badge/license/MIT/blue

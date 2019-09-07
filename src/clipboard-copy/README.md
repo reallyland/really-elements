@@ -77,7 +77,7 @@ _Coming soon_
 [MIT License](https://motss.mit-license.org/) © Rong Sen Ng (motss)
 
 <!-- References -->
-[ReallyClipboardCopy]: /API_REFERENCES.md#reallyclipboardcopy
+[ReallyClipboardCopy]: ./API_REFERENCES.md#reallyclipboardcopy
 
 <!-- Badges -->
 [mit-license-badge]: https://flat.badgen.net/badge/license/MIT/blue

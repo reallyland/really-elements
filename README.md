@@ -52,14 +52,17 @@
 [lit-element-url]: https://github.com/Polymer/lit-element?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=motss/app-datepicker
 [web-component-tester-url]: https://github.com/Polymer/tools/tree/master/packages/web-component-tester
 
+[code-configurator]: ./src/code-configurator
+[clipboard-copy]: ./src/clipboard-copy
+
 <!-- Badges -->
 [tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
 [follow-me-badge]: https://flat.badgen.net/twitter/follow/igarshmyb?icon=twitter
 
-[version-badge]: https://flat.badgen.net/npm/v/@reallyland/really-code-configurator?icon=npm
+[version-badge]: https://flat.badgen.net/npm/v/@reallyland/really-elements?icon=npm
 [lit-element-version-badge]: https://flat.badgen.net/npm/v/lit-element/latest?icon=npm&label=lit-element
-[node-version-badge]: https://flat.badgen.net/npm/node/@reallyland/really-code-configurator
-[mit-license-badge]: https://flat.badgen.net/npm/license/@reallyland/really-code-configurator
+[node-version-badge]: https://flat.badgen.net/npm/node/@reallyland/really-elements
+[mit-license-badge]: https://flat.badgen.net/npm/license/@reallyland/really-elements
 
 [tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
 [follow-me-badge]: https://flat.badgen.net/twitter/follow/igarshmyb?icon=twitter
@@ -73,31 +76,3 @@
 [version-url]: https://www.npmjs.com/package/@reallyland/really-elements/v/latest?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [node-version-url]: https://nodejs.org/en/download?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [mit-license-url]: /LICENSE
-
-<!-- Elements:link -->
-[code-configurator]: /src/code-configurator
-[clipboard-copy]: /src/clipboard-copy
-
-<!-- Elements:npm-badge -->
-[really-code-configurator-npm-badge]: https://flat.badgen.net/npm/v/@reallyland/really-code-configurator?icon=npm
-
-<!-- Elements:npm-url -->
-[really-code-configurator-npm-url]: https://www.npmjs.com/package/@reallyland/really-code-configurator/v/latest
-
-<!-- Elements:downloads-badge -->
-[really-code-configurator-downloads-badge]: https://flat.badgen.net/npm/dm/@reallyland/really-code-configurator
-
-<!-- Elements:downloads-url -->
-[really-code-configurator-downloads-url]: https://www.npmtrends.com/@reallyland/really-code-configurator
-
-<!-- Elements:circleci-badge -->
-[really-code-configurator-circleci-badge]: https://flat.badgen.net/circleci/github/reallyland/really-code-configurator?icon=circleci
-
-<!-- Elements:circleci-url -->
-[really-code-configurator-circleci-url]: https://circleci.com/gh/reallyland/really-code-configurator/tree/master
-
-<!-- Elements:bundlephobia-badge -->
-[really-code-configurator-bundlephobia-badge]: https://flat.badgen.net/bundlephobia/minzip/@reallyland/really-code-configurator
-
-<!-- Elements:bundlephobia-url -->
-[really-code-configurator-bundlephobia-url]: https://bundlephobia.com/result?p=@reallyland/really-code-configurator
