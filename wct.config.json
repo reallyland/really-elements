@@ -15,6 +15,7 @@
     }
   },
   "suites": ["src/test"],
+  "testTimeout": 539999,
   "verbose": true,
   "expanded": true,
   "compile": "auto"

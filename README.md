@@ -6,8 +6,13 @@
 
 <hr />
 
+<a href="https://www.buymeacoffee.com/RLmMhgXFb" target="_blank" rel="noopener noreferrer"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 20px !important;width: auto !important;" ></a>
+[![tippin.me][tippin-me-badge]][tippin-me-url]
 [![Follow me][follow-me-badge]][follow-me-url]
 
+[![Version][version-badge]][version-url]
+[![lit-element][lit-element-version-badge]][lit-element-url]
+[![Node version][node-version-badge]][node-version-url]
 [![MIT License][mit-license-badge]][mit-license-url]
 
 > Custom elements for the web
@@ -15,31 +20,57 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Available elements](#available-elements)
+- [Browser compatibility](#browser-compatibility)
 - [License](#license)
 
 ## Available elements
 
-| Element | Version | Downloads | Test Status | Minzipped |
-| --- | --- | --- | --- | --- |
-| [really-code-configurator][] | [![Version][really-code-configurator-npm-badge]][really-code-configurator-npm-url] | [![Version][really-code-configurator-downloads-badge]][really-code-configurator-downloads-url] | [![CircleCI][really-code-configurator-circleci-badge]][really-code-configurator-circleci-url] | [![Bundlephobia][really-code-configurator-bundlephobia-badge]][really-code-configurator-bundlephobia-url] |
+* [really-code-configurator][]
+
+## Browser compatibility
+
+`really-elements` works in all major browsers (Chrome, Firefox, IE, Edge, Safari, and Opera).
+
+[Heavily tested](/.circleci/config.yml) on the following browsers:
+
+| Name | OS |
+| --- | --- |
+| Edge 17 | Windows 10 |
+| Edge 15 | Windows 10 |
+| Internet Explorer 11 | Windows 10 |
+| Safari 10.1 | Mac OS 10.12 |
+| Safari 9 | Mac OS X 10.11 |
+| Firefox 62 (w/o native Shadow DOM) | macOS Mojave (10.14) |
+| Chrome 69 ([WRE 2019][wre-2019-url]) | Windows 10 |
 
 ## License
 
 [MIT License](https://motss.mit-license.org/) © Rong Sen Ng (motss)
 
 <!-- References -->
+[lit-element-url]: https://github.com/Polymer/lit-element?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=motss/app-datepicker
 [web-component-tester-url]: https://github.com/Polymer/tools/tree/master/packages/web-component-tester
 
 <!-- Badges -->
 [tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
 [follow-me-badge]: https://flat.badgen.net/twitter/follow/igarshmyb?icon=twitter
 
+[version-badge]: https://flat.badgen.net/npm/v/@reallyland/really-code-configurator?icon=npm
+[lit-element-version-badge]: https://flat.badgen.net/npm/v/lit-element/latest?icon=npm&label=lit-element
+[node-version-badge]: https://flat.badgen.net/npm/node/@reallyland/really-code-configurator
+[mit-license-badge]: https://flat.badgen.net/npm/license/@reallyland/really-code-configurator
+
+[tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
+[follow-me-badge]: https://flat.badgen.net/twitter/follow/igarshmyb?icon=twitter
+
 [mit-license-badge]: https://flat.badgen.net/github/license/reallyland/really-elements
 
 <!-- Links -->
-[tippin-me-url]: https://tippin.me/@igarshmyb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-code-configurator
-[follow-me-url]: https://twitter.com/igarshmyb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-code-configurator
+[tippin-me-url]: https://tippin.me/@igarshmyb
+[follow-me-url]: https://twitter.com/igarshmyb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 
+[version-url]: https://www.npmjs.com/package/@reallyland/really-elements/v/latest?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
+[node-version-url]: https://nodejs.org/en/download?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [mit-license-url]: /LICENSE
 
 <!-- Elements:link -->

@@ -10,17 +10,11 @@ export interface PropertyValue {
 }
 
 import '@material/mwc-button/mwc-button.js';
-import {
-  css,
-  customElement,
-  html,
-  LitElement,
-  property,
-} from 'lit-element/lit-element.js';
+import { css, customElement, html, LitElement, property } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import 'prismjs/prism.js';
+import 'prismjs';
 
-import { nothing } from 'lit-html';
+import { nothing } from 'lit-html/lib/part.js';
 import { contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
 
@@ -124,10 +118,14 @@ export class ReallyCodeConfigurator extends LitElement {
         width: 100%;
       }
 
+      .all-properties-container {
+        flex-direction: column;
+      }
+
       label > div,
       label > input,
-      label > select, {
-        max-width: calc(50% - 4px);
+      label > select {
+        max-width: calc(50% - 8px);
         width: 100%;
       }
     }
