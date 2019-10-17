@@ -57,14 +57,14 @@
   "devDependencies": {
     "@reallyland/tsconfig": "^1.0.0",
     "@reallyland/tslint-config": "^1.1.1",
-    "@types/chai": "^4.2.1",
+    "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.1",
     "shx": "^0.3.2",
-    "tslint": "^5.19.0",
-    "typescript": "^3.6.2",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4",
     "wct-mocha": "^1.0.1"
   },
   "engines": {
