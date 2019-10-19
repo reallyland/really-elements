@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>&lt;code-configurator&gt; demo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous" />
+
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700" crossorigin="anonymous" onload="this.rel = 'stylesheet';" as="font"/>
+
+    <script type="module">
+      import 'https://unpkg.com/app-datepicker@next?module';
+      import '../dist/code-configurator/code-configurator.js';
+      import { properties, cssProperties } from './properties.config.js';
+
+      window.onload = () => {
+        const configurator = document.body.querySelector('really-code-configurator');
+
+        if (configurator) {
+          configurator.properties = properties;
+          configurator.cssProperties = cssProperties;
+          configurator.customElement = 'app-datepicker';
+        }
+      };
+    </script>
+  </head>
+
+  <body>
+    <style>
+      html,
+      body {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+        color: #000;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <really-code-configurator>
+      <app-datepicker slot="element"></app-datepicker>
+    </really-code-configurator>
+  </body>
+</html>

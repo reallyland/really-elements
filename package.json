@@ -47,11 +47,10 @@
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "dependencies": {
-    "@material/mwc-button": "^0.8.0",
-    "@types/prismjs": "^1.16.0",
+    "@material/mwc-button": "^0.10.0",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
-    "prismjs": "^1.17.1",
+    "nodemod": "^2.1.0-rc.1",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
@@ -59,6 +58,7 @@
     "@reallyland/tslint-config": "^1.1.1",
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
+    "@types/prismjs": "^1.16.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
     "mocha": "^6.2.1",

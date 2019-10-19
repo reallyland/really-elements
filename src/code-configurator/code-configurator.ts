@@ -12,14 +12,13 @@ export interface PropertyValue {
 import '@material/mwc-button/mwc-button.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import 'prismjs';
+import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
 import { nothing } from 'lit-html/lib/part.js';
 import { contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
 
 const localName  = 'really-code-configurator';
-const { highlight, languages } = window.Prism;
 
 function notArray(a?: unknown[]) {
   return !Array.isArray(a) || !a.length;
@@ -144,10 +143,16 @@ export class ReallyCodeConfigurator extends LitElement {
 
   private _slottedElements?: HTMLElement[];
 
+  private get _slot(): HTMLSlotElement | null {
+    return this.shadowRoot!.querySelector('slot');
+  }
+
   protected updated() {
     const properties = this.properties;
     const cssProperties = this.cssProperties;
     const slottedElements = this._slottedElements;
+
+    if (null == slottedElements) return this._updateSlotted();
 
     if (notArray(slottedElements)) return;
 
@@ -175,38 +180,54 @@ export class ReallyCodeConfigurator extends LitElement {
 
     return html`
     <div>
-      <slot class="slot" @slotchange="${this._updateSlotted}"></slot>
+      <slot name="element" class="slot" @slotchange2="${this._updateSlotted}"></slot>
     </div>
 
     <div>${this._renderProperties(elName!, properties, cssProperties)}</div>
     `;
   }
 
-  private _updateSlotted(ev: Event) {
-    const slotted = ev.currentTarget as HTMLSlotElement;
+  private _updateSlotted() {
     const customElementName = this.customElement;
 
     if (typeof customElementName !== 'string' || !customElementName.length) {
-      throw new Error(`Property 'customElement' is not defined`);
+      console.warn(`Property 'customElement' is not defined`);
+      return;
     }
 
-    const assignedNodes = Array.from(slotted.assignedNodes()).filter(
-      n => n.nodeType === Node.ELEMENT_NODE) as HTMLElement[];
-    const matchedCustomElements = assignedNodes.reduce((p, n) => {
-      if (n.localName === customElementName) {
-        p.push(n);
-      } else if (n && n.querySelectorAll) {
-        const allCustomElements = Array.from<HTMLElement>(n.querySelectorAll(customElementName));
-        p.push(...allCustomElements);
-      }
+    const slotted = this._slot;
 
-      return p;
-    }, [] as HTMLElement[]);
+    if (slotted) {
+      const assignedNodes = Array.from(slotted.assignedNodes()).filter(
+        n => n.nodeType === Node.ELEMENT_NODE) as LitElement[];
+      const matchedCustomElements = assignedNodes.reduce<LitElement[]>((p, n) => {
+        if (n.localName === customElementName) {
+          p.push(n);
+        } else if (n && n.querySelectorAll) {
+          const allCustomElements = Array.from<LitElement>(n.querySelectorAll(customElementName));
+          p.push(...allCustomElements);
+        }
 
-    const noNodes = notArray(matchedCustomElements);
+        return p;
+      }, []);
 
-    this._slottedElements = noNodes ? [] : matchedCustomElements;
-    this.requestUpdate();
+      const noNodes = notArray(matchedCustomElements);
+
+      this._slottedElements = noNodes ? [] : matchedCustomElements;
+
+      /**
+       * Call `.requestUpdate()` on all slotted `LitElement`s then call `.requestUpdate()` of
+       * this element. This is to fix some of the slotted elements not being updated/ rendered
+       * correctly.
+       */
+      const elementsUpdateComplete = matchedCustomElements.map((n) => {
+        return n.updateComplete ?
+          n.updateComplete.then(() => n.requestUpdate && n.requestUpdate()) :
+          n;
+      });
+
+      Promise.all(elementsUpdateComplete).then(() => this.requestUpdate());
+    }
   }
 
   private _renderProperties(
