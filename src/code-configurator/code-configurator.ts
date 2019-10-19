@@ -182,7 +182,7 @@ export class ReallyCodeConfigurator extends LitElement {
 
     return html`
     <div>
-      <slot name="element" class="slot" @slotchange=${this._updateSlotted}></slot>
+      <slot class="slot" @slotchange=${this._updateSlotted}></slot>
     </div>
 
     <div>${this._renderProperties(elName!, properties, cssProperties)}</div>
