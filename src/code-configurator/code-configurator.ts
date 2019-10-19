@@ -148,13 +148,15 @@ export class ReallyCodeConfigurator extends LitElement {
   }
 
   protected updated() {
-    const properties = this.properties;
-    const cssProperties = this.cssProperties;
-    const slottedElements = this._slottedElements;
+    if (null == this.customElement) return;
 
+    const slottedElements = this._slottedElements;
     if (null == slottedElements) return this._updateSlotted();
 
     if (notArray(slottedElements)) return;
+
+    const properties = this.properties;
+    const cssProperties = this.cssProperties;
 
     if (!notArray(properties)) {
       properties!.forEach((n) => {
@@ -180,7 +182,7 @@ export class ReallyCodeConfigurator extends LitElement {
 
     return html`
     <div>
-      <slot name="element" class="slot" @slotchange2="${this._updateSlotted}"></slot>
+      <slot name="element" class="slot" @slotchange=${this._updateSlotted}></slot>
     </div>
 
     <div>${this._renderProperties(elName!, properties, cssProperties)}</div>
@@ -188,32 +190,24 @@ export class ReallyCodeConfigurator extends LitElement {
   }
 
   private _updateSlotted() {
+    const slotted = this._slot;
     const customElementName = this.customElement;
 
-    if (typeof customElementName !== 'string' || !customElementName.length) {
-      console.warn(`Property 'customElement' is not defined`);
-      return;
-    }
-
-    const slotted = this._slot;
-
-    if (slotted) {
+    if (slotted && (typeof customElementName === 'string' && customElementName.length > 0)) {
       const assignedNodes = Array.from(slotted.assignedNodes()).filter(
         n => n.nodeType === Node.ELEMENT_NODE) as LitElement[];
       const matchedCustomElements = assignedNodes.reduce<LitElement[]>((p, n) => {
         if (n.localName === customElementName) {
           p.push(n);
         } else if (n && n.querySelectorAll) {
-          const allCustomElements = Array.from<LitElement>(n.querySelectorAll(customElementName));
+          const allCustomElements = Array.from(n.querySelectorAll<LitElement>(customElementName));
           p.push(...allCustomElements);
         }
 
         return p;
       }, []);
 
-      const noNodes = notArray(matchedCustomElements);
-
-      this._slottedElements = noNodes ? [] : matchedCustomElements;
+      this._slottedElements = notArray(matchedCustomElements) ? [] : matchedCustomElements;
 
       /**
        * Call `.requestUpdate()` on all slotted `LitElement`s then call `.requestUpdate()` of
