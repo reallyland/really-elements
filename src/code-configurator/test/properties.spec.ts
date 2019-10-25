@@ -73,6 +73,8 @@ describe(getTestName('really-code-configurator'), () => {
       isTrue(hasCodeSnippetRendered(el), `Code snippets container should render`);
     });
 
+    /** FIXME: Add tests for copy/ copied */
+
   });
 
 });

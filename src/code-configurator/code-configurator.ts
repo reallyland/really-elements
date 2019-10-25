@@ -15,7 +15,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
 import { nothing } from 'lit-html/lib/part.js';
-import { contentCopy } from './icons.js';
+import { contentCopy, contentCopied } from './icons.js';
 import { prismVscode } from './styles.js';
 
 const localName  = 'really-code-configurator';
@@ -150,6 +150,14 @@ export class ReallyCodeConfigurator extends LitElement {
   @property({ type: String })
   public customElement?: string;
 
+  @property({ type: Boolean })
+  private _propsCopied: boolean = false;
+
+  @property({ type: Boolean })
+  private _cssPropsCopied: boolean = false;
+
+  private copiedDuration: number = 3e3;
+
   private _slottedElements?: HTMLElement[];
 
   private get _slot(): HTMLSlotElement | null {
@@ -264,12 +272,9 @@ export class ReallyCodeConfigurator extends LitElement {
       ${noProperties ? nothing : html`
       <h3 class="properties">Properties</h3>
       <div class="code-container">
-        <mwc-button
-          class="copy-btn"
-          for="propertiesFor"
-          @click="${this._copyCode}">
-          ${contentCopy}
-          <span class="copy-text">Copy</span>
+        <mwc-button class="copy-btn" for="propertiesFor" @click="${this._copyCode}">
+          ${this._propsCopied ? contentCopied : contentCopy}
+          <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
         </mwc-button>
         <pre class="language-html" id="propertiesFor">${
           renderCode(`<${elName}${
@@ -280,8 +285,8 @@ export class ReallyCodeConfigurator extends LitElement {
       <h3 class="css-properties">CSS Properties</h3>
       <div class="code-container">
         <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${this._copyCode}">
-          ${contentCopy}
-          <span class="copy-text">Copy</span>
+          ${this._cssPropsCopied ? contentCopied : contentCopy}
+          <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
         </mwc-button>
         <pre class="language-css" id="cssPropertiesFor">${
           renderCode(`${elName} {\n${toCSSProperties(cssProperties!)}}`, 'css', 'css')}</pre>
@@ -347,6 +352,8 @@ export class ReallyCodeConfigurator extends LitElement {
   }
 
   private _copyCode(ev: Event) {
+    if (this._copied) return;
+
     const currentTarget = ev.currentTarget as HTMLElement;
     const copyNode =
       this.shadowRoot!.querySelector(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
@@ -362,6 +369,14 @@ export class ReallyCodeConfigurator extends LitElement {
     selection.removeAllRanges();
 
     this.dispatchEvent(new CustomEvent('content-copied'));
+
+    const attrFor = currentTarget.getAttribute('for');
+    const copiedProp = 'propertiesFor' === attrFor ? '_propsCopied' : '_cssPropsCopied';
+    this[copiedProp] = true;
+
+    setTimeout(() => {
+      this[copiedProp] = false;
+    }, this.copiedDuration);
   }
 
 }
