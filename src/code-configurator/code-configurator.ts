@@ -15,7 +15,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
 import { nothing } from 'lit-html/lib/part.js';
-import { contentCopy, contentCopied } from './icons.js';
+import { contentCopied, contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
 
 const localName  = 'really-code-configurator';

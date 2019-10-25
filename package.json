@@ -23,6 +23,15 @@
     "email": "wes.ngrongsen@gmail.com",
     "url": "https://github.com/motss"
   },
+  "files": [
+    "dist/**/*.d.ts.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.js.map",
+    "dist/**/*.js"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "npm run ts -- -p tsconfig.prod.json",
     "clean": "shx rm -rf dist/",
@@ -37,15 +46,11 @@
     "ts": "tsc",
     "watch": "npm run ts -- --watch"
   },
-  "files": [
-    "dist/**/*.d.ts.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.js.map",
-    "dist/**/*.js"
-  ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "dependencies": {
     "@material/mwc-button": "^0.10.0",
     "lit-element": "^2.2.1",
@@ -61,6 +66,7 @@
     "@types/prismjs": "^1.16.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
+    "husky": "^3.0.9",
     "mocha": "^6.2.1",
     "shx": "^0.3.2",
     "tslint": "^5.20.0",
