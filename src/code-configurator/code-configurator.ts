@@ -352,9 +352,12 @@ export class ReallyCodeConfigurator extends LitElement {
   }
 
   private _copyCode(ev: Event) {
-    if (this._copied) return;
-
     const currentTarget = ev.currentTarget as HTMLElement;
+    const attrFor = currentTarget.getAttribute('for');
+    const copiedProp = 'propertiesFor' === attrFor ? '_propsCopied' : '_cssPropsCopied';
+
+    if (this[copiedProp]) return;
+
     const copyNode =
       this.shadowRoot!.querySelector(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
 
@@ -369,9 +372,6 @@ export class ReallyCodeConfigurator extends LitElement {
     selection.removeAllRanges();
 
     this.dispatchEvent(new CustomEvent('content-copied'));
-
-    const attrFor = currentTarget.getAttribute('for');
-    const copiedProp = 'propertiesFor' === attrFor ? '_propsCopied' : '_cssPropsCopied';
     this[copiedProp] = true;
 
     setTimeout(() => {
