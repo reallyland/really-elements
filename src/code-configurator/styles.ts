@@ -129,7 +129,7 @@ code.language-markup .token.script .token.keyword {
 @media (prefers-color-scheme: dark) {
   pre[class*="language-"],
   :not(pre)>code[class*="language-"] {
-    background-color: #111;
+    background-color: var(--really-code-configurator-pre-bg-color, #000);
     border: none;
   }
 }
