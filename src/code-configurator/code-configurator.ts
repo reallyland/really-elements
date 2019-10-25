@@ -128,6 +128,15 @@ export class ReallyCodeConfigurator extends LitElement {
         width: 100%;
       }
     }
+
+    @media (prefers-color-scheme: dark) {
+      label > input:not([type="checkbox"]),
+      label > select {
+        background-color: #000;
+        color: #f5f5f5;
+        border: 1px solid #000;
+      }
+    }
     `,
     prismVscode,
   ];

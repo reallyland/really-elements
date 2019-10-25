@@ -125,6 +125,15 @@ code.language-markup .token.script .token.keyword {
   color: #76d9e6;
 }
 
+/** dark theme */
+@media (prefers-color-scheme: dark) {
+  pre[class*="language-"],
+  :not(pre)>code[class*="language-"] {
+    background-color: #111;
+    border: none;
+  }
+}
+
 /* Line highlight plugin */
 pre[class*="language-"][data-line] {
   position: relative;
