@@ -22,6 +22,10 @@ pre[class*="language-"] {
   color: #569cd6;
   text-shadow: none;
 }
+code[class="language-css"],
+pre[class="language-css"] {
+  color: #b5cea8;
+}
 pre[class*="language-"],
 :not(pre)>code[class*="language-"] {
   background: #1e1e1e;
