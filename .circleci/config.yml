@@ -15,7 +15,7 @@ aliases:
 defaults: &defaults
   working_directory: ~/really-elements
   docker:
-    - image: circleci/node:8-browsers
+    - image: circleci/node:13-browsers
 
 jobs:
   build:

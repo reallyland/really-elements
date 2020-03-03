@@ -1,4 +1,4 @@
-import { ReallyClipboardCopy } from '../clipboard-copy.js';
+import type { ReallyClipboardCopy } from '../clipboard-copy.js';
 
 import { getTestName } from '../../test/test-helpers.js';
 import '../clipboard-copy.js';

@@ -1,4 +1,4 @@
-import { ReallyCodeConfigurator } from '../code-configurator.js';
+import type { ReallyCodeConfigurator } from '../code-configurator.js';
 
 import { getTestName } from '../../test/test-helpers.js';
 import '../code-configurator.js';

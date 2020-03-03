@@ -43,20 +43,36 @@ function toInputType(type?: string) {
 }
 
 function toPropertiesAttr(properties: PropertyValue[]) {
-  const mapped = properties.map((n) => {
-    const { name, type, value } = n;
+  const mapped = properties.reduce<string[]>((p, n) => {
+    const {
+      name,
+      type = 'string',
+      value,
+    } = n;
 
     const fnType = toFunctionType(type);
     const val = fnType(value);
 
-    return `  ${name.toLowerCase()}="${val}"`;
-  });
+    if (type === 'string' && !val) return p;
 
-  return `\n${mapped.join('  \n')}\n`;
+    p.push(`${name.toLowerCase()}="${val}"`);
+
+    return p;
+  }, []).filter(Boolean).join('\n  ');
+
+  return mapped ? `\n  ${mapped}\n` : '';
 }
 
 function toCSSProperties(cssProperties: PropertyValue[]) {
-  return cssProperties.map(n => `  ${n.name}: ${n.value};\n`).join('');
+  return cssProperties.reduce<string[]>((p, n) => {
+    const { name, value } = n;
+
+    if (!value) return p;
+
+    p.push(`  ${name}: ${value};\n`);
+
+    return p;
+  }, []).join('');
 }
 
 function renderCode(code: string, grammar: string, language: string) {
@@ -81,7 +97,7 @@ export class ReallyCodeConfigurator extends LitElement {
     }
 
     .all-properties-container {
-      display: flex;
+      /* display: flex; */
     }
 
     .configurator + .configurator {
@@ -106,27 +122,6 @@ export class ReallyCodeConfigurator extends LitElement {
 
     .copy-text {
       margin: 0 0 0 8px;
-    }
-
-    @media screen and (max-width: 820px) {
-      .all-properties-container,
-      .configurator > label,
-      .all-code-snippets-container,
-      .code-container {
-        max-width: 100%;
-        width: 100%;
-      }
-
-      .all-properties-container {
-        flex-direction: column;
-      }
-
-      label > div,
-      label > input,
-      label > select {
-        max-width: calc(50% - 8px);
-        width: 100%;
-      }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -249,6 +244,9 @@ export class ReallyCodeConfigurator extends LitElement {
     const noProperties = notArray(properties);
     const noCssProperties = notArray(cssProperties);
 
+    const propsContent = noProperties ? '' : toPropertiesAttr(properties!);
+    const cssPropsContent = noCssProperties ? '' : toCSSProperties(cssProperties!);
+
     // tslint:disable: max-line-length
     return html`
     <div class="all-properties-container">
@@ -256,8 +254,6 @@ export class ReallyCodeConfigurator extends LitElement {
       <h2 class="properties">Properties</h2>
       <div class="configurator-container">${this._renderPropertiesConfigurator(properties)}</div>
     </div>`}
-
-    <div style="flex: 1; min-width: 16px;"></div>
 
     ${noCssProperties ? nothing : html`<div>
       <h2 class="css-properties">CSS Properties</h2>
@@ -277,8 +273,7 @@ export class ReallyCodeConfigurator extends LitElement {
           <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
         </mwc-button>
         <pre class="language-html" id="propertiesFor">${
-          renderCode(`<${elName}${
-            toPropertiesAttr(properties!)}><${elName}>`, 'html', 'html')}</pre>
+          renderCode(`<${elName}${propsContent}><${elName}>`, 'html', 'html')}</pre>
       </div>`}
 
       ${noCssProperties ? nothing : html`
@@ -289,7 +284,7 @@ export class ReallyCodeConfigurator extends LitElement {
           <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
         </mwc-button>
         <pre class="language-css" id="cssPropertiesFor">${
-          renderCode(`${elName} {\n${toCSSProperties(cssProperties!)}}`, 'css', 'css')}</pre>
+          renderCode(`${elName} {${cssPropsContent ? `\n${cssPropsContent}` : ''}}`, 'css', 'css')}</pre>
       </div>`}
     </div>
     `;

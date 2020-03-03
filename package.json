@@ -23,28 +23,29 @@
     "email": "wes.ngrongsen@gmail.com",
     "url": "https://github.com/motss"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist/**/*.d.ts.map",
     "dist/**/*.d.ts",
     "dist/**/*.js.map",
     "dist/**/*.js"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "npm run ts -- -p tsconfig.prod.json",
+    "build": "tsc -p tsconfig.prod.json",
     "clean": "shx rm -rf dist/",
     "gulp": "gulp",
     "install:deps": "sh ./src/scripts/npm-install.sh",
     "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
     "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
     "prepublishOnly": "npm run clean && npm run build",
+    "serve": "es-dev-server --watch --port=3000 --node-resolve --dedupe",
     "test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
     "test:ci": "wct --config-file ./wct.config.ci.json",
     "test:sl": "wct --config-file ./wct.config.sl.json",
     "ts": "tsc",
-    "watch": "npm run ts -- --watch"
+    "watch": "tsc --watch"
   },
   "husky": {
     "hooks": {
@@ -55,22 +56,23 @@
     "@material/mwc-button": "^0.13.0",
     "lit-element": "^2.2.1",
     "lit-html": "^1.1.2",
-    "nodemod": "^2.3.0",
-    "tslib": "^1.10.0"
+    "nodemod": "^2.4.0",
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@reallyland/tsconfig": "^1.0.1",
+    "@reallyland/tsconfig": "^2.0.0",
     "@reallyland/tslint-config": "^1.1.1",
-    "@types/chai": "^4.2.8",
+    "@types/chai": "^4.2.10",
     "@types/mocha": "^7.0.1",
     "@types/prismjs": "^1.16.0",
     "chai": "^4.2.0",
+    "es-dev-server": "^1.42.0",
     "esm": "^3.2.25",
-    "husky": "^4.2.1",
-    "mocha": "^7.0.1",
+    "husky": "^4.2.3",
+    "mocha": "^7.1.0",
     "shx": "^0.3.2",
     "tslint": "^6.0.0",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.3",
     "wct-mocha": "^1.0.1"
   },
   "engines": {

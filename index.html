@@ -12,9 +12,64 @@
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700" crossorigin="anonymous" onload="this.rel = 'stylesheet';" as="font"/>
 
     <script type="module">
-      import '../dist/code-configurator/code-configurator.js';
       import 'https://unpkg.com/app-datepicker@next?module';
-      import { properties, cssProperties } from './properties.config.js';
+      import '../dist/code-configurator/code-configurator.js';
+
+      const properties = [
+        {
+          name: 'propertyString',
+          value: 'property',
+          type: 'string',
+        },
+        {
+          name: 'propertyNumber',
+          value: 0,
+          type: 'number',
+        },
+        {
+          name: 'propertyBoolean',
+          value: true,
+          type: 'boolean',
+        },
+        {
+          name: 'propertyWithSelectableOptions',
+          value: 'option-1',
+          type: 'string',
+          options: [
+            {
+              label: 'option-1',
+              value: 'option-1',
+            },
+            {
+              label: 'option-2',
+              value: 'option-2',
+            },
+            {
+              label: 'option-3',
+              value: 'option-3',
+            },
+          ],
+        },
+      ];
+
+      const cssProperties = [
+        {
+          name: '--test-property-width',
+          value: '2px',
+        },
+        {
+          name: '--test-property-height',
+          value: '2px',
+        },
+        {
+          name: '--test-property-color',
+          value: 'green',
+        },
+        {
+          name: '--test-property-background-color',
+          value: 'red',
+        },
+      ];
 
       window.onload = () => {
         const configurator = document.body.querySelector('really-code-configurator');
@@ -62,10 +117,17 @@
         margin: 0;
         padding: 0;
       }
+
+      .container {
+        display: flex;
+        justify-content: center;
+      }
     </style>
 
     <really-code-configurator>
-      <app-datepicker></app-datepicker>
+      <div class="container">
+        <app-datepicker></app-datepicker>
+      </div>
     </really-code-configurator>
   </body>
 </html>
