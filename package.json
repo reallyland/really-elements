@@ -42,8 +42,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "serve": "es-dev-server --watch --port=3000 --node-resolve --dedupe",
     "test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
-    "test:ci": "wct --config-file ./wct.config.ci.json",
-    "test:sl": "wct --config-file ./wct.config.sl.json",
+    "test:ci": "./node_modules/.bin/wct --config-file ./wct.config.ci.json",
+    "test:sl": "./node_modules/.bin/wct --config-file ./wct.config.sl.json",
     "ts": "tsc",
     "watch": "tsc --watch"
   },
@@ -76,8 +76,8 @@
     "wct-mocha": "^1.0.1"
   },
   "engines": {
-    "node": ">= 8.16.0",
-    "npm": ">= 6.4.1"
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4"
   },
   "publishConfig": {
     "access": "public"
