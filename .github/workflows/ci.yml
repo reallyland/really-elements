@@ -12,6 +12,9 @@ on:
     tags-ignore:
       - '*'
 
+# env:
+#   CI_SKIP: true
+
 jobs:
   # env.CI_SKIP == 'true' is not supported at job level
   # check_ci:
@@ -52,6 +55,8 @@ jobs:
             echo '::set-env name=CI_SKIP::false'
           fi
 
+          echo ${CI_SKIP};
+
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
@@ -67,6 +72,7 @@ jobs:
         continue-on-error: true
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
+          echo env.
 
       - name: Install dependencies
         if: "env.CI_SKIP == 'false'"
