@@ -155,7 +155,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --quiet
+          npm ci --quiet && npm i web-component-tester
 
       - name: Lint
         run: |

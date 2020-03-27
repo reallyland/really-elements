@@ -38,7 +38,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-18.04]
+        os: [ubuntu-18.04]
         target: [13.x]
     timeout-minutes: 120
 
