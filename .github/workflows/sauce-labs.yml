@@ -34,7 +34,7 @@ jobs:
 
   test_edge_ie:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
-    name: ${{ matrix.os }} ${{ matrix.target }}
+    name: Edge IE
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --quiet
+          npm ci --quiet && npm i web-component-tester
 
       - name: Lint
         run: |
@@ -83,7 +83,7 @@ jobs:
 
   test_safari:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
-    name: ${{ matrix.os }} ${{ matrix.target }}
+    name: Safari
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -106,7 +106,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --quiet
+          npm ci --quiet && npm i web-component-tester
 
       - name: Lint
         run: |
@@ -132,7 +132,7 @@ jobs:
 
   test_old_firefox_chrome:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
-    name: ${{ matrix.os }} ${{ matrix.target }}
+    name: Old Firefox Chrome
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
