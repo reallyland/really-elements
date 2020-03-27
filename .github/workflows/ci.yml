@@ -29,9 +29,11 @@ jobs:
     steps:
       - name: Git log
         run: |
-          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
             echo '::set-env name=CI_SKIP::true'
           fi
+
+          git log --oneline
 
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
