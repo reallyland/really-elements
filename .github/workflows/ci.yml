@@ -55,7 +55,11 @@ jobs:
             echo '::set-env name=CI_SKIP::false'
           fi
 
-          echo ${CI_SKIP};
+      - name: Log env
+        run: |
+          echo $CI_SKIP
+        env:
+          CI_SKIP: ${{ env.CI_SKIP }}
 
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
