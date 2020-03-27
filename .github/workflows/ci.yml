@@ -13,7 +13,7 @@ on:
       - '*'
 
 jobs:
-  # env.SKIP_CI == 'true' is not supported at job level
+  # env.CI_SKIP == 'true' is not supported at job level
   # check_ci:
   #   name: ${{ matrix.os }} ${{ matrix.target }}
   #   runs-on: ${{ matrix.os }}
@@ -26,10 +26,10 @@ jobs:
   #   steps:
   #     - name: Git log
   #       run: |
-  #         echo '::set-env name=SKIP_CI::true'
+  #         echo '::set-env name=CI_SKIP::true'
 
   #         if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-  #           echo '::set-env name=SKIP_CI::false'
+  #           echo '::set-env name=CI_SKIP::false'
   #         fi
 
   test:
@@ -43,37 +43,53 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Git log
+        run: |
+          echo '::set-env name=CI_SKIP::true'
+
+          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::false'
+          fi
+
       - name: Checkout
+        if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.target }}
 
       - name: List versions
+        if: "env.CI_SKIP == 'false'"
         continue-on-error: true
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
 
       - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm ci --quiet && npm i web-component-tester
 
       - name: Lint
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run lint
 
       - name: Build
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run ts
 
       - name: Check build
+        if: "env.CI_SKIP == 'false'"
         shell: bash
         run: |
           pwd && ls -la
 
       - name: Run Test
+        if: "env.CI_SKIP == 'false'"
         run: |
           if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
             npm run test:ci
