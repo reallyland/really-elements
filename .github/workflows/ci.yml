@@ -47,7 +47,8 @@ jobs:
         run: |
           echo '::set-env name=CI_SKIP::true'
 
-          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+          # if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+          if [ -z "" ]; then
             echo '::set-env name=CI_SKIP::false'
           fi
 
