@@ -28,7 +28,7 @@ jobs:
   #       run: |
   #         echo '::set-env name=SKIP_CI::true'
 
-  #         if [ -z "$(git describe --exact-match HEAD)" ] && [ -z git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+') ]; then
+  #         if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
   #           echo '::set-env name=SKIP_CI::false'
   #         fi
 
@@ -75,6 +75,6 @@ jobs:
 
       - name: Run Test
         run: |
-          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+') ]; then
+          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
             npm run test:ci
           fi
