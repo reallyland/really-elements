@@ -12,26 +12,10 @@ on:
     tags-ignore:
       - '*'
 
+env:
+  CI_SKIP: false
+
 jobs:
-  # env.SKIP_CI == 'true' is not supported at job level
-  # check_ci:
-  #   name: ${{ matrix.os }} ${{ matrix.target }}
-  #   runs-on: ${{ matrix.os }}
-  #   timeout-minutes: 120
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-18.04]
-  #       target: [13.x]
-
-  #   steps:
-  #     - name: Git log
-  #       run: |
-  #         echo '::set-env name=SKIP_CI::true'
-
-  #         if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-  #           echo '::set-env name=SKIP_CI::false'
-  #         fi
-
   test_edge_ie:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
     name: Edge IE
@@ -43,43 +27,55 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Git log
+        run: |
+          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
       - name: Checkout
+        if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.target }}
 
       - name: List versions
+        if: "env.CI_SKIP == 'false'"
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
 
       - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm ci --quiet && npm i web-component-tester
 
       - name: Lint
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run lint
 
       - name: Build
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run ts
 
       - name: Check build
+        if: "env.CI_SKIP == 'false'"
         shell: bash
         run: |
           pwd && ls -la
 
       - name: Run Test
+        if: "env.CI_SKIP == 'false'"
         env:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
         run: |
-          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            npm run test:sl -- -s 'windows 10/microsoftedge@17' -s 'windows 10/microsoftedge@15' -s 'windows 10/internet explorer@11';
-          fi
+          npm run test:sl -- -s 'windows 10/microsoftedge@17' -s 'windows 10/microsoftedge@15' -s 'windows 10/internet explorer@11';
 
   test_safari:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
@@ -92,43 +88,55 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Git log
+        run: |
+          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
       - name: Checkout
+        if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.target }}
 
       - name: List versions
+        if: "env.CI_SKIP == 'false'"
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
 
       - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm ci --quiet && npm i web-component-tester
 
       - name: Lint
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run lint
 
       - name: Build
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run ts
 
       - name: Check build
+        if: "env.CI_SKIP == 'false'"
         shell: bash
         run: |
           pwd && ls -la
 
       - name: Run Test
+        if: "env.CI_SKIP == 'false'"
         env:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
         run: |
-          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            npm run test:sl -- -s 'macos 10.12/safari@10.1' -s 'os x 10.11/safari@9';
-          fi
+          npm run test:sl -- -s 'macos 10.12/safari@10.1' -s 'os x 10.11/safari@9';
 
   test_old_firefox_chrome:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
@@ -141,40 +149,53 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Git log
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
       - name: Checkout
+        if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.target }}
 
       - name: List versions
+        if: "env.CI_SKIP == 'false'"
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
 
       - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm ci --quiet && npm i web-component-tester
 
       - name: Lint
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run lint
 
       - name: Build
+        if: "env.CI_SKIP == 'false'"
         run: |
           npm run ts
 
       - name: Check build
+        if: "env.CI_SKIP == 'false'"
         shell: bash
         run: |
           pwd && ls -la
 
       - name: Run Test
+        if: "env.CI_SKIP == 'false'"
         env:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
         run: |
-          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            npm run test:sl -- -s 'macos 10.14/firefox@62' -s 'windows 10/chrome@69';
-          fi
+          npm run test:sl -- -s 'macos 10.14/firefox@62' -s 'windows 10/chrome@69';
