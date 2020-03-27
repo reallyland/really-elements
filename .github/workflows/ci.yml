@@ -37,8 +37,6 @@ jobs:
             echo '::set-env name=CI_SKIP::true'
           fi
 
-          git log --oneline
-
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
