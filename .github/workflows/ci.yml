@@ -12,8 +12,8 @@ on:
     tags-ignore:
       - '*'
 
-# env:
-#   CI_SKIP: true
+env:
+  CI_SKIP: false
 
 jobs:
   # env.CI_SKIP == 'true' is not supported at job level
@@ -48,10 +48,9 @@ jobs:
     steps:
       - name: Git log
         run: |
-          echo '::set-env name=CI_SKIP::false'
+          # echo '::set-env name=CI_SKIP::false'
 
-          # if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-          if [ -z "" ]; then
+          if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
             echo '::set-env name=CI_SKIP::true'
           fi
 
