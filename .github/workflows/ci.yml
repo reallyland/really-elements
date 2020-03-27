@@ -48,11 +48,11 @@ jobs:
     steps:
       - name: Git log
         run: |
-          echo '::set-env name=CI_SKIP::true'
+          echo '::set-env name=CI_SKIP::false'
 
           # if [ -z "$(git describe --exact-match HEAD)" ] && [ -z "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
           if [ -z "" ]; then
-            echo '::set-env name=CI_SKIP::false'
+            echo '::set-env name=CI_SKIP::true'
           fi
 
       - name: Log env
