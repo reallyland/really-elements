@@ -27,15 +27,15 @@ jobs:
     timeout-minutes: 120
 
     steps:
+      - name: Checkout
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/checkout@v2
+
       - name: Git log
         run: |
           if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
             echo '::set-env name=CI_SKIP::true'
           fi
-
-      - name: Checkout
-        if: "env.CI_SKIP == 'false'"
-        uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
         if: "env.CI_SKIP == 'false'"
@@ -88,15 +88,15 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - name: Git log
-        run: |
-          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            echo '::set-env name=CI_SKIP::true'
-          fi
-
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
+
+      - name: Git log
+        run: |
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
 
       - name: Setup node@${{ matrix.target }}
         if: "env.CI_SKIP == 'false'"
@@ -149,16 +149,15 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - name: Git log
-        if: "env.CI_SKIP == 'false'"
-        run: |
-          if [ -n "$(git describe --exact-match HEAD)" ] && [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            echo '::set-env name=CI_SKIP::true'
-          fi
-
       - name: Checkout
         if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
+
+      - name: Git log
+        run: |
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
 
       - name: Setup node@${{ matrix.target }}
         if: "env.CI_SKIP == 'false'"
