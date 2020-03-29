@@ -7,6 +7,11 @@ const properties: PropertyValue[] = [
     type: 'string',
   },
   {
+    name: 'propertyStringEmpty',
+    value: '',
+    type: 'string',
+  },
+  {
     name: 'propertyNumber',
     value: 0,
     type: 'number',
@@ -14,6 +19,11 @@ const properties: PropertyValue[] = [
   {
     name: 'propertyBoolean',
     value: true,
+    type: 'boolean',
+  },
+  {
+    name: 'propertyBooleanFalse',
+    value: false,
     type: 'boolean',
   },
   {
@@ -41,6 +51,10 @@ const cssProperties: PropertyValue[] = [
   {
     name: '--test-property-width',
     value: '2px',
+  },
+  {
+    name: '--test-dummy-property',
+    value: '',
   },
   {
     name: '--test-property-height',

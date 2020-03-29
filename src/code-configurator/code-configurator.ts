@@ -275,7 +275,7 @@ export class ReallyCodeConfigurator extends LitElement {
           <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
         </mwc-button>
         <pre class="language-html" id="propertiesFor">${
-          renderCode(`<${elName}${propsContent}><${elName}>`, 'html', 'html')}</pre>
+          renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
       </div>`}
 
       ${noCssProperties ? nothing : html`
@@ -310,6 +310,7 @@ export class ReallyCodeConfigurator extends LitElement {
           data-propertyname="${name}"
           type="${toInputType(type)}"
           value="${value}"
+          ?checked="${type === 'boolean' && value}"
           @change="${(ev: Event) => this._updateProps(ev, isCSS)}"/>`;
 
       return html`<div class="configurator">

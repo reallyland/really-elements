@@ -107,6 +107,38 @@ describe(getTestName('really-code-configurator'), () => {
       isTrue(hasCodeSnippetRendered(el), `Code snippets container should render`);
     });
 
+    it(`renders code snippets`, async () => {
+      el.properties = properties;
+      el.cssProperties = cssProperties;
+      el.customElement = 'test-property';
+      await el.updateComplete;
+
+      const testPropertyEl = document.createElement('test-property');
+      el.appendChild(testPropertyEl);
+
+      await el.updateComplete;
+
+      const propertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.properties + .code-container > pre');
+      const cssPropertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.css-properties + .code-container > pre');
+
+      strictEqual(propertiesCodeSnippet?.textContent, [
+        '<test-property',
+        '  propertystring="property"',
+        '  propertynumber="0"',
+        '  propertyboolean',
+        '  propertywithselectableoptions="option-1"',
+        '></test-property>',
+      ].join('\n'));
+      strictEqual(cssPropertiesCodeSnippet?.textContent, [
+        'test-property {',
+        '  --test-property-width: 2px;',
+        '  --test-property-height: 2px;',
+        '  --test-property-color: green;',
+        '  --test-property-background-color: red;',
+        '}',
+      ].join('\n'));
+    });
+
   });
 
 });
