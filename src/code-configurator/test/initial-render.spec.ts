@@ -118,10 +118,10 @@ describe(getTestName('really-code-configurator'), () => {
 
       await el.updateComplete;
 
-      const propertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.properties + .code-container > pre');
-      const cssPropertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.css-properties + .code-container > pre');
+      const propertiesCodeSnippet = el.shadowRoot!.querySelector<HTMLPreElement>('.properties + .code-container > pre')!;
+      const cssPropertiesCodeSnippet = el.shadowRoot!.querySelector<HTMLPreElement>('.css-properties + .code-container > pre')!;
 
-      strictEqual(propertiesCodeSnippet?.textContent, [
+      strictEqual(propertiesCodeSnippet.textContent, [
         '<test-property',
         '  propertystring="property"',
         '  propertynumber="0"',
@@ -129,7 +129,7 @@ describe(getTestName('really-code-configurator'), () => {
         '  propertywithselectableoptions="option-1"',
         '></test-property>',
       ].join('\n'));
-      strictEqual(cssPropertiesCodeSnippet?.textContent, [
+      strictEqual(cssPropertiesCodeSnippet.textContent, [
         'test-property {',
         '  --test-property-width: 2px;',
         '  --test-property-height: 2px;',
