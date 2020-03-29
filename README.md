@@ -15,6 +15,9 @@
 [![Node version][node-version-badge]][node-version-url]
 [![MIT License][mit-license-badge]][mit-license-url]
 
+[![ci][ga-badge]][ga-url]
+[![Sauce Labs][ga-sl-badge]][ga-sl-url]
+
 > Custom elements for the web
 
 ## Table of contents <!-- omit in toc -->
@@ -69,6 +72,9 @@
 
 [mit-license-badge]: https://flat.badgen.net/github/license/reallyland/really-elements
 
+[ga-badge]: https://github.com/reallyland/really-elements/workflows/ci/badge.svg
+[ga-sl-badge]: https://github.com/reallyland/really-elements/workflows/Sauce%20Labs/badge.svg
+
 <!-- Links -->
 [tippin-me-url]: https://tippin.me/@igarshmyb
 [follow-me-url]: https://twitter.com/igarshmyb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
@@ -76,3 +82,6 @@
 [version-url]: https://www.npmjs.com/package/@reallyland/really-elements/v/latest?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [node-version-url]: https://nodejs.org/en/download?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [mit-license-url]: /LICENSE
+
+[ga-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3Aci
+[ga-sl-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3A%22Sauce+Labs%22

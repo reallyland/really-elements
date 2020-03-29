@@ -1,0 +1,200 @@
+name: Sauce Labs
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+
+env:
+  CI_SKIP: false
+
+jobs:
+  test_edge_ie:
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
+    name: Edge IE
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        target: [13.x]
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/checkout@v2
+
+      - name: Git log
+        run: |
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
+      - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.target }}
+
+      - name: List versions
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          node -v && npm version && which npm && pwd && npx envinfo
+
+      - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm ci --quiet && npm i web-component-tester
+
+      - name: Lint
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run lint
+
+      - name: Build
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run ts
+
+      - name: Check build
+        if: "env.CI_SKIP == 'false'"
+        shell: bash
+        run: |
+          pwd && ls -la
+
+      - name: Run Test
+        if: "env.CI_SKIP == 'false'"
+        env:
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+        run: |
+          npm run test:sl -- -s 'windows 10/microsoftedge@17' -s 'windows 10/microsoftedge@15' -s 'windows 10/internet explorer@11';
+
+  test_safari:
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
+    name: Safari
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        target: [13.x]
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/checkout@v2
+
+      - name: Git log
+        run: |
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
+      - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.target }}
+
+      - name: List versions
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          node -v && npm version && which npm && pwd && npx envinfo
+
+      - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm ci --quiet && npm i web-component-tester
+
+      - name: Lint
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run lint
+
+      - name: Build
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run ts
+
+      - name: Check build
+        if: "env.CI_SKIP == 'false'"
+        shell: bash
+        run: |
+          pwd && ls -la
+
+      - name: Run Test
+        if: "env.CI_SKIP == 'false'"
+        env:
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+        run: |
+          npm run test:sl -- -s 'macos 10.12/safari@10.1' -s 'os x 10.11/safari@9';
+
+  test_old_firefox_chrome:
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, 'doc:')"
+    name: Old Firefox Chrome
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        target: [13.x]
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/checkout@v2
+
+      - name: Git log
+        run: |
+          if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
+            echo '::set-env name=CI_SKIP::true'
+          fi
+
+      - name: Setup node@${{ matrix.target }}
+        if: "env.CI_SKIP == 'false'"
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.target }}
+
+      - name: List versions
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          node -v && npm version && which npm && pwd && npx envinfo
+
+      - name: Install dependencies
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm ci --quiet && npm i web-component-tester
+
+      - name: Lint
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run lint
+
+      - name: Build
+        if: "env.CI_SKIP == 'false'"
+        run: |
+          npm run ts
+
+      - name: Check build
+        if: "env.CI_SKIP == 'false'"
+        shell: bash
+        run: |
+          pwd && ls -la
+
+      - name: Run Test
+        if: "env.CI_SKIP == 'false'"
+        env:
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+        run: |
+          npm run test:sl -- -s 'macos 10.14/firefox@62' -s 'windows 10/chrome@69';
