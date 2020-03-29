@@ -53,9 +53,11 @@ function toPropertiesAttr(properties: PropertyValue[]) {
     const fnType = toFunctionType(type);
     const val = fnType(value);
 
-    if (type === 'string' && !val) return p;
+    if ((type === 'string' && !val) || (type === 'boolean' && !val)) return p;
 
-    p.push(`${name.toLowerCase()}="${val}"`);
+    const attrName = name.toLowerCase();
+
+    p.push(type === 'boolean' ? attrName : `${attrName}="${val}"`);
 
     return p;
   }, []).filter(Boolean).join('\n  ');
@@ -301,9 +303,9 @@ export class ReallyCodeConfigurator extends LitElement {
       const element = options ?
         html`<select
           data-propertyname="${name}"
-          selected="${value}"
+          .value="${value}"
           @change="${(ev: Event) => this._updateProps(ev, isCSS)}">${
-          options.map(o => html`<option value="${o.value}">${o.label}</option>`)}</select>` :
+          options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)}</select>` :
         html`<input
           data-propertyname="${name}"
           type="${toInputType(type)}"
@@ -340,7 +342,7 @@ export class ReallyCodeConfigurator extends LitElement {
       return n;
     });
 
-    const propName = `${isCSS ? 'cssP' : 'p'}roperties` as 'properties' | 'cssProperties';
+    const propName = isCSS ? 'cssProperties' : 'properties';
 
     this[propName] = updatedProperties;
     this.requestUpdate(propName);
