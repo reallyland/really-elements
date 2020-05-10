@@ -53,11 +53,11 @@
     }
   },
   "dependencies": {
-    "@material/mwc-button": "^0.14.1",
+    "@material/mwc-button": "^0.15.0",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
     "nodemod": "^2.6.1",
-    "tslib": "^1.11.1"
+    "tslib": "^1.11.2"
   },
   "devDependencies": {
     "@reallyland/tsconfig": "^2.0.0",
@@ -66,14 +66,14 @@
     "@types/mocha": "^7.0.2",
     "@types/prismjs": "^1.16.0",
     "chai": "^4.2.0",
-    "es-dev-server": "^1.46.0",
+    "es-dev-server": "^1.48.1",
     "esm": "^3.2.25",
-    "husky": "^4.2.3",
-    "mocha": "^7.1.1",
+    "husky": "^4.2.5",
+    "mocha": "^7.1.2",
     "shx": "^0.3.2",
-    "tslint": "^6.1.0",
+    "tslint": "^6.1.2",
     "typescript": "^3.8.3",
-    "wct-mocha": "^1.0.1"
+    "wct-mocha": "^1.1.0"
   },
   "engines": {
     "node": ">= 10.18.1",
