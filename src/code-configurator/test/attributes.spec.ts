@@ -10,7 +10,7 @@ let el: ReallyCodeConfigurator;
 describe(getTestName('really-code-configurator'), () => {
   describe('attributes', () => {
     const getAssignedNodes = (node: HTMLElement) => {
-      const slotEl = node.shadowRoot!.querySelector('slot') as HTMLSlotElement;
+      const slotEl = node.shadowRoot?.querySelector('slot') as HTMLSlotElement;
       const assignedNodes = Array.from(slotEl.assignedNodes()).filter(
         n => n.nodeType === Node.ELEMENT_NODE);
 
@@ -18,16 +18,16 @@ describe(getTestName('really-code-configurator'), () => {
     };
     const hasPropertiesRendered = (node: HTMLElement) => {
       const h2Properties =
-        node.shadowRoot!.querySelector('.all-properties-container h2.properties');
+        node.shadowRoot?.querySelector('.all-properties-container h2.properties');
       return h2Properties != null;
     };
     const hasCssPropertiesRendered = (node: HTMLElement) => {
       const h2CssProperties =
-        node.shadowRoot!.querySelector('.all-properties-container h2.css-properties');
+        node.shadowRoot?.querySelector('.all-properties-container h2.css-properties');
       return h2CssProperties != null;
     };
     const hasCodeSnippetRendered = (node: HTMLElement) => {
-      const $ = (e: string) => node.shadowRoot!.querySelector(e);
+      const $ = (e: string) => node.shadowRoot?.querySelector(e);
       const h2CodeSnippet = $('.all-code-snippets-container > h2');
       const h3Properties = $('.all-code-snippets-container > h3.properties');
       const h3CssProperties = $('.all-code-snippets-container > h3.css-properties');

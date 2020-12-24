@@ -41,12 +41,12 @@ describe(getTestName(localName), () => {
        * Here attempt to test for 2 different custom events and see if any of these fires.
        * As long as any of these fulfills, the tests should pass.
        */
-      const eventFired = new Promise<[Error|null, string|null]>((yay) => {
-        setTimeout(() => yay([new Error('timeout'), null]), 10e3);
+      const eventFired = new Promise<[Error|null, string|null]>((resolve) => {
+        setTimeout(() => resolve([new Error('timeout'), null]), 10e3);
 
         el.addEventListener('copy-error', ev =>
-          yay([ev.detail.reason, null]));
-        el.addEventListener('copy-success', ev => yay([null, ev.detail.value]));
+          resolve([ev.detail.reason, null]));
+        el.addEventListener('copy-success', ev => resolve([null, ev.detail.value]));
       });
 
       /** NOTE(motss): Document needs to be focused first */

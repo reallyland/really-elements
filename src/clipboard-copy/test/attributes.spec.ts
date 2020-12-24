@@ -11,8 +11,8 @@ let el: ReallyClipboardCopy;
 describe(getTestName(localName), () => {
   describe('attributes', () => {
     const getAssignedNodes = (node: HTMLElement) => {
-      const slotEl = node.shadowRoot!.querySelector('slot') as HTMLSlotElement;
-      const assignedNodes = Array.from(slotEl.assignedNodes()).filter(
+      const slotEl = node.shadowRoot?.querySelector('slot');
+      const assignedNodes = Array.from(slotEl?.assignedNodes() ?? []).filter(
         n => n.nodeType === Node.ELEMENT_NODE);
 
       return assignedNodes;

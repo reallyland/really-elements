@@ -26,6 +26,11 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./clipboard-copy": "./dist/clipboard-copy/clipboard-copy.js",
+    "./code-configurator": "./dist/code-configurator/code-configurator.js"
+  },
   "files": [
     "dist/**/*.d.ts.map",
     "dist/**/*.d.ts",
@@ -33,12 +38,13 @@
     "dist/**/*.js"
   ],
   "scripts": {
+    "check": "package-check",
     "build": "tsc -p tsconfig.prod.json",
     "clean": "shx rm -rf dist/",
-    "gulp": "gulp",
     "install:deps": "sh ./src/scripts/npm-install.sh",
-    "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
-    "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
+    "postinstall": "npm dedupe",
+    "lint": "eslint src/**/*.ts --ext .js,.jsx,.ts,.tsx",
+    "lint:build": "npm run lint -- --config .build.eslintrc.json",
     "prepublishOnly": "npm run clean && npm run build",
     "serve": "es-dev-server --watch --port=3000 --node-resolve --dedupe",
     "test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
@@ -49,7 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && tsc --noEmit"
+      "pre-commit": "npm run check && npm run lint && tsc --noEmit"
     }
   },
   "dependencies": {
@@ -61,17 +67,23 @@
   },
   "devDependencies": {
     "@reallyland/tsconfig": "^2.0.0",
-    "@reallyland/tslint-config": "^1.1.1",
+    "@skypack/package-check": "^0.2.2",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.2.0",
     "@types/prismjs": "^1.16.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "chai": "^4.2.0",
     "es-dev-server": "^2.0.2",
+    "eslint": "^7.16.0",
+    "eslint-plugin-lit": "^1.3.0",
+    "eslint-plugin-lit-a11y": "^1.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-regexp": "^0.1.1",
     "esm": "^3.2.25",
     "husky": "^4.2.5",
     "mocha": "^7.2.0",
     "shx": "^0.3.2",
-    "tslint": "^5.20.1",
     "typescript": "^3.9.7",
     "wct-mocha": "^1.1.0"
   },

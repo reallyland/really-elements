@@ -10,7 +10,7 @@ export interface PropertyValue {
 }
 
 import '@material/mwc-button/mwc-button.js';
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, customElement, html, LitElement, property, TemplateResult } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
@@ -20,8 +20,8 @@ import { prismVscode } from './styles.js';
 
 const localName  = 'really-code-configurator';
 
-function notArray(a?: unknown[]) {
-  return !Array.isArray(a) || !a.length;
+function isArray(a?: unknown[]): a is unknown[] {
+  return Array.isArray(a) && a.length > 0;
 }
 
 function toFunctionType(type?: string) {
@@ -148,48 +148,50 @@ export class ReallyCodeConfigurator extends LitElement {
   public customElement?: string;
 
   @property({ type: Boolean })
-  private _propsCopied: boolean = false;
+  private _propsCopied = false;
 
   @property({ type: Boolean })
-  private _cssPropsCopied: boolean = false;
+  private _cssPropsCopied = false;
 
-  private copiedDuration: number = 3e3;
+  private copiedDuration = 3e3;
 
   private _slottedElements?: HTMLElement[];
 
-  private get _slot(): HTMLSlotElement | null {
-    return this.shadowRoot!.querySelector('slot');
+  private get _slot(): HTMLSlotElement | null | undefined {
+    return this.shadowRoot?.querySelector('slot');
   }
 
-  protected updated() {
+  protected updated(): Promise<void> | void {
     if (null == this.customElement) return;
 
     const slottedElements = this._slottedElements;
     if (null == slottedElements) return this._updateSlotted();
 
-    if (notArray(slottedElements)) return;
+    if (!isArray(slottedElements)) return;
 
     const properties = this.properties;
     const cssProperties = this.cssProperties;
 
-    if (!notArray(properties)) {
-      properties!.forEach((n) => {
-        slottedElements!.forEach((o) => {
-          (o as any)[n.name] = n.value;
-        });
-      });
+    if (isArray(properties)) {
+      for (const property of properties) {
+        for (const el of slottedElements) {
+          Object.assign(el, {
+            [property.name]: property.value,
+          });
+        }
+      }
     }
 
-    if (!notArray(cssProperties)) {
-      cssProperties!.forEach((n) => {
-        slottedElements!.forEach((o) => {
-          o.style.setProperty(n.name, n.value as string);
-        });
-      });
+    if (isArray(cssProperties)) {
+      for (const property of cssProperties) {
+        for (const el of slottedElements) {
+          el.style.setProperty(property.name, property.value as string);
+        }
+      }
     }
   }
 
-  protected render() {
+  protected render(): TemplateResult {
     const elName = this.customElement;
     const properties = this.properties;
     const cssProperties = this.cssProperties;
@@ -199,11 +201,11 @@ export class ReallyCodeConfigurator extends LitElement {
       <slot class="slot" @slotchange=${this._updateSlotted}></slot>
     </div>
 
-    <div>${this._renderProperties(elName!, properties, cssProperties)}</div>
+    <div>${elName && this._renderProperties(elName, properties, cssProperties)}</div>
     `;
   }
 
-  private _updateSlotted() {
+  private async _updateSlotted(): Promise<void> {
     const slotted = this._slot;
     const customElementName = this.customElement;
 
@@ -221,7 +223,7 @@ export class ReallyCodeConfigurator extends LitElement {
         return p;
       }, []);
 
-      this._slottedElements = notArray(matchedCustomElements) ? [] : matchedCustomElements;
+      this._slottedElements = isArray(matchedCustomElements) ? [] : matchedCustomElements;
 
       /**
        * Call `.requestUpdate()` on all slotted `LitElement`s then call `.requestUpdate()` of
@@ -234,7 +236,8 @@ export class ReallyCodeConfigurator extends LitElement {
           n;
       });
 
-      Promise.all(elementsUpdateComplete).then(() => this.requestUpdate());
+      await Promise.all(elementsUpdateComplete);
+      await this.requestUpdate();
     }
   }
 
@@ -243,11 +246,11 @@ export class ReallyCodeConfigurator extends LitElement {
     properties?: PropertyValue[],
     cssProperties?: PropertyValue[]
   ) {
-    const noProperties = notArray(properties);
-    const noCssProperties = notArray(cssProperties);
+    const noProperties = !isArray(properties);
+    const noCssProperties = !isArray(cssProperties);
 
-    const propsContent = noProperties ? '' : toPropertiesAttr(properties!);
-    const cssPropsContent = noCssProperties ? '' : toCSSProperties(cssProperties!);
+    const propsContent = noProperties ? '' : toPropertiesAttr(properties ?? []);
+    const cssPropsContent = noCssProperties ? '' : toCSSProperties(cssProperties ?? []);
 
     // tslint:disable: max-line-length
     return html`
@@ -293,18 +296,18 @@ export class ReallyCodeConfigurator extends LitElement {
     // tslint:disable: max-line-length
   }
 
-  private _renderPropertiesConfigurator(properties?: PropertyValue[], isCSS: boolean = false) {
-    if (notArray(properties)) return '';
+  private _renderPropertiesConfigurator(properties?: PropertyValue[], isCSS = false) {
+    if (!isArray(properties)) return '';
 
-    const longestName = properties!.reduce((p, n) => n.name.length > p.length ? n.name : p, '');
+    const longestName = properties.reduce((p, n) => n.name.length > p.length ? n.name : p, '');
     const longestNameLen = longestName.length;
-    const content = properties!.map((n) => {
+    const content = properties.map((n) => {
       const { name, options, type, value } = n;
       const element = options ?
         html`<select
           data-propertyname="${name}"
           .value="${value}"
-          @change="${(ev: Event) => this._updateProps(ev, isCSS)}">${
+          @blur="${(ev: Event) => this._updateProps(ev, isCSS)}">${
           options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)}</select>` :
         html`<input
           data-propertyname="${name}"
@@ -333,9 +336,9 @@ export class ReallyCodeConfigurator extends LitElement {
       (currentTarget as HTMLInputElement).checked :
       currentTarget.value;
 
-    if (notArray(properties)) return;
+    if (!isArray(properties)) return;
 
-    const updatedProperties = properties!.map((n) => {
+    const updatedProperties = properties.map((n) => {
       if (n.name === propertyName) {
         return { ...n, value: toFunctionType(n.type)(val) };
       }
@@ -357,17 +360,17 @@ export class ReallyCodeConfigurator extends LitElement {
     if (this[copiedProp]) return;
 
     const copyNode =
-      this.shadowRoot!.querySelector(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
+      this.shadowRoot?.querySelector(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
 
-    const selection = getSelection()!;
+    const selection = getSelection();
     const range = document.createRange();
 
-    selection.removeAllRanges();
+    selection?.removeAllRanges();
     range.selectNodeContents(copyNode);
-    selection.addRange(range);
+    selection?.addRange(range);
 
     document.execCommand('copy');
-    selection.removeAllRanges();
+    selection?.removeAllRanges();
 
     this.dispatchEvent(new CustomEvent('content-copied'));
     this[copiedProp] = true;
