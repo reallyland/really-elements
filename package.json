@@ -53,26 +53,26 @@
     }
   },
   "dependencies": {
-    "@material/mwc-button": "^0.15.0",
+    "@material/mwc-button": "^0.20.0",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
     "nodemod": "^2.6.1",
-    "tslib": "^1.11.2"
+    "tslib": "^1.14.1"
   },
   "devDependencies": {
     "@reallyland/tsconfig": "^2.0.0",
     "@reallyland/tslint-config": "^1.1.1",
     "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
+    "@types/mocha": "^8.2.0",
     "@types/prismjs": "^1.16.0",
     "chai": "^4.2.0",
-    "es-dev-server": "^1.48.1",
+    "es-dev-server": "^2.0.2",
     "esm": "^3.2.25",
     "husky": "^4.2.5",
-    "mocha": "^7.1.2",
+    "mocha": "^7.2.0",
     "shx": "^0.3.2",
-    "tslint": "^6.1.2",
-    "typescript": "^3.8.3",
+    "tslint": "^5.20.1",
+    "typescript": "^3.9.7",
     "wct-mocha": "^1.1.0"
   },
   "engines": {
