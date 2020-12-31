@@ -1,4 +1,4 @@
-import { assert, html, fixture } from '@open-wc/testing';
+import { assert, fixture, html } from '@open-wc/testing';
 import type { TemplateResult } from 'lit-html';
 
 import type { ReallyClipboardCopy } from '../clipboard-copy.js';
@@ -178,7 +178,7 @@ describe('misc', () => {
 
     window.focus();
     copyButtonEl?.click();
-    
+
     await el.updateComplete;
     const result = await copyTask;
 
