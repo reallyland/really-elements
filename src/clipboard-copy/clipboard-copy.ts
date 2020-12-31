@@ -60,8 +60,8 @@ export class ReallyClipboardCopy extends LitElement {
   @property({ type: String })
   public idSlot: string = 'copy-id';
 
-  @property({ type: Boolean, reflect: true })
-  public sync: boolean = false;
+  // @property({ type: Boolean, reflect: true })
+  // public sync: boolean = false;
 
   @query('slot')
   private _slot?: HTMLSlotElement;
@@ -124,11 +124,16 @@ export class ReallyClipboardCopy extends LitElement {
         (idElement as HTMLInputElement).value :
         (isAnchorElement ? (idElement as HTMLAnchorElement).href : idElement.textContent)) || '';
 
-      if (!this.sync && 'clipboard' in navigator) {
-        await navigator.clipboard.writeText(contentValue);
-        copySuccess = true;
-        return;
-      }
+      /**
+       * FIXME(motss): Temporarily disable Clipboard API due to incomplete implementation in
+       * supported browsers as the permission prompt does not work as expected. Users have to
+       * manually allow Clipboard API in browser setting which is not intuitive in terms of UX.
+       */
+      // if (!this.sync && 'clipboard' in navigator) {
+      //   await navigator.clipboard.writeText(contentValue);
+      //   copySuccess = true;
+      //   return;
+      // }
 
       const nodeObj = toCopyNode(
         idElement,

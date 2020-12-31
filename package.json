@@ -23,6 +23,11 @@
     "email": "wes.ngrongsen@gmail.com",
     "url": "https://github.com/motss"
   },
+  "exports": {
+    ".": "./dist/index.js",
+    "./clipboard-copy": "./dist/clipboard-copy/clipboard-copy.js",
+    "./code-configurator": "./dist/code-configurator/code-configurator.js"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -33,23 +38,24 @@
     "dist/**/*.js"
   ],
   "scripts": {
+    "//install:deps": "sh ./src/scripts/npm-install.sh",
+    "//test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
+    "//test:ci": "./node_modules/.bin/wct --config-file ./wct.config.ci.json",
+    "//test:sl": "./node_modules/.bin/wct --config-file ./wct.config.sl.json",
     "build": "tsc -p tsconfig.prod.json",
-    "clean": "shx rm -rf dist/",
-    "gulp": "gulp",
-    "install:deps": "sh ./src/scripts/npm-install.sh",
+    "check": "package-check",
+    "clean": "shx rm -rf .*cache *.log coverage/ dist/ logs/",
     "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
     "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
-    "prepublishOnly": "npm run clean && npm run build",
-    "serve": "es-dev-server --watch --port=3000 --node-resolve --dedupe",
-    "test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
-    "test:ci": "./node_modules/.bin/wct --config-file ./wct.config.ci.json",
-    "test:sl": "./node_modules/.bin/wct --config-file ./wct.config.sl.json",
+    "prepublishOnly": "npm run lint && npm run build",
+    "test": "wtr",
     "ts": "tsc",
-    "watch": "tsc --watch"
+    "watch": "wtr --watch",
+    "wtr": "node --max-old-space-size=8192 --trace-deprecation node_modules/@web/test-runner/dist/bin.js"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && tsc --noEmit"
+      "pre-commit": "npm run check && npm run lint && tsc --noEmit"
     }
   },
   "dependencies": {
@@ -60,20 +66,20 @@
     "tslib": "^1.14.1"
   },
   "devDependencies": {
+    "@esm-bundle/chai": "^4.1.5",
+    "@open-wc/testing": "^2.5.32",
     "@reallyland/tsconfig": "^2.0.0",
     "@reallyland/tslint-config": "^1.1.1",
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^8.2.0",
+    "@skypack/package-check": "^0.2.2",
     "@types/prismjs": "^1.16.0",
-    "chai": "^4.2.0",
-    "es-dev-server": "^2.0.2",
-    "esm": "^3.2.25",
+    "@web/dev-server-esbuild": "^0.2.9",
+    "@web/test-runner": "^0.11.2",
+    "@web/test-runner-mocha": "^0.6.0",
+    "@web/test-runner-playwright": "^0.7.0",
     "husky": "^4.2.5",
-    "mocha": "^7.2.0",
-    "shx": "^0.3.2",
+    "mocha": "^8.2.1",
     "tslint": "^5.20.1",
-    "typescript": "^3.9.7",
-    "wct-mocha": "^1.1.0"
+    "typescript": "^3.9.7"
   },
   "engines": {
     "node": ">= 10.18.1",
