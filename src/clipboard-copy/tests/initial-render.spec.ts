@@ -77,5 +77,5 @@ describe('initial render', () => {
   //   assert.isTrue(el.hasAttribute('sync'));
   //   assert.strictEqual(getAssignedNodes(el).length, 2);
   // });
-});
 
+});
