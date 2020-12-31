@@ -34,6 +34,7 @@ const config = {
     './src/clipboard-copy/tests/custom-events.spec.ts',
     './src/clipboard-copy/tests/initial-render.spec.ts',
     './src/clipboard-copy/tests/properties.spec.ts',
+    './src/clipboard-copy/tests/misc.spec.ts',
   ],
   nodeResolve: true,
   plugins: [

@@ -114,7 +114,9 @@ export class ReallyClipboardCopy extends LitElement {
     try {
       const idElement = this._idElement;
 
-      if (idElement == null) return;
+      if (idElement == null) {
+        throw new Error(`No element matches 'idSlot' is found`);
+      }
 
       const isInputElement = idElement instanceof HTMLInputElement;
       const isTextareaElement = idElement instanceof HTMLTextAreaElement;
