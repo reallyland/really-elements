@@ -24,7 +24,7 @@ const config = {
     },
     nativeInstrumentation: true,
     exclude: [
-      './src/tests/**',
+      './src/**/tests/**',
     ],
   },
   files: [

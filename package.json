@@ -45,6 +45,7 @@
     "build": "tsc -p tsconfig.prod.json",
     "check": "package-check",
     "clean": "shx rm -rf .*cache *.log coverage/ dist/ logs/",
+    "postinstall": "npm dedupe",
     "lint": "tslint --project tsconfig.json --config tslint.prod.json --format stylish",
     "lint:debug": "tslint --project tsconfig.json --config tslint.json --format stylish",
     "prepublishOnly": "npm run lint && npm run build",
