@@ -33,11 +33,14 @@ const config = {
   files: [
     // './src/tests/**/*.test.ts',
 
-    './src/tests/clipboard-copy/attributes.spec.ts',
-    './src/tests/clipboard-copy/custom-events.spec.ts',
-    './src/tests/clipboard-copy/initial-render.spec.ts',
-    './src/tests/clipboard-copy/properties.spec.ts',
-    './src/tests/clipboard-copy/misc.spec.ts',
+    // './src/tests/clipboard-copy/attributes.spec.ts',
+    // './src/tests/clipboard-copy/custom-events.spec.ts',
+    // './src/tests/clipboard-copy/initial-render.spec.ts',
+    // './src/tests/clipboard-copy/properties.spec.ts',
+    // './src/tests/clipboard-copy/misc.spec.ts',
+
+    './src/tests/code-configurator/attributes.spec.ts',
+    './src/tests/code-configurator/properties.spec.ts',
   ],
   nodeResolve: true,
   plugins: [

@@ -1,10 +1,11 @@
 
 import '@material/mwc-button/mwc-button.js';
-import { customElement, LitElement } from 'lit-element';
-import { localName } from './code-configurator.js';
+import { customElement } from 'lit-element';
+
+import { CodeConfigurator, localName } from './code-configurator.js';
 
 @customElement(localName)
-export class ReallyCodeConfigurator extends LitElement {}
+export class ReallyCodeConfigurator extends CodeConfigurator {}
 
 export type { PropertyValue, PropertyValueOptions } from './code-configurator.js';
 

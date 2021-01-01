@@ -250,8 +250,7 @@ export class CodeConfigurator extends LitElement {
 
     // tslint:disable: max-line-length
     return html`
-    <!-- <div class="all-properties-container"> -->
-    <div>
+    <div class="all-properties-container">
     ${noProperties ? nothing : html`<div>
       <h2 class="properties">Properties</h2>
       <div class="configurator-container">${this._renderPropertiesConfigurator(properties)}</div>
