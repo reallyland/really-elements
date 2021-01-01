@@ -1,8 +1,9 @@
-import { assert, fixture, html } from '@open-wc/testing';
+import { assert, fixture, fixtureCleanup, html } from '@open-wc/testing';
 import type { TemplateResult } from 'lit-html';
 
 import type { ReallyClipboardCopy } from '../clipboard-copy.js';
 import '../clipboard-copy.js';
+import { pageClick } from './wtr-helpers/page-click.js';
 
 describe('misc', () => {
   it('does not have idSlot element', async () => {
@@ -14,179 +15,98 @@ describe('misc', () => {
     `;
     const el = await fixture<ReallyClipboardCopy>(content);
 
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('.copy-button');
-
     const copyTask = new Promise<Error>((resolve) => {
-      window.setTimeout(() => resolve(), 3e3);
+      const copyTimer = window.setTimeout(() => resolve(new Error('timeout')), 3e3);
 
       el.addEventListener('copy-error', (ev) => {
+        window.clearTimeout(copyTimer);
         resolve(ev.detail.reason);
       });
     });
 
-    window.focus();
-    copyButtonEl?.click();
+    await pageClick('button[copy-for]');
 
-    await el.updateComplete;
     const result = await copyTask;
 
     assert.instanceOf(result, Error);
     assert.strictEqual(result.message, `No element matches 'idSlot' is found`);
   });
 
-  it('copies input value', async () => {
+  it.only('copies value', async () => {
+    type A = [Error | null, string | null];
+
     const copyKey = 'test';
     const copyText = 'Hello, World!';
-    const content: TemplateResult = html`
-      <really-clipboard-copy>
-        <input copy-id="${copyKey}" value="${copyText}">
-        <button copy-for="${copyKey}" class="copy-button">Copy</button>
-      </really-clipboard-copy>
-    `;
-    const el = await fixture<ReallyClipboardCopy>(content);
+    const testCases: [() => TemplateResult, A][] = [
+      [
+        () => html`<input copy-id="${copyKey}" value="${copyText}">`,
+        [null, copyText],
+      ],
+      [
+        () => html`<textarea copy-id="${copyKey}" .value="${copyText}"></textarea>`,
+        [null, copyText],
+      ],
+      [
+        () => html`<a copy-id="${copyKey}" href="/#${copyText}">${copyText}</a>`,
+        [null, '/#Hello,%20World!'],
+      ],
+      [
+        () => html`<div copy-id="${copyKey}"></div>`,
+        [null, ''],
+      ],
+    ];
 
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('.copy-button');
+    const result: A[] = [];
+    for (const [contentFn, [, expected]] of testCases) {
+      const content: TemplateResult = html`
+        <really-clipboard-copy>
+          ${contentFn()}
+          <button copy-for="${copyKey}" class="copy-button">Copy</button>
+        </really-clipboard-copy>
+      `;
+      const el = await fixture<ReallyClipboardCopy>(content);
 
-    const copyTask = new Promise<Error | string>((resolve) => {
-      window.setTimeout(() => resolve(), 3e3);
+      const copyTask = new Promise<A>((resolve) => {
+        const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
 
-      el.addEventListener('copy-error', (ev) => {
-        resolve(ev.detail.reason);
+        el.addEventListener('copy-error', (ev) => {
+          window.clearTimeout(copyTimer);
+          resolve([ev.detail.reason, null]);
+        });
+        el.addEventListener('copy-success', (ev) => {
+          window.clearTimeout(copyTimer);
+          resolve([null, ev.detail.value]);
+        });
       });
-      el.addEventListener('copy-success', (ev) => {
-        resolve(ev.detail.value);
-      });
-    });
 
-    window.focus();
-    copyButtonEl?.click();
+      await el.updateComplete;
+      await pageClick('button[copy-for]');
 
-    await el.updateComplete;
-    const result = await copyTask;
+      const [copyError, copyResult] = await copyTask;
+      const copyExpectedResult = copyResult && expected?.startsWith('/') ?
+        `/${new URL(copyResult).hash}` :
+        copyResult;
 
-    if (result instanceof Error) {
-      assert.instanceOf(result, Error);
-      assert.strictEqual(result.message, `Failed to copy`);
-    } else {
-      assert.strictEqual(result, copyText);
+      result.push([copyError, copyExpectedResult]);
+
+      fixtureCleanup();
     }
-  });
 
-  it('copies textarea value', async () => {
-    const copyKey = 'test';
-    const copyText = 'Hello, World!';
-    const content: TemplateResult = html`
-      <really-clipboard-copy>
-        <textarea copy-id="${copyKey}" value="${copyText}"></textarea>
-        <button copy-for="${copyKey}" class="copy-button">Copy</button>
-      </really-clipboard-copy>
-    `;
-    const el = await fixture<ReallyClipboardCopy>(content);
+    /** FIXME(motss): Webkit fails to copy an empty content */
+    assert.deepStrictEqual(
+      result.slice(0, 3),
+      testCases.slice(0, 3).map(([, expected]) => expected)
+    );
 
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('.copy-button');
-
-    const copyTask = new Promise<Error | string>((resolve) => {
-      window.setTimeout(() => resolve(), 3e3);
-
-      el.addEventListener('copy-error', (ev) => {
-        resolve(ev.detail.reason);
-      });
-      el.addEventListener('copy-success', (ev) => {
-        resolve(ev.detail.value);
-      });
-    });
-
-    window.focus();
-    copyButtonEl?.click();
-
-    await el.updateComplete;
-    const result = await copyTask;
-
-    if (result instanceof Error) {
-      assert.instanceOf(result, Error);
-      assert.strictEqual(result.message, `Failed to copy`);
+    /** FIXME(motss): Temporary workaround to make tests pass for Webkit */
+    const [webkitCopyError, webkitCopyResult] = result[3];
+    if (webkitCopyError) {
+      assert.instanceOf(webkitCopyError, Error);
+      assert.deepStrictEqual(webkitCopyError?.message, 'Failed to copy');
+      assert.isNull(webkitCopyResult);
     } else {
-      assert.strictEqual(result, '');
-    }
-  });
-
-  it('copies anchor value', async () => {
-    const copyKey = 'test';
-    const copyText = 'Hello, World!';
-    const content: TemplateResult = html`
-      <really-clipboard-copy>
-        <a copy-id="${copyKey}" href="/#${copyText}">${copyText}</a>
-        <button copy-for="${copyKey}" class="copy-button">Copy</button>
-      </really-clipboard-copy>
-    `;
-    const el = await fixture<ReallyClipboardCopy>(content);
-
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('.copy-button');
-
-    const copyTask = new Promise<Error | string>((resolve) => {
-      window.setTimeout(() => resolve(), 3e3);
-
-      el.addEventListener('copy-error', (ev) => {
-        resolve(ev.detail.reason);
-      });
-      el.addEventListener('copy-success', (ev) => {
-        resolve(ev.detail.value);
-      });
-    });
-
-    window.focus();
-    copyButtonEl?.click();
-
-    await el.updateComplete;
-    const result = await copyTask;
-
-    if (result instanceof Error) {
-      assert.instanceOf(result, Error);
-      assert.strictEqual(result.message, `Failed to copy`);
-    } else {
-      const {
-        pathname,
-        hash,
-      } = new URL(result);
-
-      assert.strictEqual(`${pathname}${hash}`, '/#Hello,%20World!');
-    }
-  });
-
-  it('fallbacks to empty string for copy content', async () => {
-    const copyKey = 'test';
-    const content: TemplateResult = html`
-      <really-clipboard-copy>
-        <div copy-id="${copyKey}"></div>
-        <button copy-for="${copyKey}" class="copy-button">Copy</button>
-      </really-clipboard-copy>
-    `;
-    const el = await fixture<ReallyClipboardCopy>(content);
-
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('.copy-button');
-
-    const copyTask = new Promise<Error | string>((resolve) => {
-      window.setTimeout(() => resolve(), 3e3);
-
-      el.addEventListener('copy-error', (ev) => {
-        resolve(ev.detail.reason);
-      });
-      el.addEventListener('copy-success', (ev) => {
-        resolve(ev.detail.value);
-      });
-    });
-
-    window.focus();
-    copyButtonEl?.click();
-
-    await el.updateComplete;
-    const result = await copyTask;
-
-    if (result instanceof Error) {
-      assert.instanceOf(result, Error);
-      assert.strictEqual(result.message, `Failed to copy`);
-    } else {
-      assert.strictEqual(result, '');
+      assert.isNull(webkitCopyError);
+      assert.deepStrictEqual(webkitCopyResult, '');
     }
   });
 
