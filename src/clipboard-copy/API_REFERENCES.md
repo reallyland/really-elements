@@ -24,7 +24,8 @@ interface CopyError {
 | --- | --- | --- | --- |
 | `forSlot` | [string] | `copy-for` | The content of an element that has the `copy-for` attribute set will the copied to the clipboard. |
 | `idSlot` | [string]| `copy-id` | The element that has the `copy-id` attribute set will trigger the copy function to copy the content of an element that has the `copy-for` attribute set. This usually is a clickable element such as the `<button>` element. |
-| `sync` | [boolean] | `false` | If true, `document.execCommand('copy')` will be used instead of the native [Async Clipboard API] if supported.
+
+<!-- | `sync` | [boolean] | `false` | If true, `document.execCommand('copy')` will be used instead of the native [Async Clipboard API] if supported. -->
 
 ### Methods
 

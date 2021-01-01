@@ -11,14 +11,13 @@ export interface CopyError {
 
 import {
   css,
-  customElement,
   html,
   LitElement,
   property,
   query,
 } from 'lit-element';
 
-const localName = 'really-clipboard-copy';
+export const localName = 'really-clipboard-copy';
 
 function toCopyNode(
   node: HTMLElement,
@@ -40,8 +39,7 @@ function toCopyNode(
   return { node: preNode, temporary: noTextNode };
 }
 
-@customElement(localName)
-export class ReallyClipboardCopy extends LitElement {
+export class ClipboardCopy extends LitElement {
   public static styles = [
     css`
     :host {
@@ -171,12 +169,12 @@ export class ReallyClipboardCopy extends LitElement {
 
       if (nodeObj.temporary) document.body.removeChild(copyNode);
       if (!copySuccess) throw new Error('Failed to copy');
-    } catch (e) {
+    } catch (reason) {
       this.dispatchEvent(new CustomEvent<CopyError>('copy-error', {
         /**
          * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
          */
-        detail: { reason: e },
+        detail: { reason },
         bubbles: true,
         composed: true,
       }));
@@ -194,10 +192,6 @@ export class ReallyClipboardCopy extends LitElement {
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    [localName]: ReallyClipboardCopy;
-  }
-
   interface HTMLElementEventMap {
     'copy-success': CustomEvent<CopySuccess>;
     'copy-error': CustomEvent<CopyError>;

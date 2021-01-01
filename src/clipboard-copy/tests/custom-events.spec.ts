@@ -1,9 +1,9 @@
 import { assert, fixture, html } from '@open-wc/testing';
 
-import type { ReallyClipboardCopy } from '../clipboard-copy.js';
-import '../clipboard-copy.js';
+import { pageClick } from '../../tests/wtr-helpers/page-click.js';
+import type { ReallyClipboardCopy } from '../really-clipboard-copy.js';
+import '../really-clipboard-copy.js';
 // import { grantBrowerPermissions } from './wtr-helpers/grant-browser-permissions.js';
-import { pageClick } from './wtr-helpers/page-click.js';
 
 describe('custom-events', () => {
   // beforeEach(async function beforeEachFn() {

@@ -1,9 +1,9 @@
 import { assert, fixture, fixtureCleanup, html } from '@open-wc/testing';
 import type { TemplateResult } from 'lit-html';
 
-import type { ReallyClipboardCopy } from '../clipboard-copy.js';
-import '../clipboard-copy.js';
-import { pageClick } from './wtr-helpers/page-click.js';
+import { pageClick } from '../../tests/wtr-helpers/page-click.js';
+import type { ReallyClipboardCopy } from '../really-clipboard-copy.js';
+import '../really-clipboard-copy.js';
 
 describe('misc', () => {
   it('does not have idSlot element', async () => {
