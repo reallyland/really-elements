@@ -10,7 +10,7 @@ export interface PropertyValue {
 }
 
 import '@material/mwc-button/mwc-button.js';
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import { css, html, LitElement, property } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
@@ -18,7 +18,7 @@ import { nothing } from 'lit-html/lib/part.js';
 import { contentCopied, contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
 
-const localName  = 'really-code-configurator';
+export const localName  = 'really-code-configurator';
 
 function notArray(a?: unknown[]) {
   return !Array.isArray(a) || !a.length;
@@ -81,8 +81,7 @@ function renderCode(code: string, grammar: string, language: string) {
   return unsafeHTML(highlight(code, languages[grammar], language));
 }
 
-@customElement(localName)
-export class ReallyCodeConfigurator extends LitElement {
+export class CodeConfigurator extends LitElement {
   public static styles = [
     css`
     :host {
@@ -98,9 +97,9 @@ export class ReallyCodeConfigurator extends LitElement {
       box-sizing: border-box;
     }
 
-    .all-properties-container {
-      /* display: flex; */
-    }
+    /* .all-properties-container {
+      display: flex;
+    } */
 
     .configurator + .configurator {
       margin: 8px 0 0;
@@ -251,7 +250,8 @@ export class ReallyCodeConfigurator extends LitElement {
 
     // tslint:disable: max-line-length
     return html`
-    <div class="all-properties-container">
+    <!-- <div class="all-properties-container"> -->
+    <div>
     ${noProperties ? nothing : html`<div>
       <h2 class="properties">Properties</h2>
       <div class="configurator-container">${this._renderPropertiesConfigurator(properties)}</div>
@@ -300,17 +300,18 @@ export class ReallyCodeConfigurator extends LitElement {
     const longestNameLen = longestName.length;
     const content = properties!.map((n) => {
       const { name, options, type, value } = n;
+      const valueStr = value as string;
       const element = options ?
         html`<select
           data-propertyname="${name}"
-          .value="${value}"
+          .value="${valueStr}"
           @change="${(ev: Event) => this._updateProps(ev, isCSS)}">${
           options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)}</select>` :
         html`<input
           data-propertyname="${name}"
           type="${toInputType(type)}"
-          value="${value}"
-          ?checked="${type === 'boolean' && value}"
+          value="${valueStr}"
+          ?checked="${type === 'boolean' && Boolean(valueStr)}"
           @change="${(ev: Event) => this._updateProps(ev, isCSS)}"/>`;
 
       return html`<div class="configurator">
@@ -382,10 +383,6 @@ export class ReallyCodeConfigurator extends LitElement {
 declare global {
   interface Window {
     Prism: typeof import('prismjs');
-  }
-
-  interface HTMLElementTagNameMap {
-    'really-code-configurator': ReallyCodeConfigurator;
   }
 
   interface HTMLElementEventMap {

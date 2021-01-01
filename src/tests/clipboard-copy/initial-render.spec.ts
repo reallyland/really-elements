@@ -1,9 +1,9 @@
 import { assert, expect, fixture, fixtureCleanup, html } from '@open-wc/testing';
 import type { TemplateResult } from 'lit-html';
 
-import type { ReallyClipboardCopy } from '../really-clipboard-copy.js';
-import '../really-clipboard-copy.js';
-import { getAssignedNodes } from './helpers/get-assigned-nodes.js';
+import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
+import '../../clipboard-copy/really-clipboard-copy.js';
+import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 
 describe('initial render', () => {
   it(`renders with no nodes`, async () => {

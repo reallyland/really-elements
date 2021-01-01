@@ -1,8 +1,8 @@
 import { assert, fixture, html } from '@open-wc/testing';
 
-import { pageClick } from '../../tests/wtr-helpers/page-click.js';
-import type { ReallyClipboardCopy } from '../really-clipboard-copy.js';
-import '../really-clipboard-copy.js';
+import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
+import '../../clipboard-copy/really-clipboard-copy.js';
+import { pageClick } from '../wtr-helpers/page-click.js';
 // import { grantBrowerPermissions } from './wtr-helpers/grant-browser-permissions.js';
 
 describe('custom-events', () => {

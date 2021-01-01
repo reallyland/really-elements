@@ -4,6 +4,8 @@ import { playwrightLauncher } from '@web/test-runner-playwright';
 import { browserPermissions } from './wtr-plugins/browser-permissions.mjs';
 import { pageClick } from './wtr-plugins/page-click.mjs';
 
+const isCI = process.env.CI === true || process.env.CI === 'true';
+
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const config = {
   browsers: [
@@ -25,17 +27,17 @@ const config = {
     },
     nativeInstrumentation: true,
     exclude: [
-      './src/**/tests/**',
+      './src/tests/**',
     ],
   },
   files: [
     // './src/tests/**/*.test.ts',
 
-    './src/clipboard-copy/tests/attributes.spec.ts',
-    './src/clipboard-copy/tests/custom-events.spec.ts',
-    './src/clipboard-copy/tests/initial-render.spec.ts',
-    './src/clipboard-copy/tests/properties.spec.ts',
-    './src/clipboard-copy/tests/misc.spec.ts',
+    './src/tests/clipboard-copy/attributes.spec.ts',
+    './src/tests/clipboard-copy/custom-events.spec.ts',
+    './src/tests/clipboard-copy/initial-render.spec.ts',
+    './src/tests/clipboard-copy/properties.spec.ts',
+    './src/tests/clipboard-copy/misc.spec.ts',
   ],
   nodeResolve: true,
   plugins: [
@@ -50,9 +52,11 @@ const config = {
     config: {
       checkLeaks: true,
       fullTrace: true,
-      // retries: 3,
       timeout: 60e3,
       ui: 'bdd',
+      ...(isCI && {
+        retries: 3,
+      }),
     }
   },
 };

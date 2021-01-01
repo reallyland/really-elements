@@ -1,8 +1,8 @@
 import { assert, fixture, html } from '@open-wc/testing';
 
-import '../really-clipboard-copy.js';
-import type { ReallyClipboardCopy } from '../really-clipboard-copy.js';
-import { getAssignedNodes } from './helpers/get-assigned-nodes.js';
+import '../../clipboard-copy/really-clipboard-copy.js';
+import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
+import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 
 describe('properties', () => {
   it('renders with initial properties', async () => {
