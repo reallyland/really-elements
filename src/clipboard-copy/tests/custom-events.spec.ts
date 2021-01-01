@@ -70,6 +70,15 @@ describe('custom-events', () => {
   });
 
   it(`fires copy-error when the copy fails`, async () => {
+    // #region Mock document.execCommand(...)
+    const originalExecCommand = document.execCommand;
+    Object.assign(document, {
+      execCommand() {
+        return false;
+      },
+    });
+    // #endregion
+
     const copyKey = 'test';
     const copyText = 'Hello, World!';
     const content = html`
@@ -96,7 +105,7 @@ describe('custom-events', () => {
       });
     });
 
-    /** NOTE: Copy command does not work when calling .click() imperatively */
+    /** NOTE: Copy command does not work when calling .click() imperatively on some browsers */
     copyButtonEl?.click();
 
     const [copyError, copyResult] = await eventFired;
@@ -105,6 +114,9 @@ describe('custom-events', () => {
     /** NOTE: Timeout on FF */
     assert.isTrue(['Failed to copy', 'timeout'].some(n => n === copyError?.message));
     assert.isNull(copyResult);
+
+    /** Restore document.execCommand(...) */
+    Object.assign(document, { execCommand: originalExecCommand });
   });
 
 });

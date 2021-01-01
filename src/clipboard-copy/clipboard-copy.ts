@@ -86,16 +86,21 @@ export class ReallyClipboardCopy extends LitElement {
           n.nodeType !== Node.ELEMENT_NODE
         ) return p;
 
-        if (n.hasAttribute(forSlot)) {
-          p.for = n;
-        } else if (n.hasAttribute(idSlot)) {
-          p.id = n;
-        } else {
-          const forElement = n.querySelector<HTMLElement>(`[${forSlot}]`);
-          const idElement = n.querySelector<HTMLElement>(`[${idSlot}]`);
+        const isIdSlot = n.hasAttribute(idSlot);
+        const isForSlot = n.hasAttribute(forSlot);
+        const isIdSlotNull = p.id == null;
+        const isForSlotNull = p.for == null;
 
-          if (forElement && p.for == null) { p.for = forElement; }
-          if (idElement && p.id == null) { p.id = idElement; }
+        if (isIdSlot && isIdSlotNull) {
+          p.id = n;
+        } else if (isForSlot && isForSlotNull) {
+          p.for = n;
+        } else {
+          const forElement = isForSlotNull ? n.querySelector<HTMLElement>(`[${forSlot}]`) : null;
+          const idElement = isIdSlotNull ? n.querySelector<HTMLElement>(`[${idSlot}]`) : null;
+
+          if (forElement) p.for = forElement;
+          if (idElement) p.id = idElement;
         }
 
         return p;
@@ -171,7 +176,7 @@ export class ReallyClipboardCopy extends LitElement {
         /**
          * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
          */
-        detail: { reason: e || new Error('Failed to copy') },
+        detail: { reason: e },
         bubbles: true,
         composed: true,
       }));

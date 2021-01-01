@@ -23,6 +23,7 @@
     "email": "wes.ngrongsen@gmail.com",
     "url": "https://github.com/motss"
   },
+  "type": "module",
   "exports": {
     ".": "./dist/index.js",
     "./clipboard-copy": "./dist/clipboard-copy/clipboard-copy.js",
