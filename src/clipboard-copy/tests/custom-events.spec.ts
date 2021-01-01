@@ -69,7 +69,7 @@ describe('custom-events', () => {
     assert.strictEqual(copyResult, copyText);
   });
 
-  it.only(`fires copy-error when the copy fails`, async () => {
+  it(`fires copy-error when the copy fails`, async () => {
     const copyKey = 'test';
     const copyText = 'Hello, World!';
     const content = html`

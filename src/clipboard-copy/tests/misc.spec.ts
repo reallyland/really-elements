@@ -32,7 +32,7 @@ describe('misc', () => {
     assert.strictEqual(result.message, `No element matches 'idSlot' is found`);
   });
 
-  it.only('copies value', async () => {
+  it('copies value', async () => {
     type A = [Error | null, string | null];
 
     const copyKey = 'test';
