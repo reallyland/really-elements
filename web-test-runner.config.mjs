@@ -2,6 +2,7 @@ import { esbuildPlugin } from '@web/dev-server-esbuild';
 import { playwrightLauncher } from '@web/test-runner-playwright';
 
 import { browserPermissions } from './wtr-plugins/browser-permissions.mjs';
+import { pageClick } from './wtr-plugins/page-click.mjs';
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
 const config = {
@@ -43,6 +44,7 @@ const config = {
       target: 'firefox82', /** FF82 does not support private fields */
     }),
     browserPermissions(),
+    pageClick(),
   ],
   testFramework: {
     config: {

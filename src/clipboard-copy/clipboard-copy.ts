@@ -81,20 +81,21 @@ export class ReallyClipboardCopy extends LitElement {
       const nodes = slot.assignedNodes() as HTMLElement[];
 
       const slotted = nodes.reduce((p, n) => {
-        if (n.nodeType === Node.ELEMENT_NODE) {
-          if (p.for && p.id) return p;
+        if (
+          (p.for && p.id) ||
+          n.nodeType !== Node.ELEMENT_NODE
+        ) return p;
 
-          if (n.hasAttribute(forSlot)) {
-            p.for = n;
-          } else if (n.hasAttribute(idSlot)) {
-            p.id = n;
-          } else {
-            const forElement = n.querySelector(`[${forSlot}]`) as HTMLElement | null;
-            const idElement = n.querySelector(`[${idSlot}]`) as HTMLElement | null;
+        if (n.hasAttribute(forSlot)) {
+          p.for = n;
+        } else if (n.hasAttribute(idSlot)) {
+          p.id = n;
+        } else {
+          const forElement = n.querySelector<HTMLElement>(`[${forSlot}]`);
+          const idElement = n.querySelector<HTMLElement>(`[${idSlot}]`);
 
-            if (forElement && p.for == null) { p.for = forElement; }
-            if (idElement && p.id == null) { p.id = idElement; }
-          }
+          if (forElement && p.for == null) { p.for = forElement; }
+          if (idElement && p.id == null) { p.id = idElement; }
         }
 
         return p;
