@@ -372,7 +372,7 @@ export class CodeConfigurator extends LitElement {
     this.dispatchEvent(new CustomEvent('content-copied'));
     this[copiedProp] = true;
 
-    setTimeout(() => {
+    window.setTimeout(() => {
       this[copiedProp] = false;
     }, this.copiedDuration);
   }

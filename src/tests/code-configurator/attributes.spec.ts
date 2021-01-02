@@ -5,27 +5,11 @@ import type { ReallyCodeConfigurator } from '../../code-configurator/really-code
 import '../../code-configurator/really-code-configurator.js';
 import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 import { cssProperties, properties } from './properties.config.js';
+import { hasPropertiesRendered } from './helpers/has-properties-rendered.js';
+import { hasCssPropertiesRendered } from './helpers/has-css-properties-rendered.js';
+import { hasCodeSnippetRendered } from './helpers/has-code-snippet-rendered.js';
 
 describe('attributes', () => {
-  const hasPropertiesRendered = (node: HTMLElement) => {
-    const h2Properties =
-      node.shadowRoot?.querySelector<HTMLHeadingElement>('.all-properties-container h2.properties');
-    return h2Properties != null;
-  };
-  const hasCssPropertiesRendered = (node: HTMLElement) => {
-    const h2CssProperties =
-      node.shadowRoot?.querySelector<HTMLHeadingElement>('.all-properties-container h2.css-properties');
-    return h2CssProperties != null;
-  };
-  const hasCodeSnippetRendered = (node: HTMLElement) => {
-    const $ = (e: string) => node.shadowRoot?.querySelector<HTMLElement>(e);
-    const h2CodeSnippet = $('.all-code-snippets-container > h2');
-    const h3Properties = $('.all-code-snippets-container > h3.properties');
-    const h3CssProperties = $('.all-code-snippets-container > h3.css-properties');
-
-    return h2CodeSnippet != null && h3Properties != null && h3CssProperties != null;
-  };
-
   it(`renders with initial attributes`, async () => {
     const content: TemplateResult = html`
     <really-code-configurator></really-code-configurator>

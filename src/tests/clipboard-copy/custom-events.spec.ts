@@ -5,7 +5,7 @@ import '../../clipboard-copy/really-clipboard-copy.js';
 import { pageClick } from '../wtr-helpers/page-click.js';
 // import { grantBrowerPermissions } from './wtr-helpers/grant-browser-permissions.js';
 
-describe('custom-events', () => {
+describe('custom events', () => {
   // beforeEach(async function beforeEachFn() {
   //   try {
   //     /**

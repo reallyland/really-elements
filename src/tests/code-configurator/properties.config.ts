@@ -49,23 +49,23 @@ const properties: PropertyValue[] = [
 
 const cssProperties: PropertyValue[] = [
   {
-    name: '--test-property-width',
+    name: '--test-element-width',
     value: '2px',
   },
   {
-    name: '--test-dummy-property',
+    name: '--test-dummy-element',
     value: '',
   },
   {
-    name: '--test-property-height',
+    name: '--test-element-height',
     value: '2px',
   },
   {
-    name: '--test-property-color',
+    name: '--test-element-color',
     value: 'green',
   },
   {
-    name: '--test-property-background-color',
+    name: '--test-element-background-color',
     value: 'red',
   },
 ];

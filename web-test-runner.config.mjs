@@ -41,6 +41,9 @@ const config = {
 
     './src/tests/code-configurator/attributes.spec.ts',
     './src/tests/code-configurator/properties.spec.ts',
+    './src/tests/code-configurator/initial-render.spec.ts',
+    './src/tests/code-configurator/custom-event.spec.ts',
+    './src/tests/code-configurator/misc.spec.ts',
   ],
   nodeResolve: true,
   plugins: [
