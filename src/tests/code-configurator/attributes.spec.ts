@@ -4,10 +4,10 @@ import type { TemplateResult } from 'lit-html';
 import type { ReallyCodeConfigurator } from '../../code-configurator/really-code-configurator.js';
 import '../../code-configurator/really-code-configurator.js';
 import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
-import { cssProperties, properties } from './properties.config.js';
-import { hasPropertiesRendered } from './helpers/has-properties-rendered.js';
-import { hasCssPropertiesRendered } from './helpers/has-css-properties-rendered.js';
 import { hasCodeSnippetRendered } from './helpers/has-code-snippet-rendered.js';
+import { hasCssPropertiesRendered } from './helpers/has-css-properties-rendered.js';
+import { hasPropertiesRendered } from './helpers/has-properties-rendered.js';
+import { cssProperties, properties } from './properties.config.js';
 
 describe('attributes', () => {
   it(`renders with initial attributes`, async () => {

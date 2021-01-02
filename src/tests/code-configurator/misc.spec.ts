@@ -18,16 +18,18 @@ describe('misc', () => {
 
     el.properties = properties;
     el.cssProperties = cssProperties;
-    el.customElement = testElement
+    el.customElement = testElement;
     await el.updateComplete;
 
     const propertyBooleanSelector = 'input[type="checkbox"][data-propertyname="propertyBoolean"]';
-    const propertyBooleanEl = el.shadowRoot?.querySelector<HTMLInputElement>(propertyBooleanSelector);
+    const propertyBooleanEl = el.shadowRoot?.querySelector<HTMLInputElement>(
+      propertyBooleanSelector
+    );
 
     assert.isTrue(propertyBooleanEl?.checked);
-    
+
     await pageClick(propertyBooleanSelector);
-    
+
     assert.isFalse(propertyBooleanEl?.checked);
   });
 });

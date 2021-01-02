@@ -20,7 +20,7 @@ describe('custom event', () => {
 
     el.properties = properties;
     el.cssProperties = cssProperties;
-    el.customElement = testElement
+    el.customElement = testElement;
     await el.updateComplete;
 
     const copyButtonSelectors = [
