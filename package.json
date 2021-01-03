@@ -40,10 +40,6 @@
     "dist/**/*.js"
   ],
   "scripts": {
-    "//install:deps": "sh ./src/scripts/npm-install.sh",
-    "//test": "npm run lint && wct --skip-selenium-install --config-file wct.config.json",
-    "//test:ci": "./node_modules/.bin/wct --config-file ./wct.config.ci.json",
-    "//test:sl": "./node_modules/.bin/wct --config-file ./wct.config.sl.json",
     "build": "tsc -p tsconfig.prod.json",
     "check": "package-check",
     "clean": "shx rm -rf .*cache *.log coverage/ dist/ logs/",

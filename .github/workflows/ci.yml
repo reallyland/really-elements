@@ -76,9 +76,7 @@ jobs:
           
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1
-        # TODO(motss): To remove this
-        # if: env.CI_SKIP == 'false' && success()
-        if: env.CI_SKIP == 'false'
+        if: env.CI_SKIP == 'false' && success()
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/lcov.info
