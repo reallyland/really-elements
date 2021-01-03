@@ -1,6 +1,29 @@
 import type { PropertyValue } from '../../code-configurator/code-configurator.js';
 
-const properties: PropertyValue[] = [
+export const cssProperties: PropertyValue[] = [
+  {
+    name: '--test-element-width',
+    value: '2px',
+  },
+  {
+    name: '--test-dummy-element',
+    value: '',
+  },
+  {
+    name: '--test-element-height',
+    value: '2px',
+  },
+  {
+    name: '--test-element-color',
+    value: 'green',
+  },
+  {
+    name: '--test-element-background-color',
+    value: 'red',
+  },
+];
+
+export const properties: PropertyValue[] = [
   {
     name: 'propertyString',
     value: 'property',
@@ -46,28 +69,3 @@ const properties: PropertyValue[] = [
     ],
   },
 ];
-
-const cssProperties: PropertyValue[] = [
-  {
-    name: '--test-element-width',
-    value: '2px',
-  },
-  {
-    name: '--test-dummy-element',
-    value: '',
-  },
-  {
-    name: '--test-element-height',
-    value: '2px',
-  },
-  {
-    name: '--test-element-color',
-    value: 'green',
-  },
-  {
-    name: '--test-element-background-color',
-    value: 'red',
-  },
-];
-
-export { properties, cssProperties };
