@@ -3,6 +3,7 @@ import { playwrightLauncher } from '@web/test-runner-playwright';
 
 import { browserPermissions } from './wtr-plugins/browser-permissions.mjs';
 import { pageClick } from './wtr-plugins/page-click.mjs';
+import { pageFill } from './wtr-plugins/page-fill.mjs';
 
 const isCI = process.env.CI === true || process.env.CI === 'true';
 
@@ -53,6 +54,7 @@ const config = {
     }),
     browserPermissions(),
     pageClick(),
+    pageFill(),
   ],
   testFramework: {
     config: {

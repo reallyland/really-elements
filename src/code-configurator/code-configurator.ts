@@ -190,8 +190,8 @@ export class CodeConfigurator extends LitElement {
 
   private _slottedElements?: HTMLElement[];
 
-  private get _slot(): HTMLSlotElement | null {
-    return this.shadowRoot?.querySelector<HTMLSlotElement>('slot') || null;
+  private get _slot(): HTMLSlotElement {
+    return this.shadowRoot?.querySelector<HTMLSlotElement>('slot') as HTMLSlotElement;
   }
 
   protected updated() {
@@ -369,7 +369,6 @@ export class CodeConfigurator extends LitElement {
 
       return n;
     });
-
     const propName = isCSS ? 'cssProperties' : 'properties';
 
     this[propName] = updatedProperties;
