@@ -15,8 +15,8 @@ import {
   LitElement,
   property,
   query,
-  TemplateResult,
 } from 'lit-element';
+import type { TemplateResult } from 'lit-element';
 
 export const localName = 'really-clipboard-copy';
 

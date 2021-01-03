@@ -10,7 +10,8 @@ export interface PropertyValue {
 }
 
 import '@material/mwc-button/mwc-button.js';
-import { css, html, LitElement, property, TemplateResult } from 'lit-element';
+import { css, html, LitElement, property } from 'lit-element';
+import type { TemplateResult } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
