@@ -61,4 +61,67 @@ describe('custom event', () => {
       ].join(''));
     }
   });
+
+  it('does not fire content-copied when content is copied state', async () => {
+    type A = [Error | null, string | null];
+
+    const originalDocumentExecCommand = document.execCommand;
+    let calls = 0;
+
+    Object.assign(document, {
+      execCommand() {
+        calls += 1;
+      },
+    });
+
+    const content: TemplateResult = html`
+    <really-code-configurator>
+      <test-element></test-element>
+    </really-code-configurator>
+    `;
+    const el = await fixture<ReallyCodeConfigurator>(content);
+    const testElement = 'test-element';
+
+    el.properties = properties;
+    el.cssProperties = cssProperties;
+    el.customElement = testElement;
+    await el.updateComplete;
+
+    const copyButtonSelector = '.copy-btn[for="propertiesFor"]';
+    const copiedText = 'copied';
+    const eventFired = new Promise<A>((resolve) => {
+      const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+
+      el.addEventListener('content-copied', () => {
+        window.clearTimeout(copyTimer);
+        resolve([null, copiedText]);
+      });
+    });
+
+    await pageClick(copyButtonSelector);
+    const [copyError, copyResult] = await eventFired;
+
+    const copyButtonEl = el.shadowRoot?.querySelector<HTMLButtonElement>(copyButtonSelector);
+
+    expect(copyButtonEl).lightDom.equal([
+      '<span class="copy-text">',
+      'Copied',
+      '</span>',
+    ].join(''));
+
+    await pageClick(copyButtonSelector);
+    await new Promise(resolve => window.setTimeout(resolve, 3e3));
+
+    assert.isNull(copyError);
+    assert.strictEqual(copyResult, copiedText);
+    assert.strictEqual(calls, 1);
+
+    expect(copyButtonEl).lightDom.equal([
+      '<span class="copy-text">',
+      'Copy',
+      '</span>',
+    ].join(''));
+
+    Object.assign(document, { execCommand: originalDocumentExecCommand });
+  });
 });

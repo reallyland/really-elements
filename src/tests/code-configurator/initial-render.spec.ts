@@ -16,9 +16,10 @@ describe('initial render', () => {
     `;
     const el = await fixture<ReallyCodeConfigurator>(content);
 
-    assert.isUndefined(el.properties);
-    assert.isUndefined(el.cssProperties);
+    assert.isEmpty(el.properties);
+    assert.isEmpty(el.cssProperties);
     assert.isUndefined(el.customElement);
+
     assert.deepStrictEqual(getAssignedNodes(el).length, 0);
     assert.isFalse(hasPropertiesRendered(el));
     assert.isFalse(hasCssPropertiesRendered(el));

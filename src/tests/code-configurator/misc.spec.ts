@@ -3,6 +3,7 @@ import type { TemplateResult } from 'lit-html';
 
 import type { ReallyCodeConfigurator } from '../../code-configurator/really-code-configurator.js';
 import '../../code-configurator/really-code-configurator.js';
+import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 import { pageClick } from '../wtr-helpers/page-click.js';
 import { cssProperties, properties } from './properties.config.js';
 
@@ -31,5 +32,20 @@ describe('misc', () => {
     await pageClick(propertyBooleanSelector);
 
     assert.isFalse(propertyBooleanEl?.checked);
+  });
+
+  it('renders with no matched custom element', async () => {
+    const content: TemplateResult = html`
+    <really-code-configurator>
+      <test-element></test-element>
+    </really-code-configurator>
+    `;
+    const el = await fixture<ReallyCodeConfigurator>(content);
+    const testElement = 'test-element2';
+
+    el.customElement = testElement;
+    await el.updateComplete;
+
+    assert.strictEqual(getAssignedNodes(el).length, 1);
   });
 });

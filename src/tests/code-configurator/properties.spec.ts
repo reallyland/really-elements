@@ -16,8 +16,8 @@ describe('properties', () => {
     `;
     const el = await fixture<ReallyCodeConfigurator>(content);
 
-    assert.isUndefined(el.properties);
-    assert.isUndefined(el.cssProperties);
+    assert.isEmpty(el.properties);
+    assert.isEmpty(el.cssProperties);
     assert.isUndefined(el.customElement);
   });
 
@@ -41,6 +41,40 @@ describe('properties', () => {
     assert.isTrue(hasPropertiesRendered(el));
     assert.isTrue(hasCssPropertiesRendered(el));
     assert.isTrue(hasCodeSnippetRendered(el));
+  });
+
+  it(`renders no cssProperties container with invalid cssProperties`, async () => {
+    const content: TemplateResult = html`
+    <really-code-configurator></really-code-configurator>
+    `;
+    const el = await fixture<ReallyCodeConfigurator>(content);
+    const testElement = 'test-element';
+    const testCssProperties = null as never;
+
+    el.cssProperties = testCssProperties;
+    el.customElement = testElement;
+    await el.updateComplete;
+
+    assert.deepStrictEqual(el.cssProperties, []);
+    assert.deepStrictEqual(el.customElement, testElement);
+    assert.isFalse(hasCssPropertiesRendered(el));
+  });
+
+  it(`renders no properties container with invalid properties`, async () => {
+    const content: TemplateResult = html`
+    <really-code-configurator></really-code-configurator>
+    `;
+    const el = await fixture<ReallyCodeConfigurator>(content);
+    const testElement = 'test-element';
+    const testProperties = null as never;
+
+    el.properties = testProperties;
+    el.customElement = testElement;
+    await el.updateComplete;
+
+    assert.deepStrictEqual(el.properties, []);
+    assert.deepStrictEqual(el.customElement, testElement);
+    assert.isFalse(hasPropertiesRendered(el));
   });
 
 });
