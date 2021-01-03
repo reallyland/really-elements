@@ -16,7 +16,7 @@
 [![MIT License][mit-license-badge]][mit-license-url]
 
 [![ci][ga-badge]][ga-url]
-[![Sauce Labs][ga-sl-badge]][ga-sl-url]
+[![codecov][codecov-badge]][codecov-url]
 
 > Custom elements for the web
 
@@ -73,7 +73,7 @@
 [mit-license-badge]: https://flat.badgen.net/github/license/reallyland/really-elements
 
 [ga-badge]: https://github.com/reallyland/really-elements/workflows/ci/badge.svg
-[ga-sl-badge]: https://github.com/reallyland/really-elements/workflows/Sauce%20Labs/badge.svg
+[codecov-badge]: https://codecov.io/gh/reallyland/really-elements/branch/master/graph/badge.svg?token=llfCEKYjkd
 
 <!-- Links -->
 [tippin-me-url]: https://tippin.me/@igarshmyb
@@ -84,4 +84,4 @@
 [mit-license-url]: /LICENSE
 
 [ga-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3Aci
-[ga-sl-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3A%22Sauce+Labs%22
+[codecov-url]: https://codecov.io/gh/reallyland/really-elements
