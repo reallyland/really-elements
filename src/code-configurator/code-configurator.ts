@@ -11,6 +11,7 @@ export interface PropertyValue {
 
 import '@material/mwc-button/mwc-button.js';
 import { css, html, LitElement, property } from 'lit-element';
+import type { TemplateResult } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
@@ -136,7 +137,7 @@ export class CodeConfigurator extends LitElement {
   @property({
     type: Array,
     converter: {
-      fromAttribute(value: string) {
+      fromAttribute(value: string): PropertyValue[] {
         try {
           return JSON.parse(value);
         } catch {
@@ -145,7 +146,7 @@ export class CodeConfigurator extends LitElement {
       },
     },
   })
-  public get cssProperties() {
+  public get cssProperties(): PropertyValue[] {
     return this._cssProperties;
   }
   public set cssProperties(properties: PropertyValue[]) {
@@ -165,7 +166,7 @@ export class CodeConfigurator extends LitElement {
       },
     },
   })
-  public get properties() {
+  public get properties(): PropertyValue[] {
     return this._properties;
   }
   public set properties(properties: PropertyValue[]) {
@@ -177,14 +178,14 @@ export class CodeConfigurator extends LitElement {
   public customElement?: string;
 
   @property({ type: Boolean })
-  private _propsCopied: boolean = false;
+  private _propsCopied = false;
 
   @property({ type: Boolean })
-  private _cssPropsCopied: boolean = false;
+  private _cssPropsCopied = false;
 
   private _cssProperties: PropertyValue[] = [];
 
-  private copiedDuration: number = 3e3;
+  private copiedDuration = 3e3;
 
   private _properties: PropertyValue[] = [];
 
@@ -194,7 +195,7 @@ export class CodeConfigurator extends LitElement {
     return this.shadowRoot?.querySelector<HTMLSlotElement>('slot') as HTMLSlotElement;
   }
 
-  protected updated() {
+  protected updated(): void {
     if (this.customElement) {
       const slottedElements = this._slottedElements;
 
@@ -219,7 +220,7 @@ export class CodeConfigurator extends LitElement {
     }
   }
 
-  protected render() {
+  protected render(): TemplateResult {
     const elName = this.customElement;
     const properties = this._properties;
     const cssProperties = this._cssProperties;
@@ -323,7 +324,7 @@ export class CodeConfigurator extends LitElement {
     // tslint:disable: max-line-length
   }
 
-  private _renderPropertiesConfigurator(properties: PropertyValue[], isCSS: boolean = false) {
+  private _renderPropertiesConfigurator(properties: PropertyValue[], isCSS = false) {
     const longestName = properties.reduce((p, n) => n.name.length > p.length ? n.name : p, '');
     const longestNameLen = longestName.length;
     const content = properties.map((n) => {
@@ -333,7 +334,7 @@ export class CodeConfigurator extends LitElement {
         html`<select
           data-propertyname="${name}"
           .value="${valueStr}"
-          @change="${(ev: Event) => this._updateProps(ev, isCSS)}">${
+          @blur="${(ev: Event) => this._updateProps(ev, isCSS)}">${
           options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)}</select>` :
         html`<input
           data-propertyname="${name}"
@@ -385,15 +386,15 @@ export class CodeConfigurator extends LitElement {
     const copyNode =
       this.shadowRoot?.querySelector<HTMLElement>(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
 
-    const selection = getSelection()!;
+    const selection = getSelection();
     const range = document.createRange();
 
-    selection.removeAllRanges();
+    selection?.removeAllRanges();
     range.selectNodeContents(copyNode);
-    selection.addRange(range);
+    selection?.addRange(range);
 
     document.execCommand('copy');
-    selection.removeAllRanges();
+    selection?.removeAllRanges();
 
     this.dispatchEvent(new CustomEvent('content-copied'));
     this[copiedProp] = true;

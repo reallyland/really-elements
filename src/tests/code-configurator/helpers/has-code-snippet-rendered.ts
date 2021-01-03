@@ -1,4 +1,4 @@
-export function hasCodeSnippetRendered(node: HTMLElement) {
+export function hasCodeSnippetRendered(node: HTMLElement): boolean {
   const $ = (e: string) => node.shadowRoot?.querySelector<HTMLElement>(e);
   const h2CodeSnippet = $('.all-code-snippets-container > h2');
   const h3Properties = $('.all-code-snippets-container > h3.properties');

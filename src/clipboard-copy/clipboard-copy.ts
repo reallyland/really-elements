@@ -16,13 +16,14 @@ import {
   property,
   query,
 } from 'lit-element';
+import type { TemplateResult } from 'lit-element';
 
 export const localName = 'really-clipboard-copy';
 
 function toCopyNode(
   node: HTMLElement,
   contentValue: string,
-  noTextNode: boolean = false
+  noTextNode = false
 ) {
   let preNode = node;
 
@@ -53,10 +54,10 @@ export class ClipboardCopy extends LitElement {
   ];
 
   @property({ type: String })
-  public forSlot: string = 'copy-for';
+  public forSlot = 'copy-for';
 
   @property({ type: String })
-  public idSlot: string = 'copy-id';
+  public idSlot = 'copy-id';
 
   // @property({ type: Boolean, reflect: true })
   // public sync: boolean = false;
@@ -64,9 +65,9 @@ export class ClipboardCopy extends LitElement {
   @query('slot')
   private _slot?: HTMLSlotElement;
 
-  private _idElement?: HTMLElement;
+  private _idElement: HTMLElement | null = null;
 
-  protected render() {
+  protected render(): TemplateResult {
     return html`<slot @slotchange="${this._assignSlotted}"></slot>`;
   }
 
@@ -107,7 +108,7 @@ export class ClipboardCopy extends LitElement {
 
       if (forSlotted) forSlotted.addEventListener('click', () => this._copyText());
 
-      this._idElement = slotted.id!;
+      this._idElement = slotted.id;
     }
   }
 
@@ -147,12 +148,12 @@ export class ClipboardCopy extends LitElement {
         isInputElement || isTextareaElement || isAnchorElement);
       const copyNode = nodeObj.node;
 
-      const selection = getSelection()!;
+      const selection = getSelection();
       const range = document.createRange();
 
-      selection.removeAllRanges();
+      selection?.removeAllRanges();
       range.selectNodeContents(copyNode);
-      selection.addRange(range);
+      selection?.addRange(range);
 
       /**
        * NOTE(motss): Even though `document.execCommand` has been documented to have widely
@@ -165,7 +166,7 @@ export class ClipboardCopy extends LitElement {
        * For in-depth implementation details of the `copy` command, visit https://bit.ly/2XxcXDF.
        */
       copySuccess = document.execCommand('copy');
-      selection.removeAllRanges();
+      selection?.removeAllRanges();
 
       if (nodeObj.temporary) document.body.removeChild(copyNode);
       if (!copySuccess) throw new Error('Failed to copy');
