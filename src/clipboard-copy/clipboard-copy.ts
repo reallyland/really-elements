@@ -11,14 +11,13 @@ export interface CopyError {
 
 import {
   css,
-  customElement,
   html,
   LitElement,
   property,
   query,
 } from 'lit-element';
 
-const localName = 'really-clipboard-copy';
+export const localName = 'really-clipboard-copy';
 
 function toCopyNode(
   node: HTMLElement,
@@ -40,8 +39,7 @@ function toCopyNode(
   return { node: preNode, temporary: noTextNode };
 }
 
-@customElement(localName)
-export class ReallyClipboardCopy extends LitElement {
+export class ClipboardCopy extends LitElement {
   public static styles = [
     css`
     :host {
@@ -60,8 +58,8 @@ export class ReallyClipboardCopy extends LitElement {
   @property({ type: String })
   public idSlot: string = 'copy-id';
 
-  @property({ type: Boolean, reflect: true })
-  public sync: boolean = false;
+  // @property({ type: Boolean, reflect: true })
+  // public sync: boolean = false;
 
   @query('slot')
   private _slot?: HTMLSlotElement;
@@ -81,20 +79,26 @@ export class ReallyClipboardCopy extends LitElement {
       const nodes = slot.assignedNodes() as HTMLElement[];
 
       const slotted = nodes.reduce((p, n) => {
-        if (n.nodeType === Node.ELEMENT_NODE) {
-          if (p.for && p.id) return p;
+        if (
+          (p.for && p.id) ||
+          n.nodeType !== Node.ELEMENT_NODE
+        ) return p;
 
-          if (n.hasAttribute(forSlot)) {
-            p.for = n;
-          } else if (n.hasAttribute(idSlot)) {
-            p.id = n;
-          } else {
-            const forElement = n.querySelector(`[${forSlot}]`) as HTMLElement | null;
-            const idElement = n.querySelector(`[${idSlot}]`) as HTMLElement | null;
+        const isIdSlot = n.hasAttribute(idSlot);
+        const isForSlot = n.hasAttribute(forSlot);
+        const isIdSlotNull = p.id == null;
+        const isForSlotNull = p.for == null;
 
-            if (forElement && p.for == null) { p.for = forElement; }
-            if (idElement && p.id == null) { p.id = idElement; }
-          }
+        if (isIdSlot && isIdSlotNull) {
+          p.id = n;
+        } else if (isForSlot && isForSlotNull) {
+          p.for = n;
+        } else {
+          const forElement = isForSlotNull ? n.querySelector<HTMLElement>(`[${forSlot}]`) : null;
+          const idElement = isIdSlotNull ? n.querySelector<HTMLElement>(`[${idSlot}]`) : null;
+
+          if (forElement) p.for = forElement;
+          if (idElement) p.id = idElement;
         }
 
         return p;
@@ -114,7 +118,9 @@ export class ReallyClipboardCopy extends LitElement {
     try {
       const idElement = this._idElement;
 
-      if (idElement == null) return;
+      if (idElement == null) {
+        throw new Error(`No element matches 'idSlot' is found`);
+      }
 
       const isInputElement = idElement instanceof HTMLInputElement;
       const isTextareaElement = idElement instanceof HTMLTextAreaElement;
@@ -124,11 +130,16 @@ export class ReallyClipboardCopy extends LitElement {
         (idElement as HTMLInputElement).value :
         (isAnchorElement ? (idElement as HTMLAnchorElement).href : idElement.textContent)) || '';
 
-      if (!this.sync && 'clipboard' in navigator) {
-        await navigator.clipboard.writeText(contentValue);
-        copySuccess = true;
-        return;
-      }
+      /**
+       * FIXME(motss): Temporarily disable Clipboard API due to incomplete implementation in
+       * supported browsers as the permission prompt does not work as expected. Users have to
+       * manually allow Clipboard API in browser setting which is not intuitive in terms of UX.
+       */
+      // if (!this.sync && 'clipboard' in navigator) {
+      //   await navigator.clipboard.writeText(contentValue);
+      //   copySuccess = true;
+      //   return;
+      // }
 
       const nodeObj = toCopyNode(
         idElement,
@@ -158,12 +169,12 @@ export class ReallyClipboardCopy extends LitElement {
 
       if (nodeObj.temporary) document.body.removeChild(copyNode);
       if (!copySuccess) throw new Error('Failed to copy');
-    } catch (e) {
+    } catch (reason) {
       this.dispatchEvent(new CustomEvent<CopyError>('copy-error', {
         /**
          * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
          */
-        detail: { reason: e || new Error('Failed to copy') },
+        detail: { reason },
         bubbles: true,
         composed: true,
       }));
@@ -181,10 +192,6 @@ export class ReallyClipboardCopy extends LitElement {
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    [localName]: ReallyClipboardCopy;
-  }
-
   interface HTMLElementEventMap {
     'copy-success': CustomEvent<CopySuccess>;
     'copy-error': CustomEvent<CopyError>;

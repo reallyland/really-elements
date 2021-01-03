@@ -22,24 +22,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04]
-        target: [13.x]
+        os: [ubuntu-latest]
+        target: [14.x]
     timeout-minutes: 120
 
     steps:
       - name: Checkout
-        if: "env.CI_SKIP == 'false'"
         uses: actions/checkout@v2
 
       - name: Git log
+        shell: bash
         run: |
           if [ -n "$(git log --format=%B -n 1 | grep -iE '^[0-9]+[.]{1,}[0-9]+[.]{1,}[0-9]+')" ]; then
-            echo '::set-env name=CI_SKIP::true'
+            echo "CI_SKIP=true" >> $GITHUB_ENV
           fi
-
-      - name: Checkout
-        if: "env.CI_SKIP == 'false'"
-        uses: actions/checkout@v2
 
       - name: Setup node@${{ matrix.target }}
         if: "env.CI_SKIP == 'false'"
@@ -47,35 +43,41 @@ jobs:
         with:
           node-version: ${{ matrix.target }}
 
-      - name: List versions
+      - name: Setup Playwright
         if: "env.CI_SKIP == 'false'"
+        uses: microsoft/playwright-github-action@v1
+
+      - name: List versions
         continue-on-error: true
+        if: "env.CI_SKIP == 'false'"
+        shell: bash
         run: |
           node -v && npm version && which npm && pwd && npx envinfo
-          echo env.
 
       - name: Install dependencies
         if: "env.CI_SKIP == 'false'"
         run: |
-          npm ci --quiet && npm i web-component-tester
+          npm ci --quiet
 
       - name: Lint
         if: "env.CI_SKIP == 'false'"
         run: |
           npm run lint
 
-      - name: Build
+      - name: Package check
         if: "env.CI_SKIP == 'false'"
         run: |
-          npm run ts
-
-      - name: Check build
-        if: "env.CI_SKIP == 'false'"
-        shell: bash
-        run: |
-          pwd && ls -la
+          npm run check
 
       - name: Run Test
         if: "env.CI_SKIP == 'false'"
         run: |
-          npm run test:ci
+          npm t
+          
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        if: env.CI_SKIP == 'false' && success()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/lcov.info
+          flags: unit_tests
