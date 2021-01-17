@@ -27,8 +27,9 @@
   "exports": {
     ".": "./dist/index.js",
     "./clipboard-copy": "./dist/clipboard-copy/clipboard-copy.js",
-    "./really-clipboard-copy": "./dist/clipboard-copy/really-clipboard-copy.js",
     "./code-configurator": "./dist/code-configurator/code-configurator.js",
+    "./dist/*": "./dist/*",
+    "./really-clipboard-copy": "./dist/clipboard-copy/really-clipboard-copy.js",
     "./really-code-configurator": "./dist/code-configurator/really-code-configurator.js"
   },
   "main": "./dist/index.js",
