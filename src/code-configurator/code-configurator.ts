@@ -21,6 +21,17 @@ import { prismVscode } from './styles.js';
 
 export const localName  = 'really-code-configurator';
 
+const parts = {
+  slot: 'slot',
+  content: 'content',
+  propertiesConfigurator: 'propertiesConfigurator',
+  allPropertiesConfigurator: 'allPropertiesConfigurator',
+  cssPropertiesConfigurator: 'cssPropertiesConfigurator',
+  propertiesCodeSnippet: 'propertiesCodeSnippet',
+  cssPropertiesCodeSnippet: 'cssPropertiesCodeSnippet',
+  allCodeSnippets: 'allCodeSnippets',
+} as const;
+
 function toFunctionType(type?: string) {
   switch (type) {
     case 'boolean': return Boolean;
@@ -226,11 +237,11 @@ export class CodeConfigurator extends LitElement {
     const cssProperties = this._cssProperties;
 
     return html`
-    <div>
+    <div part="${parts.slot}">
       <slot class="slot" @slotchange=${this._updateSlotted}></slot>
     </div>
 
-    <div>${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
+    <div part="${parts.content}">${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
     `;
   }
 
@@ -282,42 +293,44 @@ export class CodeConfigurator extends LitElement {
 
     // tslint:disable: max-line-length
     return html`
-    <div class="all-properties-container">
-    ${propsContent ? html`<div>
+    <div class="all-properties-container" part="${parts.allPropertiesConfigurator}">
+    ${propsContent ? html`<div part="${parts.propertiesConfigurator}">
       <h2 class="properties">Properties</h2>
       <div class="configurator-container">${this._renderPropertiesConfigurator(properties)}</div>
     </div>` : nothing}
 
-    ${cssPropsContent ? html`<div>
+    ${cssPropsContent ? html`<div part="${parts.cssPropertiesConfigurator}">
       <h2 class="css-properties">CSS Properties</h2>
       <div class="configurator-container">${
         this._renderPropertiesConfigurator(cssProperties, true)}</div>
     </div>` : nothing}
     </div>
 
-    <div class="all-code-snippets-container">
+    <div class="all-code-snippets-container" part="${parts.allCodeSnippets}">
       ${propsContent && cssPropsContent ? html`<h2>Code snippet</h2>` : nothing}
 
-      ${propsContent ? html`
-      <h3 class="properties">Properties</h3>
-      <div class="code-container">
-        <mwc-button class="copy-btn" for="propertiesFor" @click="${this._copyCode}">
-          ${this._propsCopied ? contentCopied : contentCopy}
-          <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
-        </mwc-button>
-        <pre class="language-html" id="propertiesFor">${
-          renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
+      ${propsContent ? html`<div part="${parts.propertiesCodeSnippet}">
+        <h3 class="properties">Properties</h3>
+        <div class="code-container">
+          <mwc-button class="copy-btn" for="propertiesFor" @click="${this._copyCode}">
+            ${this._propsCopied ? contentCopied : contentCopy}
+            <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
+          </mwc-button>
+          <pre class="language-html" id="propertiesFor">${
+            renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
+        </div>
       </div>` : nothing}
 
-      ${cssPropsContent ? html`
-      <h3 class="css-properties">CSS Properties</h3>
-      <div class="code-container">
-        <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${this._copyCode}">
-          ${this._cssPropsCopied ? contentCopied : contentCopy}
-          <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
-        </mwc-button>
-        <pre class="language-css" id="cssPropertiesFor">${
-          renderCode(`${elName} {\n${cssPropsContent}}`, 'css', 'css')}</pre>
+      ${cssPropsContent ? html`<div part="${parts.cssPropertiesCodeSnippet}">
+        <h3 class="css-properties">CSS Properties</h3>
+        <div class="code-container">
+          <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${this._copyCode}">
+            ${this._cssPropsCopied ? contentCopied : contentCopy}
+            <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
+          </mwc-button>
+          <pre class="language-css" id="cssPropertiesFor">${
+            renderCode(`${elName} {\n${cssPropsContent}}`, 'css', 'css')}</pre>
+        </div>
       </div>` : nothing}
     </div>
     `;
