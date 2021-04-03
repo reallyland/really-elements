@@ -24,12 +24,14 @@ export const localName  = 'really-code-configurator';
 const parts = {
   slot: 'slot',
   content: 'content',
-  propertiesConfigurator: 'propertiesConfigurator',
-  allPropertiesConfigurator: 'allPropertiesConfigurator',
-  cssPropertiesConfigurator: 'cssPropertiesConfigurator',
-  propertiesCodeSnippet: 'propertiesCodeSnippet',
-  cssPropertiesCodeSnippet: 'cssPropertiesCodeSnippet',
-  allCodeSnippets: 'allCodeSnippets',
+  propertiesConfigurator: 'properties-configurator',
+  allPropertiesConfigurator: 'all-properties-configurator',
+  cssPropertiesConfigurator: 'css-properties-configurator',
+  propertiesCodeSnippet: 'properties-code-snippet',
+  cssPropertiesCodeSnippet: 'css-properties-code-snippet',
+  allCodeSnippets: 'all-code-snippets',
+  select: 'select',
+  input: 'input',
 } as const;
 
 function toFunctionType(type?: string) {
@@ -131,15 +133,6 @@ export class CodeConfigurator extends LitElement {
 
     .copy-text {
       margin: 0 0 0 8px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      label > input:not([type="checkbox"]),
-      label > select {
-        background-color: #000;
-        color: #f5f5f5;
-        border: 1px solid #000;
-      }
     }
     `,
     prismVscode,
@@ -345,11 +338,14 @@ export class CodeConfigurator extends LitElement {
       const valueStr = value as string;
       const element = options ?
         html`<select
+          part="${parts.select}"
           data-propertyname="${name}"
           .value="${valueStr}"
           @blur="${(ev: Event) => this._updateProps(ev, isCSS)}">${
-          options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)}</select>` :
+          options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)
+        }</select>` :
         html`<input
+          part="${parts.input}"
           data-propertyname="${name}"
           type="${toInputType(type)}"
           value="${valueStr}"
