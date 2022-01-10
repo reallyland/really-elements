@@ -45,7 +45,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
     "check": "package-check",
-    "clean": "shx rm -rf .*cache *.log coverage/ dist/ logs/",
+    "clean": "rm -rf .*cache *.log coverage/ dist/ logs/",
     "commitlint": "npm run commitlint",
     "postinstall": "if [ \"$CI\" != 'true' ]; then npm dedupe; fi",
     "lint": "eslint src/**/*.ts --ext .js,.jsx,.ts,.tsx",
