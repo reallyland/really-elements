@@ -19,9 +19,9 @@ export function browserPermissions() {
 
         const page = session.browser.getPage(session.id);
         const context = page.context();
-        
+
         await context.grantPermissions(permissions, options);
-        
+
         return true;
       } catch (error) {
         return false;

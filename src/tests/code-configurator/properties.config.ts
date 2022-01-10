@@ -1,4 +1,4 @@
-import type { PropertyValue } from '../../code-configurator/code-configurator.js';
+import type { PropertyValue } from '../../code-configurator/types.js';
 
 export const cssProperties: PropertyValue[] = [
   {

@@ -1,8 +1,9 @@
+import '../../code-configurator/really-code-configurator.js';
+
 import { assert, fixture, html } from '@open-wc/testing';
-import type { TemplateResult } from 'lit-html';
+import type { TemplateResult } from 'lit';
 
 import type { ReallyCodeConfigurator } from '../../code-configurator/really-code-configurator.js';
-import '../../code-configurator/really-code-configurator.js';
 import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 import { pageClick } from '../wtr-helpers/page-click.js';
 import { pageFill } from '../wtr-helpers/page-fill.js';

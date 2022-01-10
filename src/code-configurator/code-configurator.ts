@@ -1,38 +1,15 @@
-export interface PropertyValueOptions {
-  label: string;
-  value: string;
-}
-export interface PropertyValue {
-  name: string;
-  value: unknown;
-  options?: PropertyValueOptions[];
-  type?: string;
-}
-
 import '@material/mwc-button/mwc-button.js';
-import { css, html, LitElement, property } from 'lit-element';
-import type { TemplateResult } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import { highlight, languages } from 'nodemod/dist/lib/prismjs.js';
 
-import { nothing } from 'lit-html/lib/part.js';
+import { highlight, languages } from '@reallyland/esm';
+import type { TemplateResult } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
+import { property } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
+import { parts } from './constants.js';
 import { contentCopied, contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
-
-export const localName  = 'really-code-configurator';
-
-const parts = {
-  slot: 'slot',
-  content: 'content',
-  propertiesConfigurator: 'properties-configurator',
-  allPropertiesConfigurator: 'all-properties-configurator',
-  cssPropertiesConfigurator: 'css-properties-configurator',
-  propertiesCodeSnippet: 'properties-code-snippet',
-  cssPropertiesCodeSnippet: 'css-properties-code-snippet',
-  allCodeSnippets: 'all-code-snippets',
-  select: 'select',
-  input: 'input',
-} as const;
+import type { PropertyValue } from './types.js';
 
 function toFunctionType(type?: string) {
   switch (type) {
@@ -92,7 +69,7 @@ function renderCode(code: string, grammar: string, language: string) {
 }
 
 export class CodeConfigurator extends LitElement {
-  public static styles = [
+  public static override styles = [
     css`
     :host {
       display: block;
@@ -199,7 +176,7 @@ export class CodeConfigurator extends LitElement {
     return this.shadowRoot?.querySelector<HTMLSlotElement>('slot') as HTMLSlotElement;
   }
 
-  protected updated(): void {
+  protected override updated(): void {
     if (this.customElement) {
       const slottedElements = this._slottedElements;
 
@@ -224,7 +201,7 @@ export class CodeConfigurator extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const elName = this.customElement;
     const properties = this._properties;
     const cssProperties = this._cssProperties;
@@ -413,14 +390,4 @@ export class CodeConfigurator extends LitElement {
     }, this.copiedDuration);
   }
 
-}
-
-declare global {
-  interface Window {
-    Prism: typeof import('prismjs');
-  }
-
-  interface HTMLElementEventMap {
-    'content-copied': CustomEvent<undefined>;
-  }
 }

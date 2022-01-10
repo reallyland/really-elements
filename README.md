@@ -11,8 +11,7 @@
 [![Follow me][follow-me-badge]][follow-me-url]
 
 [![Version][version-badge]][version-url]
-[![lit-element][lit-element-version-badge]][lit-element-url]
-[![Node version][node-version-badge]][node-version-url]
+[![lit][lit-version-badge]][lit-url]
 [![MIT License][mit-license-badge]][mit-license-url]
 
 [![ci][ga-badge]][ga-url]
@@ -52,7 +51,7 @@
 [MIT License](https://motss.mit-license.org/) © Rong Sen Ng (motss)
 
 <!-- References -->
-[lit-element-url]: https://github.com/Polymer/lit-element?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=motss/app-datepicker
+[lit-url]: https://github.com/lit/lit
 [web-component-tester-url]: https://github.com/Polymer/tools/tree/master/packages/web-component-tester
 
 [code-configurator]: ./src/code-configurator
@@ -62,9 +61,8 @@
 [tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
 [follow-me-badge]: https://flat.badgen.net/twitter/follow/igarshmyb?icon=twitter
 
-[version-badge]: https://flat.badgen.net/npm/v/@reallyland/really-elements?icon=npm
-[lit-element-version-badge]: https://flat.badgen.net/npm/v/lit-element/latest?icon=npm&label=lit-element
-[node-version-badge]: https://flat.badgen.net/npm/node/@reallyland/really-elements
+[version-badge]: https://flat.badgen.net/npm/v/@reallyland/reallyelements?icon=npm
+[lit-version-badge]: https://flat.badgen.net/npm/v/lit/latest?icon=npm&label=lit
 [mit-license-badge]: https://flat.badgen.net/npm/license/@reallyland/really-elements
 
 [tippin-me-badge]: https://badgen.net/badge/%E2%9A%A1%EF%B8%8Ftippin.me/@igarshmyb/F0918E
@@ -80,7 +78,6 @@
 [follow-me-url]: https://twitter.com/igarshmyb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 
 [version-url]: https://www.npmjs.com/package/@reallyland/really-elements/v/latest?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
-[node-version-url]: https://nodejs.org/en/download?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [mit-license-url]: /LICENSE
 
 [ga-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3Aci

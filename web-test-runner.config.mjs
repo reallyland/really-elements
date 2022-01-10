@@ -28,7 +28,8 @@ const config = {
     },
     nativeInstrumentation: true,
     exclude: [
-      './src/tests/**',
+      './src/*tests*/**',
+      'node_modules/**'
     ],
   },
   files: [
@@ -58,7 +59,7 @@ const config = {
   ],
   testFramework: {
     config: {
-      checkLeaks: true,
+      // checkLeaks: true,
       fullTrace: true,
       timeout: 60e3,
       ui: 'bdd',

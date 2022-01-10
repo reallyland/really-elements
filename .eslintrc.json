@@ -10,12 +10,14 @@
     "plugin:lit/recommended",
     "plugin:lit-a11y/recommended"
   ],
+  "ignorePatterns": "wtr.config.mjs",
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "simple-import-sort"
   ],
   "rules": {
     "no-async-promise-executor": "off",
@@ -37,11 +39,18 @@
         "functions": "never"
       }
     ],
+    "@typescript-eslint/consistent-type-exports": [
+      "error", {
+        "fixMixedExportsWithInlineTypeSpecifier": true
+      }
+    ],
     "@typescript-eslint/consistent-type-imports": [
       "error", {
         "prefer": "type-imports",
         "disallowTypeAnnotations": false
       }
-    ]
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   }
 }

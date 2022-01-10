@@ -1,8 +1,9 @@
+import '../../clipboard-copy/really-clipboard-copy.js';
+
 import { assert, fixture, fixtureCleanup, html } from '@open-wc/testing';
-import type { TemplateResult } from 'lit-html';
+import type { TemplateResult } from 'lit';
 
 import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
-import '../../clipboard-copy/really-clipboard-copy.js';
 import { pageClick } from '../wtr-helpers/page-click.js';
 
 describe('misc', () => {

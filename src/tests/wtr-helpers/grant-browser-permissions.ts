@@ -21,7 +21,7 @@ export type BrowserPermissionName =
 
 export type BrowserPermissionsOption = Parameters<BrowserContext['grantPermissions']>[1];
 
-export async function grantBrowerPermissions(
+export async function grantBrowserPermissions(
   permissions: BrowserPermissionName[],
   options?: BrowserPermissionsOption
 ): Promise<boolean> {

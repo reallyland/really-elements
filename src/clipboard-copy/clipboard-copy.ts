@@ -1,24 +1,12 @@
-interface Slotted {
-  id: HTMLElement | null;
-  for: HTMLElement | null;
-}
-export interface CopySuccess {
-  value: string;
-}
-export interface CopyError {
-  reason: Error;
-}
-
+import type { TemplateResult } from 'lit';
 import {
   css,
   html,
   LitElement,
-  property,
-  query,
-} from 'lit-element';
-import type { TemplateResult } from 'lit-element';
+} from 'lit';
+import { property, query } from 'lit/decorators.js';
 
-export const localName = 'really-clipboard-copy';
+import type { CopyError, CopySuccess, Slotted } from './types';
 
 function toCopyNode(
   node: HTMLElement,
@@ -41,7 +29,7 @@ function toCopyNode(
 }
 
 export class ClipboardCopy extends LitElement {
-  public static styles = [
+  public static override styles = [
     css`
     :host {
       display: block;
@@ -67,7 +55,7 @@ export class ClipboardCopy extends LitElement {
 
   private _idElement: HTMLElement | null = null;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot @slotchange="${this._assignSlotted}"></slot>`;
   }
 
@@ -175,7 +163,7 @@ export class ClipboardCopy extends LitElement {
         /**
          * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
          */
-        detail: { reason },
+        detail: { reason: reason as Error },
         bubbles: true,
         composed: true,
       }));
@@ -188,14 +176,6 @@ export class ClipboardCopy extends LitElement {
         }));
       }
     }
-  }
-
-}
-
-declare global {
-  interface HTMLElementEventMap {
-    'copy-success': CustomEvent<CopySuccess>;
-    'copy-error': CustomEvent<CopyError>;
   }
 
 }

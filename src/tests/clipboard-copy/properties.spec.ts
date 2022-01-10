@@ -1,6 +1,7 @@
+import '../../clipboard-copy/really-clipboard-copy.js';
+
 import { assert, fixture, html } from '@open-wc/testing';
 
-import '../../clipboard-copy/really-clipboard-copy.js';
 import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
 import { getAssignedNodes } from '../helpers/get-assigned-nodes.js';
 

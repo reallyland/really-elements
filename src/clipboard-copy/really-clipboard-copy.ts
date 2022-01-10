@@ -1,13 +1,17 @@
-import { customElement } from 'lit-element';
+import { customElement } from 'lit/decorators.js';
 
-import { ClipboardCopy, localName } from './clipboard-copy.js';
+import { ClipboardCopy } from './clipboard-copy.js';
+import { localName } from './constants.js';
+import type { CopyError,CopySuccess } from './types.js';
 
 @customElement(localName)
 export class ReallyClipboardCopy extends ClipboardCopy {}
 
-export type { CopyError, CopySuccess } from './clipboard-copy.js';
-
 declare global {
+  interface HTMLElementEventMap {
+    'copy-success': CustomEvent<CopySuccess>;
+    'copy-error': CustomEvent<CopyError>;
+  }
   interface HTMLElementTagNameMap {
     [localName]: ReallyClipboardCopy;
   }
