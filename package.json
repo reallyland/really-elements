@@ -46,10 +46,13 @@
     "build": "tsc -p tsconfig.prod.json",
     "check": "package-check",
     "clean": "shx rm -rf .*cache *.log coverage/ dist/ logs/",
-    "postinstall": "npm dedupe",
     "commitlint": "npm run commitlint",
+    "postinstall": "if [ \"$CI\" != 'true' ]; then npm dedupe; fi",
     "lint": "eslint src/**/*.ts --ext .js,.jsx,.ts,.tsx",
+    "lint-commit": "npm x -y -- commitlint --edit",
     "lint:build": "npm run lint -- --config .build.eslintrc.json",
+    "nano-staged": "nano-staged",
+    "prepare": "if [ \"$CI\" != 'true' ]; then npm x -y -- simple-git-hooks; fi",
     "prepublishOnly": "npm run lint && npm run build",
     "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000",
     "serve:app": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000 -a demo.html",
@@ -57,6 +60,11 @@
     "ts": "tsc",
     "watch": "wtr --watch",
     "wtr": "node --max-old-space-size=8192 --trace-deprecation node_modules/@web/test-runner/dist/bin.js"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run check && npm run nano-staged && npm run ts -- --noEmit",
+    "commit-msg": "npm run lint-commit",
+    "post-commit": "npm run clean"
   },
   "commitlint": {
     "extends": [
@@ -94,10 +102,13 @@
     "typescript": "^4.2.3"
   },
   "engines": {
-    "node": ">= 10.18.1",
-    "npm": ">= 6.13.4"
+    "node": ">= 16.x",
+    "npm": ">= 8.x"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "nano-staged": {
+    "*.ts": "npm run lint:build -- --fix"
   }
 }
