@@ -1,6 +1,3 @@
-
-import '@material/mwc-button/mwc-button.js';
-
 import { customElement } from 'lit/decorators.js';
 
 import { CodeConfigurator } from './code-configurator.js';
