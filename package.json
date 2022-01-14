@@ -73,6 +73,7 @@
   },
   "dependencies": {
     "@material/mwc-button": "^0.25.3",
+    "@reallyland/esm": "^0.0.3",
     "lit": "^2.1.1",
     "tslib": "^2.3.1"
   },
@@ -80,7 +81,6 @@
     "@commitlint/config-conventional": "^16.0.0",
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@open-wc/testing": "^3.0.3",
-    "@reallyland/esm": "^0.0.3",
     "@reallyland/tsconfig": "^4.0.1",
     "@skypack/package-check": "^0.2.2",
     "@types/prismjs": "^1.16.4",
