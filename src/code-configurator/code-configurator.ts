@@ -1,4 +1,4 @@
-import '@material/mwc-button/mwc-button.js';
+import '@material/mwc-button';
 
 import { highlight, languages } from '@reallyland/esm';
 import type { TemplateResult } from 'lit';
