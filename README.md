@@ -70,7 +70,7 @@
 
 [mit-license-badge]: https://flat.badgen.net/github/license/reallyland/really-elements
 
-[ga-badge]: https://github.com/reallyland/really-elements/workflows/ci/badge.svg
+[ga-badge]: https://github.com/reallyland/really-elements/actions/workflows/ci.yml/badge.svg
 [codecov-badge]: https://codecov.io/gh/reallyland/really-elements/branch/master/graph/badge.svg?token=llfCEKYjkd
 
 <!-- Links -->
@@ -80,5 +80,5 @@
 [version-url]: https://www.npmjs.com/package/@reallyland/really-elements/v/latest?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=@reallyland/really-elements
 [mit-license-url]: /LICENSE
 
-[ga-url]: https://github.com/reallyland/really-elements/actions?query=workflow%3Aci
+[ga-url]: https://github.com/reallyland/really-elements/actions/workflows/ci.yml
 [codecov-url]: https://codecov.io/gh/reallyland/really-elements
