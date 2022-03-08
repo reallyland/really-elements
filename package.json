@@ -48,7 +48,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
     "clean": "rm -rf .*cache *.log .swc/ coverage/ dist/ logs/",
-    "postinstall": "bash postinstall.bash",
+    "postinstall": "sh postinstall.sh",
     "lint": "eslint src/**/*.ts --ext .js,.jsx,.ts,.tsx",
     "lint-commit": "npm x -y -- commitlint@latest --edit",
     "lint:build": "npm run lint -- --config .build.eslintrc.json",
