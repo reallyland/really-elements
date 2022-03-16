@@ -1,1 +1,1 @@
-export const localName = 'really-clipboard-copy' as const;
+export const reallyClipboardCopyLocalName = 'really-clipboard-copy' as const;

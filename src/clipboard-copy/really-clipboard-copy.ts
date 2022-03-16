@@ -1,10 +1,10 @@
 import { customElement } from 'lit/decorators.js';
 
 import { ClipboardCopy } from './clipboard-copy.js';
-import { localName } from './constants.js';
+import { reallyClipboardCopyLocalName } from './constants.js';
 import type { CopyError, CopySuccess } from './types.js';
 
-@customElement(localName)
+@customElement(reallyClipboardCopyLocalName)
 export class ReallyClipboardCopy extends ClipboardCopy {}
 
 declare global {
@@ -13,6 +13,6 @@ declare global {
     'copy-error': CustomEvent<CopyError>;
   }
   interface HTMLElementTagNameMap {
-    [localName]: ReallyClipboardCopy;
+    [reallyClipboardCopyLocalName]: ReallyClipboardCopy;
   }
 }

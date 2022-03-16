@@ -9,7 +9,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { parts } from './constants.js';
 import { contentCopied, contentCopy } from './icons.js';
 import { prismVscode } from './styles.js';
-import type { PropertyValue } from './types.js';
+import type { CodeConfiguratorCustomEventPropertyChangeDetail, PropertyValue } from './types.js';
 
 function toFunctionType(type?: string) {
   switch (type) {
@@ -316,18 +316,18 @@ export class CodeConfigurator extends LitElement {
       const element = options ?
         html`<select
           part="${parts.select}"
-          data-propertyname="${name}"
+          name="${name}"
           .value="${valueStr}"
-          @blur="${(ev: Event) => this._updateProps(ev, isCSS)}">${
+          @input="${(ev: Event) => this._updateProps(ev, isCSS)}">${
           options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)
         }</select>` :
         html`<input
           part="${parts.input}"
-          data-propertyname="${name}"
+          name="${name}"
           type="${toInputType(type)}"
           value="${valueStr}"
           ?checked="${type === 'boolean' && Boolean(valueStr)}"
-          @change="${(ev: Event) => this._updateProps(ev, isCSS)}"/>`;
+          @input="${(ev: Event) => this._updateProps(ev, isCSS)}"/>`;
 
       return html`<div class="configurator">
         <label>
@@ -343,7 +343,7 @@ export class CodeConfigurator extends LitElement {
 
   private _updateProps(ev: Event, isCSS: boolean) {
     const currentTarget = ev.currentTarget as HTMLInputElement | HTMLSelectElement;
-    const propertyName = currentTarget.getAttribute('data-propertyname');
+    const propertyName = currentTarget.getAttribute('name') as string;
     const properties = isCSS ? this._cssProperties : this._properties;
     const val = currentTarget.tagName === 'INPUT' && currentTarget.type === 'checkbox' ?
       (currentTarget as HTMLInputElement).checked :
@@ -360,6 +360,16 @@ export class CodeConfigurator extends LitElement {
 
     this[propName] = updatedProperties;
     this.requestUpdate(propName);
+    this.dispatchEvent(new CustomEvent<CodeConfiguratorCustomEventPropertyChangeDetail>('property-changed', {
+      bubbles: true,
+      detail: {
+        eventFrom: ev.currentTarget as HTMLElement,
+        isCSS,
+        propertyName,
+        propertyValue: toFunctionType(properties.find(n => n.name === propertyName)?.type)(val),
+      },
+      composed: true,
+    }));
   }
 
   private _copyCode(ev: Event) {

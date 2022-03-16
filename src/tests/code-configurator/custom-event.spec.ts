@@ -1,10 +1,13 @@
 import '../../code-configurator/really-code-configurator.js';
 
 import { assert, expect, fixture, html } from '@open-wc/testing';
+import { sendKeys } from '@web/test-runner-commands';
 import type { TemplateResult } from 'lit';
 
 import type { ReallyCodeConfigurator } from '../../code-configurator/really-code-configurator.js';
+import type { CodeConfiguratorCustomEventMap } from '../../code-configurator/types.js';
 import { pageClick } from '../wtr-helpers/page-click.js';
+import { pageFill } from '../wtr-helpers/page-fill.js';
 import { cssProperties, properties } from './properties.config.js';
 
 describe('custom event', () => {
@@ -124,5 +127,95 @@ describe('custom event', () => {
     ].join(''));
 
     Object.assign(document, { execCommand: originalDocumentExecCommand });
+  });
+
+  it.only('fires property-changed when input changes', async () => {
+    type A = [
+      error: Error | undefined,
+      result: CodeConfiguratorCustomEventMap['property-changed']['detail'] | undefined
+    ];
+
+    const content: TemplateResult = html`
+    <really-code-configurator>
+      <test-element></test-element>
+    </really-code-configurator>
+    `;
+    const el = await fixture<ReallyCodeConfigurator>(content);
+    const testElement = 'test-element';
+
+    el.properties = properties;
+    el.cssProperties = cssProperties;
+    el.customElement = testElement;
+    await el.updateComplete;
+
+    for (const property of properties) {
+      /**
+       * NOTE(motss): Skip `select` element as `@input` does not fire as expected.
+       */
+      if (property.options?.length) continue;
+
+      const propertySelector = `${property.options?.length ? 'select' : 'input'}[name="${property.name}"]`;
+      const propertyElement = el.shadowRoot?.querySelector<
+        | HTMLInputElement
+        | HTMLSelectElement
+      >(
+        propertySelector
+      );
+
+      propertyElement?.focus();
+
+      const eventFired = new Promise<A>((resolve) => {
+        const propertyTimer = globalThis.setTimeout(
+          () =>
+            resolve([new Error('timeout'), undefined]), 3e3
+        );
+
+        el.addEventListener('property-changed', (e) => {
+          globalThis.clearTimeout(propertyTimer);
+          resolve([undefined, e.detail]);
+        });
+      });
+
+      let expectedPropertyValue: unknown;
+
+      switch (property.type) {
+        case 'boolean': {
+          await sendKeys({ press: ' ' });
+
+          expectedPropertyValue = false;
+
+          break;
+        }
+        case 'number': {
+          await sendKeys({ press: 'ArrowUp' });
+
+          expectedPropertyValue = 1;
+
+          break;
+        }
+        case 'string': {
+          if (property.options?.length) {
+            // await sendKeys({ press: ' ' });
+            // await sendKeys({ press: 'ArrowDown' });
+            // await sendKeys({ press: 'Enter' });
+
+            // expectedPropertyValue = '2';
+          } else {
+            await pageFill(propertySelector, 'a');
+
+            expectedPropertyValue = 'a';
+          }
+
+          break;
+        }
+        default:
+          // Do nothing
+      }
+
+      const [propertyError, propertyResult] = await eventFired;
+
+      assert.isUndefined(propertyError);
+      assert.strictEqual(propertyResult?.propertyValue, expectedPropertyValue);
+    }
   });
 });

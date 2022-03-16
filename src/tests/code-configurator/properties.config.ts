@@ -45,11 +45,6 @@ export const properties: PropertyValue[] = [
     type: 'boolean',
   },
   {
-    name: 'propertyBooleanFalse',
-    value: false,
-    type: 'boolean',
-  },
-  {
     name: 'propertyWithSelectableOptions',
     value: 'option-1',
     type: 'string',

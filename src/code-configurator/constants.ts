@@ -1,5 +1,3 @@
-export const localName  = 'really-code-configurator' as const;
-
 export const parts = {
   allCodeSnippets: 'all-code-snippets',
   allPropertiesConfigurator: 'all-properties-configurator',
@@ -12,3 +10,5 @@ export const parts = {
   select: 'select',
   slot: 'slot',
 } as const;
+
+export const reallyCodeConfiguratorLocalName  = 'really-code-configurator' as const;

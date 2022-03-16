@@ -39,7 +39,7 @@ describe('misc', () => {
     el.customElement = testElement;
     await el.updateComplete;
 
-    const propertyBooleanSelector = 'input[type="checkbox"][data-propertyname="propertyBoolean"]';
+    const propertyBooleanSelector = 'input[type="checkbox"][name="propertyBoolean"]';
     const propertyBooleanEl = el.shadowRoot?.querySelector<HTMLInputElement>(
       propertyBooleanSelector
     );
@@ -66,7 +66,7 @@ describe('misc', () => {
     await el.updateComplete;
 
     const testColor = 'yellow';
-    const testElementColorSelector = 'input[data-propertyname="--test-element-color"]';
+    const testElementColorSelector = 'input[name="--test-element-color"]';
     const testElementColorEl = el.shadowRoot?.querySelector<HTMLInputElement>(
       testElementColorSelector
     );

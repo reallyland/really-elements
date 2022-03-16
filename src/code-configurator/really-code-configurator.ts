@@ -1,18 +1,17 @@
 import { customElement } from 'lit/decorators.js';
 
 import { CodeConfigurator } from './code-configurator.js';
-import { localName } from './constants.js';
+import { reallyCodeConfiguratorLocalName } from './constants.js';
+import type { CodeConfiguratorCustomEventMap } from './types.js';
 
-@customElement(localName)
+@customElement(reallyCodeConfiguratorLocalName)
 export class ReallyCodeConfigurator extends CodeConfigurator {}
 
 declare global {
-  interface HTMLElementEventMap {
-    'content-copied': CustomEvent<undefined>;
-  }
+  interface HTMLElementEventMap extends CodeConfiguratorCustomEventMap {}
 
   interface HTMLElementTagNameMap {
-    [localName]: ReallyCodeConfigurator;
+    [reallyCodeConfiguratorLocalName]: ReallyCodeConfigurator;
   }
 
   interface Window {

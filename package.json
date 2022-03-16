@@ -48,19 +48,20 @@
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
     "clean": "rm -rf .*cache *.log .swc/ coverage/ dist/ logs/",
+    "dev": "npm run serve & npm run watch",
     "postinstall": "sh postinstall.sh",
     "lint": "eslint src/**/*.ts --ext .js,.jsx,.ts,.tsx",
     "lint-commit": "npm x -y -- commitlint@latest --edit",
     "lint:build": "npm run lint -- --config .build.eslintrc.json",
+    "pre-commit": "package-check && nano-staged && tsc --noEmit",
     "prepublishOnly": "npm run lint:build && npm run build",
     "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000",
-    "serve:app": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000 -a demo.html",
     "test": "npm run wtr",
-    "watch": "npm run wtr --watch",
+    "watch": "npm run clean && tsc --watch",
     "wtr": "node --max-old-space-size=8192 --trace-deprecation node_modules/@web/test-runner/dist/bin.js --config wtr.config.mjs"
   },
   "simple-git-hooks": {
-    "pre-commit": "package-check && nano-staged && tsc --noEmit",
+    "pre-commit": "npm run pre-commit",
     "commit-msg": "npm run lint-commit"
   },
   "commitlint": {
@@ -104,6 +105,9 @@
     "access": "public"
   },
   "nano-staged": {
-    "*.ts": "npm run lint:build -- --fix"
+    "*.ts": [
+      "npm run lint:build -- --fix",
+      "git add"
+    ]
   }
 }
