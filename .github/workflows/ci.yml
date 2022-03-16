@@ -56,9 +56,9 @@ jobs:
       #   with:
       #     node-version: ${{ matrix.target }}
 
-      - name: Setup Playwright
-        if: env.CI_SKIP == 'false'
-        uses: microsoft/playwright-github-action@v1
+      # - name: Setup Playwright
+      #   if: env.CI_SKIP == 'false'
+      #   uses: microsoft/playwright-github-action@v1
 
       # - name: Install latest npm
       #   if: env.CI_SKIP == 'false'
