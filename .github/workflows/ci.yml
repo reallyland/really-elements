@@ -50,11 +50,11 @@ jobs:
         if: env.CI_SKIP == 'false'
         uses: actions/checkout@v2
 
-      - name: Setup node@${{ matrix.target }}
-        if: env.CI_SKIP == 'false'
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.target }}
+      # - name: Setup node@${{ matrix.target }}
+      #   if: env.CI_SKIP == 'false'
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ matrix.target }}
 
       - name: Setup Playwright
         if: env.CI_SKIP == 'false'
@@ -68,11 +68,15 @@ jobs:
       - name: List versions
         if: env.CI_SKIP == 'false'
         run: |
-          pwd && ls -la && npx envinfo
           echo "IS_UBUNTU=${{ contains(matrix.os, 'ubuntu') }}" >> $GITHUB_ENV
           echo "NODE_VERSION=$(node -v)" >> $GITHUB_ENV
           echo "NPM_CACHE_DIR=$(npm config get cache)" >> $GITHUB_ENV
           echo "NPM_VERSION=$(npm -v)" >> $GITHUB_ENV
+
+          pwd
+          ls -la
+          which npm
+          npm x -y -- envinfo
 
       - name: Cache dependencies
         if: env.CI_SKIP == 'false'
@@ -90,9 +94,14 @@ jobs:
       - name: Install dependencies
         if: env.CI_SKIP == 'false'
         run: |
-          bash ./list-npx-cache.bash
+          sh ./list-npx-cache.sh
           npm ci
-          bash ./list-npx-cache.bash
+          sh ./list-npx-cache.sh
+
+      - name: Setup Playwright
+        if: env.CI_SKIP == 'false'
+        run: |
+          ./node_modules/.bin/playwright install-deps
 
       - name: Lint
         if: env.CI_SKIP == 'false'
@@ -102,13 +111,14 @@ jobs:
       - name: Test
         if: env.CI_SKIP == 'false' && env.IS_UBUNTU == 'false'
         run: |
-          npm t
+          npm run wtr
 
       - name: Test with coverage
         if: env.CI_SKIP == 'false' && env.IS_UBUNTU != 'false'
         run: |
-          echo "COVERAGE=true" >> $GITHUB_ENV
-          npm t
+          npm run wtr
+        env:
+          COVERAGE: true
 
       - name: Upload coverage to codecov
         if: env.CI_SKIP == 'false' && env.IS_UBUNTU != 'false' && success()
