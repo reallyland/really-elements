@@ -46,7 +46,7 @@ jobs:
           pwd
           ls -la
           which npm
-          npm config list
+          npm config ls -l
 
       - name: Cache dependencies
         id: npm-cache
