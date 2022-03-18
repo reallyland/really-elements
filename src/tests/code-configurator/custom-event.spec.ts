@@ -129,7 +129,7 @@ describe('custom event', () => {
     Object.assign(document, { execCommand: originalDocumentExecCommand });
   });
 
-  it.only('fires property-changed when input changes', async () => {
+  it('fires property-changed when input changes', async () => {
     type A = [
       error: Error | undefined,
       result: CodeConfiguratorCustomEventMap['property-changed']['detail'] | undefined
