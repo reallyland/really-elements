@@ -56,6 +56,7 @@ export class ClipboardCopy extends LitElement {
   private _idElement: HTMLElement | null = null;
 
   protected override render(): TemplateResult {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     return html`<slot @slotchange="${this._assignSlotted}"></slot>`;
   }
 
@@ -100,7 +101,7 @@ export class ClipboardCopy extends LitElement {
     }
   }
 
-  private async _copyText() {
+  private _copyText() {
     let copySuccess = false;
     let contentValue = '';
 
@@ -117,7 +118,7 @@ export class ClipboardCopy extends LitElement {
 
       contentValue = (isInputElement || isTextareaElement ?
         (idElement as HTMLInputElement).value :
-        (isAnchorElement ? (idElement as HTMLAnchorElement).href : idElement.textContent)) || '';
+        (isAnchorElement ? idElement.href : idElement.textContent)) || '';
 
       /**
        * FIXME(motss): Temporarily disable Clipboard API due to incomplete implementation in

@@ -44,7 +44,7 @@ function toPropertiesAttr(properties: PropertyValue[]) {
 
     const attrName = name.toLowerCase();
 
-    p.push(type === 'boolean' ? attrName : `${attrName}="${val}"`);
+    p.push(type === 'boolean' ? attrName : `${attrName}="${String(val)}"`);
 
     return p;
   }, []).filter(Boolean).join('\n  ');
@@ -58,7 +58,7 @@ function toCSSProperties(cssProperties: PropertyValue[]) {
 
     if (!value) return p;
 
-    p.push(`  ${name}: ${value};\n`);
+    p.push(`  ${name}: ${value as string};\n`);
 
     return p;
   }, []).join('');
@@ -120,7 +120,7 @@ export class CodeConfigurator extends LitElement {
     converter: {
       fromAttribute(value: string): PropertyValue[] {
         try {
-          return JSON.parse(value);
+          return JSON.parse(value) as PropertyValue[];
         } catch {
           return [];
         }
@@ -138,9 +138,9 @@ export class CodeConfigurator extends LitElement {
   @property({
     type: Array,
     converter: {
-      fromAttribute(value: string) {
+      fromAttribute(value: string): PropertyValue[] {
         try {
-          return JSON.parse(value);
+          return JSON.parse(value) as PropertyValue[];
         } catch {
           return [];
         }
@@ -197,7 +197,7 @@ export class CodeConfigurator extends LitElement {
             o.style.setProperty(n.name, n.value as string);
           });
         });
-      } else this._updateSlotted();
+      } else void this._updateSlotted();
     }
   }
 
@@ -208,7 +208,9 @@ export class CodeConfigurator extends LitElement {
 
     return html`
     <div part="${parts.slot}">
-      <slot class="slot" @slotchange=${this._updateSlotted}></slot>
+      <slot class="slot" @slotchange=${
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        this._updateSlotted}></slot>
     </div>
 
     <div part="${parts.content}">${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
@@ -282,7 +284,9 @@ export class CodeConfigurator extends LitElement {
       ${propsContent ? html`<div part="${parts.propertiesCodeSnippet}">
         <h3 class="properties">Properties</h3>
         <div class="code-container">
-          <mwc-button class="copy-btn" for="propertiesFor" @click="${this._copyCode}">
+          <mwc-button class="copy-btn" for="propertiesFor" @click="${
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            this._copyCode}">
             ${this._propsCopied ? contentCopied : contentCopy}
             <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
@@ -294,7 +298,9 @@ export class CodeConfigurator extends LitElement {
       ${cssPropsContent ? html`<div part="${parts.cssPropertiesCodeSnippet}">
         <h3 class="css-properties">CSS Properties</h3>
         <div class="code-container">
-          <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${this._copyCode}">
+          <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            this._copyCode}">
             ${this._cssPropsCopied ? contentCopied : contentCopy}
             <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
@@ -380,7 +386,7 @@ export class CodeConfigurator extends LitElement {
     if (this[copiedProp]) return;
 
     const copyNode =
-      this.shadowRoot?.querySelector<HTMLElement>(`#${currentTarget.getAttribute('for')}`) as HTMLElement;
+      this.shadowRoot?.querySelector<HTMLElement>(`#${currentTarget.getAttribute('for') as string}`) as HTMLElement;
 
     const selection = getSelection();
     const range = document.createRange();
