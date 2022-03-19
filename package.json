@@ -41,7 +41,6 @@
     "dist/**/*.d.ts",
     "dist/**/*.js.map",
     "dist/**/*.js",
-    "postinstall.*",
     "!**/*demo*/**/*.*",
     "!**/*test*/**/*.*"
   ],
@@ -49,7 +48,7 @@
     "build": "tsc -p tsconfig.prod.json",
     "clean": "rm -rf .*cache *.log .swc/ coverage/ dist/ logs/",
     "dev": "npm run serve & npm run watch",
-    "postinstall": "sh postinstall.sh",
+    "postinstall": "sh ./node_modules/@reallyland/tools/postinstall.sh",
     "lint": "sh ./node_modules/@reallyland/tools/lint-build.sh -c ./node_modules/@reallyland/tools/browser/lit/.eslintrc.json",
     "lint-commit": "sh ./node_modules/@reallyland/tools/lint-commit.sh",
     "lint:build": "sh ./node_modules/@reallyland/tools/lint-build.sh -c ./node_modules/@reallyland/tools/browser/lit/.build.eslintrc.json",
