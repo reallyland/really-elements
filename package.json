@@ -46,22 +46,22 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
-    "clean": "sh ./node_modules/@reallyland/tools/cleanup.sh",
+    "clean": "sh $(npm root)/@reallyland/tools/cleanup.sh",
     "dev": "npm run serve & npm run watch",
-    "postinstall": "sh ./node_modules/@reallyland/tools/postinstall.sh",
-    "lint": "sh ./node_modules/@reallyland/tools/lint-build.sh -c ./node_modules/@reallyland/tools/browser/lit/.eslintrc.json",
-    "lint-commit": "sh ./node_modules/@reallyland/tools/lint-commit.sh",
-    "lint:build": "sh ./node_modules/@reallyland/tools/lint-build.sh -c ./node_modules/@reallyland/tools/browser/lit/.build.eslintrc.json",
-    "pre-commit": "sh ./node_modules/@reallyland/tools/pre-commit.sh",
+    "postinstall": "FILE=\"$(npm root)/@reallyland/tools/postinstall.sh\"; if [ -f \"$FILE\" ]; then sh \"$FILE\"; fi",
+    "lint": "sh $(npm root)/@reallyland/tools/lint-build.sh -c $(npm root)/@reallyland/tools/browser/lit/.eslintrc.json",
+    "lint-commit": "sh $(npm root)/@reallyland/tools/lint-commit.sh",
+    "lint:build": "sh $(npm root)/@reallyland/tools/lint-build.sh -c $(npm root)/@reallyland/tools/browser/lit/.build.eslintrc.json",
+    "pre-commit": "sh $(npm root)/@reallyland/tools/pre-commit.sh",
     "prepublishOnly": "npm run lint:build && npm run build",
     "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000",
     "test": "npm run wtr",
     "watch": "npm run clean && tsc --watch",
-    "wtr": "node --max-old-space-size=8192 --trace-deprecation node_modules/.bin/wtr --config wtr.config.mjs"
+    "wtr": "node --max-old-space-size=8192 --trace-deprecation $(npm bin)/wtr --config wtr.config.mjs"
   },
   "dependencies": {
     "@material/mwc-button": "^0.25.3",
-    "@reallyland/esm": "^0.0.4",
+    "@reallyland/esm": "^0.0.6",
     "lit": "^2.2.1",
     "tslib": "^2.3.1"
   },

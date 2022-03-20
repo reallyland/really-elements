@@ -91,12 +91,12 @@ jobs:
         if: env.CI_SKIP == 'false'
         run: |
           npm ci
-          sh ./node_modules/@reallyland/tools/list-npx-cache.sh
+          sh $(npm root)/@reallyland/tools/list-npx-cache.sh
 
       - name: Setup Playwright
         if: env.CI_SKIP == 'false'
         run: |
-          ./node_modules/.bin/playwright install-deps
+          $(npm bin)/playwright install-deps
 
       - name: Lint
         if: env.CI_SKIP == 'false'
