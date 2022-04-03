@@ -28,8 +28,8 @@ describe('custom event', () => {
     await el.updateComplete;
 
     const copyButtonSelectors = [
-      '.copy-btn[for="propertiesFor"]',
-      '.copy-btn[for="cssPropertiesFor"]',
+      '.copy-btn[for^="propertiesFor"]',
+      '.copy-btn[for^="cssPropertiesFor"]',
     ];
     const copiedText = 'copied';
     for (const copyButtonSelector of copyButtonSelectors) {
@@ -91,7 +91,7 @@ describe('custom event', () => {
     el.customElement = testElement;
     await el.updateComplete;
 
-    const copyButtonSelector = '.copy-btn[for="propertiesFor"]';
+    const copyButtonSelector = '.copy-btn[for^="propertiesFor"]';
     const copiedText = 'copied';
     const eventFired = new Promise<A>((resolve) => {
       const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);

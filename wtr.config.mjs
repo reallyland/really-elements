@@ -66,7 +66,7 @@ const config = {
       exportConditions: ['default', 'dev', 'development', 'esbuild', 'import'],
       extensions: ['.mjs', '.js', '.ts', '.css', '.graphql'],
     }),
-    esbuildPlugin({ ts: true }),
+    esbuildPlugin({ target: 'es2021', ts: true }),
     browserPermissions(),
     pageClick(),
     pageFill(),

@@ -1,6 +1,7 @@
 export const parts = {
   allCodeSnippets: 'all-code-snippets',
   allPropertiesConfigurator: 'all-properties-configurator',
+  configurators: 'configurators',
   content: 'content',
   cssPropertiesCodeSnippet: 'css-properties-code-snippet',
   cssPropertiesConfigurator: 'css-properties-configurator',

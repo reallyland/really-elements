@@ -54,23 +54,23 @@
     "lint:build": "sh $(npm root)/@reallyland/tools/lint-build.sh -c $(npm root)/@reallyland/tools/browser/lit/.build.eslintrc.json",
     "pre-commit": "sh $(npm root)/@reallyland/tools/pre-commit.sh",
     "prepublishOnly": "npm run lint:build && npm run build",
-    "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3000",
+    "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3030",
     "test": "npm run wtr",
     "watch": "npm run clean && tsc --watch",
     "wtr": "node --max-old-space-size=8192 --trace-deprecation $(npm bin)/wtr --config wtr.config.mjs"
   },
   "dependencies": {
     "@material/mwc-button": "^0.25.3",
-    "@reallyland/esm": "^0.0.7",
+    "@reallyland/esm": "^0.0.8",
     "lit": "^2.2.1",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@open-wc/testing": "^3.1.2",
-    "@reallyland/tools": "^0.0.7",
+    "@reallyland/tools": "^0.0.14",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/prismjs": "^1.26.0",
-    "@web/dev-server-esbuild": "^0.2.10",
+    "@web/dev-server-esbuild": "^0.3.0",
     "@web/test-runner": "^0.13.27",
     "@web/test-runner-mocha": "^0.7.2",
     "@web/test-runner-playwright": "^0.8.4",

@@ -2,13 +2,13 @@ import '@material/mwc-button';
 
 import { highlight, languages } from '@reallyland/esm';
 import type { TemplateResult } from 'lit';
-import { css, html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import { parts } from './constants.js';
 import { contentCopied, contentCopy } from './icons.js';
-import { prismVscode } from './styles.js';
+import { codeConfigurationStyles, prismVscodeStyles } from './styles.js';
 import type { CodeConfiguratorCustomEventPropertyChangeDetail, PropertyValue } from './types.js';
 
 function toFunctionType(type?: string) {
@@ -70,49 +70,8 @@ function renderCode(code: string, grammar: string, language: string) {
 
 export class CodeConfigurator extends LitElement {
   public static override styles = [
-    css`
-    :host {
-      display: block;
-    }
-
-    input,
-    select {
-      margin: 0;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    /* .all-properties-container {
-      display: flex;
-    } */
-
-    .configurator + .configurator {
-      margin: 8px 0 0;
-    }
-
-    .code-container {
-      position: relative;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-
-      color: #fff;
-      fill: #fff;
-      z-index: 1;
-
-      --mdc-theme-primary: #fff;
-    }
-
-    .copy-text {
-      margin: 0 0 0 8px;
-    }
-    `,
-    prismVscode,
+    codeConfigurationStyles,
+    prismVscodeStyles,
   ];
 
   @property({
@@ -207,13 +166,14 @@ export class CodeConfigurator extends LitElement {
     const cssProperties = this._cssProperties;
 
     return html`
-    <div part="${parts.slot}">
-      <slot class="slot" @slotchange=${
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        this._updateSlotted}></slot>
+    <div part=${parts.slot}>
+      <slot
+        @slotchange=${this._updateSlotted}
+        class=slot
+      ></slot>
     </div>
 
-    <div part="${parts.content}">${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
+    <div part=${parts.content}>${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
     `;
   }
 
@@ -263,84 +223,90 @@ export class CodeConfigurator extends LitElement {
     const propsContent = toPropertiesAttr(properties);
     const cssPropsContent = toCSSProperties(cssProperties);
 
-    // tslint:disable: max-line-length
-    return html`
-    <div class="all-properties-container" part="${parts.allPropertiesConfigurator}">
-    ${propsContent ? html`<div part="${parts.propertiesConfigurator}">
-      <h2 class="properties">Properties</h2>
-      <div class="configurator-container">${this._renderPropertiesConfigurator(properties)}</div>
-    </div>` : nothing}
+    const idPrefix = Math.random().toString(32).slice(-7);
+    const cssPropertiesId = `cssPropertiesFor${idPrefix}`;
+    const propertiesId = `propertiesFor${idPrefix}`;
 
-    ${cssPropsContent ? html`<div part="${parts.cssPropertiesConfigurator}">
-      <h2 class="css-properties">CSS Properties</h2>
-      <div class="configurator-container">${
-        this._renderPropertiesConfigurator(cssProperties, true)}</div>
-    </div>` : nothing}
+    return html`
+    <div class=all-properties-container part=${parts.allPropertiesConfigurator}>
+    ${
+      propsContent ?
+        html`<section part=${parts.propertiesConfigurator}>
+          <h2 class=properties>Properties</h2>
+          <div class=configurators part=${parts.configurators}>${this._renderPropertiesConfigurator(properties)}</div>
+        </section>` :
+        nothing
+    }
+
+    ${
+      cssPropsContent ?
+      html`<section part=${parts.cssPropertiesConfigurator}>
+        <h2 class=css-properties>CSS Properties</h2>
+        <div class=configurators part=${parts.configurators}>${
+          this._renderPropertiesConfigurator(cssProperties, true)}</div>
+      </section>` :
+      nothing
+    }
     </div>
 
-    <div class="all-code-snippets-container" part="${parts.allCodeSnippets}">
+    <div class=all-code-snippets-container part=${parts.allCodeSnippets}>
       ${propsContent && cssPropsContent ? html`<h2>Code snippet</h2>` : nothing}
 
-      ${propsContent ? html`<div part="${parts.propertiesCodeSnippet}">
-        <h3 class="properties">Properties</h3>
-        <div class="code-container">
-          <mwc-button class="copy-btn" for="propertiesFor" @click="${
-            // eslint-disable-next-line @typescript-eslint/unbound-method
-            this._copyCode}">
+      ${propsContent ? html`<section part=${parts.propertiesCodeSnippet}>
+        <h3 class=properties>Properties</h3>
+        <div class=code-container>
+          <mwc-button class=copy-btn for=${propertiesId} aria-label="Copy properties" @click=${this._copyCode}>
             ${this._propsCopied ? contentCopied : contentCopy}
-            <span class="copy-text">${this._propsCopied ? 'Copied' : 'Copy'}</span>
+            <span class=copy-text>${this._propsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
-          <pre class="language-html" id="propertiesFor">${
-            renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
+          <pre class=language-html id=${propertiesId}>${renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
         </div>
-      </div>` : nothing}
+      </section>` : nothing}
 
-      ${cssPropsContent ? html`<div part="${parts.cssPropertiesCodeSnippet}">
-        <h3 class="css-properties">CSS Properties</h3>
-        <div class="code-container">
-          <mwc-button class="copy-btn" for="cssPropertiesFor" @click="${
-            // eslint-disable-next-line @typescript-eslint/unbound-method
-            this._copyCode}">
+      ${cssPropsContent ? html`<section part=${parts.cssPropertiesCodeSnippet}>
+        <h3 class=css-properties>CSS Properties</h3>
+        <div class=code-container>
+          <mwc-button class=copy-btn for=${cssPropertiesId} aria-label="Copy CSS properties" @click=${this._copyCode}>
             ${this._cssPropsCopied ? contentCopied : contentCopy}
-            <span class="copy-text">${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
+            <span class=copy-text>${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
-          <pre class="language-css" id="cssPropertiesFor">${
+          <pre class=language-css id=${cssPropertiesId}>${
             renderCode(`${elName} {\n${cssPropsContent}}`, 'css', 'css')}</pre>
         </div>
-      </div>` : nothing}
+      </section>` : nothing}
     </div>
     `;
-    // tslint:disable: max-line-length
   }
 
   private _renderPropertiesConfigurator(properties: PropertyValue[], isCSS = false) {
-    const longestName = properties.reduce((p, n) => n.name.length > p.length ? n.name : p, '');
-    const longestNameLen = longestName.length;
     const content = properties.map((n) => {
       const { name, options, type, value } = n;
       const valueStr = value as string;
+      const elementId = `${options ? 'select' : 'input'}_${type}_${name}`;
+
       const element = options ?
         html`<select
-          part="${parts.select}"
-          name="${name}"
-          .value="${valueStr}"
-          @input="${(ev: Event) => this._updateProps(ev, isCSS)}">${
+          .value=${valueStr}
+          @input=${(ev: Event) => this._updateProps(ev, isCSS)}
+          id=${elementId}
+          name=${name}
+          part=${parts.select}
+        >${
           options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)
         }</select>` :
         html`<input
-          part="${parts.input}"
-          name="${name}"
-          type="${toInputType(type)}"
-          value="${valueStr}"
-          ?checked="${type === 'boolean' && Boolean(valueStr)}"
-          @input="${(ev: Event) => this._updateProps(ev, isCSS)}"/>`;
+          ?checked=${type === 'boolean' && Boolean(valueStr)}
+          @input=${(ev: Event) => this._updateProps(ev, isCSS)}
+          id=${elementId}
+          name=${name}
+          part=${parts.input}
+          type=${toInputType(type)}
+          value=${valueStr}
+        />`;
 
-      return html`<div class="configurator">
-        <label>
-          <div style="display: inline-block; width: calc(${
-            longestNameLen}ch + 8px);">${name}</div>
-          ${element}
-        </label>
+      return html`<div class=configurator>
+        <label for=${elementId}>${name}</label>
+        ${element}
       </div>`;
     });
 
@@ -381,12 +347,12 @@ export class CodeConfigurator extends LitElement {
   private _copyCode(ev: Event) {
     const currentTarget = ev.currentTarget as HTMLElement;
     const attrFor = currentTarget.getAttribute('for');
-    const copiedProp = 'propertiesFor' === attrFor ? '_propsCopied' : '_cssPropsCopied';
+    const copiedProp = attrFor?.startsWith('propertiesFor') ? '_propsCopied' : '_cssPropsCopied';
 
     if (this[copiedProp]) return;
 
     const copyNode =
-      this.shadowRoot?.querySelector<HTMLElement>(`#${currentTarget.getAttribute('for') as string}`) as HTMLElement;
+      this.shadowRoot?.querySelector<HTMLElement>(`#${attrFor}`) as HTMLElement;
 
     const selection = getSelection();
     const range = document.createRange();

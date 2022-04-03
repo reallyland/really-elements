@@ -1,6 +1,73 @@
 import { css } from 'lit';
 
-export const prismVscode = css`
+export const codeConfigurationStyles = css`
+:host {
+  display: block;
+
+  --_col-gap: var(--code-configurator-col-gap, 24px);
+  --_col: var(--code-configurator-col, 2);
+  --_cols-max-width: var(--code-configurator-configurators-max-width, 100%);
+  --_config-gap: var(--code-configurator-configurator-gap, 2px);
+  --_pre-lang-padding: var(--code-configurator-pre-lang-padding, 15px);
+  --_row-gap: var(--code-configurator-row-gap, 16px);
+}
+
+input,
+select {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.configurators {
+  display: grid;
+  /**
+   * NOTE(motss): 100% here will calculate based on current width of the container,
+   * e.g. 100% of max-width.
+   */
+  grid-template-columns: repeat(var(--_col), minmax(1px, calc((100% - var(--_col-gap)) / var(--_col))));
+  gap: var(--_row-gap) var(--_col-gap);
+
+  max-width: var(--_cols-max-width);
+  width: 100%;
+}
+
+.configurator {
+  display: grid;
+  grid-template-columns: minmax(1px, 1fr);
+  grid-auto-flow: row;
+  gap: var(--_config-gap);
+}
+
+.configurator > label {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.code-container {
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  color: #fff;
+  fill: #fff;
+  z-index: 1;
+
+  --mdc-theme-primary: #fff;
+}
+
+.copy-text {
+  margin: 0 0 0 8px;
+}
+`;
+
+export const prismVscodeStyles = css`
 .token.property {
   color: #9cdcfe;
 }
@@ -31,7 +98,7 @@ pre[class*="language-"],
   background: #1e1e1e;
 }
 pre[class*="language-"] {
-  padding: 15px;
+  padding: var(--_pre-lang-padding);
   border-radius: 4px;
   border: 1px solid #e1e1e8;
   overflow: auto;
