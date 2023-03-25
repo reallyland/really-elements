@@ -9,59 +9,69 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { parts } from './constants.js';
 import { contentCopied, contentCopy } from './icons.js';
 import { codeConfigurationStyles, prismVscodeStyles } from './styles.js';
-import type { CodeConfiguratorCustomEventPropertyChangeDetail, PropertyValue } from './types.js';
+import type {
+  CodeConfiguratorCustomEventPropertyChangeDetail,
+  PropertyValue,
+} from './types.js';
 
 function toFunctionType(type?: string) {
   switch (type) {
-    case 'boolean': return Boolean;
-    case 'number': return Number;
+    case 'boolean':
+      return Boolean;
+    case 'number':
+      return Number;
     case 'string':
-    default: return String;
+    default:
+      return String;
   }
 }
 
 function toInputType(type?: string) {
   switch (type) {
-    case 'boolean': return 'checkbox';
-    case 'number': return 'number';
+    case 'boolean':
+      return 'checkbox';
+    case 'number':
+      return 'number';
     case 'string':
-    default: return 'text';
+    default:
+      return 'text';
   }
 }
 
 function toPropertiesAttr(properties: PropertyValue[]) {
-  const mapped = properties.reduce<string[]>((p, n) => {
-    const {
-      name,
-      type = 'string',
-      value,
-    } = n;
+  const mapped = properties
+    .reduce<string[]>((p, n) => {
+      const { name, type = 'string', value } = n;
 
-    const fnType = toFunctionType(type);
-    const val = fnType(value);
+      const fnType = toFunctionType(type);
+      const val = fnType(value);
 
-    if ((type === 'string' && !val) || (type === 'boolean' && !val)) return p;
+      if ((type === 'string' && !val) || (type === 'boolean' && !val)) return p;
 
-    const attrName = name.toLowerCase();
+      const attrName = name.toLowerCase();
 
-    p.push(type === 'boolean' ? attrName : `${attrName}="${String(val)}"`);
+      p.push(type === 'boolean' ? attrName : `${attrName}="${String(val)}"`);
 
-    return p;
-  }, []).filter(Boolean).join('\n  ');
+      return p;
+    }, [])
+    .filter(Boolean)
+    .join('\n  ');
 
   return mapped ? `\n  ${mapped}\n` : '';
 }
 
 function toCSSProperties(cssProperties: PropertyValue[]) {
-  return cssProperties.reduce<string[]>((p, n) => {
-    const { name, value } = n;
+  return cssProperties
+    .reduce<string[]>((p, n) => {
+      const { name, value } = n;
 
-    if (!value) return p;
+      if (!value) return p;
 
-    p.push(`  ${name}: ${value as string};\n`);
+      p.push(`  ${name}: ${value as string};\n`);
 
-    return p;
-  }, []).join('');
+      return p;
+    }, [])
+    .join('');
 }
 
 function renderCode(code: string, grammar: string, language: string) {
@@ -69,10 +79,7 @@ function renderCode(code: string, grammar: string, language: string) {
 }
 
 export class CodeConfigurator extends LitElement {
-  public static override styles = [
-    codeConfigurationStyles,
-    prismVscodeStyles,
-  ];
+  public static override styles = [codeConfigurationStyles, prismVscodeStyles];
 
   @property({
     type: Array,
@@ -90,7 +97,9 @@ export class CodeConfigurator extends LitElement {
     return this._cssProperties;
   }
   public set cssProperties(properties: PropertyValue[]) {
-    this._cssProperties = Array.isArray(properties) ? properties : this._cssProperties;
+    this._cssProperties = Array.isArray(properties)
+      ? properties
+      : this._cssProperties;
     this.requestUpdate('cssProperties');
   }
 
@@ -110,7 +119,9 @@ export class CodeConfigurator extends LitElement {
     return this._properties;
   }
   public set properties(properties: PropertyValue[]) {
-    this._properties = Array.isArray(properties) ? properties : this._properties;
+    this._properties = Array.isArray(properties)
+      ? properties
+      : this._properties;
     this.requestUpdate('properties');
   }
 
@@ -132,7 +143,9 @@ export class CodeConfigurator extends LitElement {
   private _slottedElements?: HTMLElement[];
 
   private get _slot(): HTMLSlotElement {
-    return this.shadowRoot?.querySelector<HTMLSlotElement>('slot') as HTMLSlotElement;
+    return this.shadowRoot?.querySelector<HTMLSlotElement>(
+      'slot'
+    ) as HTMLSlotElement;
   }
 
   protected override updated(): void {
@@ -173,7 +186,11 @@ export class CodeConfigurator extends LitElement {
       ></slot>
     </div>
 
-    <div part=${parts.content}>${elName ? this._renderProperties(elName, properties, cssProperties) : nothing}</div>
+    <div part=${parts.content}>${
+      elName
+        ? this._renderProperties(elName, properties, cssProperties)
+        : nothing
+    }</div>
     `;
   }
 
@@ -181,22 +198,34 @@ export class CodeConfigurator extends LitElement {
     const slotted = this._slot;
     const customElementName = this.customElement;
 
-    if (slotted && (typeof customElementName === 'string' && customElementName.length > 0)) {
+    if (
+      slotted &&
+      typeof customElementName === 'string' &&
+      customElementName.length > 0
+    ) {
       const assignedNodes = Array.from(slotted.assignedNodes()).filter(
-        n => n.nodeType === Node.ELEMENT_NODE) as LitElement[];
-      const matchedCustomElements = assignedNodes.reduce<LitElement[]>((p, n) => {
-        if (n.localName === customElementName) {
-          p.push(n);
-        } else if (n?.querySelectorAll) {
-          const allCustomElements = Array.from(n.querySelectorAll<LitElement>(customElementName));
-          p.push(...allCustomElements);
-        }
+        (n) => n.nodeType === Node.ELEMENT_NODE
+      ) as LitElement[];
+      const matchedCustomElements = assignedNodes.reduce<LitElement[]>(
+        (p, n) => {
+          if (n.localName === customElementName) {
+            p.push(n);
+          } else if (n?.querySelectorAll) {
+            const allCustomElements = Array.from(
+              n.querySelectorAll<LitElement>(customElementName)
+            );
+            p.push(...allCustomElements);
+          }
 
-        return p;
-      }, []);
+          return p;
+        },
+        []
+      );
       const hasMatchedCustomElements = matchedCustomElements.length > 0;
 
-      this._slottedElements = hasMatchedCustomElements ? matchedCustomElements : [];
+      this._slottedElements = hasMatchedCustomElements
+        ? matchedCustomElements
+        : [];
 
       if (hasMatchedCustomElements) {
         /**
@@ -204,8 +233,8 @@ export class CodeConfigurator extends LitElement {
          * this element. This is to fix some of the slotted elements not being updated/ rendered
          * correctly.
          */
-        const elementsUpdateComplete = matchedCustomElements.map(
-          n => n?.updateComplete?.then(() => n?.requestUpdate())
+        const elementsUpdateComplete = matchedCustomElements.map((n) =>
+          n?.updateComplete?.then(() => n?.requestUpdate())
         );
 
         await Promise.all(elementsUpdateComplete);
@@ -230,71 +259,99 @@ export class CodeConfigurator extends LitElement {
     return html`
     <div class=all-properties-container part=${parts.allPropertiesConfigurator}>
     ${
-      propsContent ?
-        html`<section part=${parts.propertiesConfigurator}>
+      propsContent
+        ? html`<section part=${parts.propertiesConfigurator}>
           <h2 class=properties>Properties</h2>
-          <div class=configurators part=${parts.configurators}>${this._renderPropertiesConfigurator(properties)}</div>
-        </section>` :
-        nothing
+          <div class=configurators part=${
+            parts.configurators
+          }>${this._renderPropertiesConfigurator(properties)}</div>
+        </section>`
+        : nothing
     }
 
     ${
-      cssPropsContent ?
-      html`<section part=${parts.cssPropertiesConfigurator}>
+      cssPropsContent
+        ? html`<section part=${parts.cssPropertiesConfigurator}>
         <h2 class=css-properties>CSS Properties</h2>
-        <div class=configurators part=${parts.configurators}>${
-          this._renderPropertiesConfigurator(cssProperties, true)}</div>
-      </section>` :
-      nothing
+        <div class=configurators part=${
+          parts.configurators
+        }>${this._renderPropertiesConfigurator(cssProperties, true)}</div>
+      </section>`
+        : nothing
     }
     </div>
 
     <div class=all-code-snippets-container part=${parts.allCodeSnippets}>
       ${propsContent && cssPropsContent ? html`<h2>Code snippet</h2>` : nothing}
 
-      ${propsContent ? html`<section part=${parts.propertiesCodeSnippet}>
+      ${
+        propsContent
+          ? html`<section part=${parts.propertiesCodeSnippet}>
         <h3 class=properties>Properties</h3>
         <div class=code-container>
-          <mwc-button class=copy-btn for=${propertiesId} aria-label="Copy properties" @click=${this._copyCode}>
+          <mwc-button class=copy-btn for=${propertiesId} aria-label="Copy properties" @click=${
+              this._copyCode
+            }>
             ${this._propsCopied ? contentCopied : contentCopy}
             <span class=copy-text>${this._propsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
-          <pre class=language-html id=${propertiesId}>${renderCode(`<${elName}${propsContent}></${elName}>`, 'html', 'html')}</pre>
+          <pre class=language-html id=${propertiesId}>${renderCode(
+              `<${elName}${propsContent}></${elName}>`,
+              'html',
+              'html'
+            )}</pre>
         </div>
-      </section>` : nothing}
+      </section>`
+          : nothing
+      }
 
-      ${cssPropsContent ? html`<section part=${parts.cssPropertiesCodeSnippet}>
+      ${
+        cssPropsContent
+          ? html`<section part=${parts.cssPropertiesCodeSnippet}>
         <h3 class=css-properties>CSS Properties</h3>
         <div class=code-container>
-          <mwc-button class=copy-btn for=${cssPropertiesId} aria-label="Copy CSS properties" @click=${this._copyCode}>
+          <mwc-button class=copy-btn for=${cssPropertiesId} aria-label="Copy CSS properties" @click=${
+              this._copyCode
+            }>
             ${this._cssPropsCopied ? contentCopied : contentCopy}
             <span class=copy-text>${this._cssPropsCopied ? 'Copied' : 'Copy'}</span>
           </mwc-button>
-          <pre class=language-css id=${cssPropertiesId}>${
-            renderCode(`${elName} {\n${cssPropsContent}}`, 'css', 'css')}</pre>
+          <pre class=language-css id=${cssPropertiesId}>${renderCode(
+              `${elName} {\n${cssPropsContent}}`,
+              'css',
+              'css'
+            )}</pre>
         </div>
-      </section>` : nothing}
+      </section>`
+          : nothing
+      }
     </div>
     `;
   }
 
-  private _renderPropertiesConfigurator(properties: PropertyValue[], isCSS = false) {
+  private _renderPropertiesConfigurator(
+    properties: PropertyValue[],
+    isCSS = false
+  ) {
     const content = properties.map((n) => {
       const { name, options, type, value } = n;
       const valueStr = value as string;
       const elementId = `${options ? 'select' : 'input'}_${type}_${name}`;
 
-      const element = options ?
-        html`<select
+      const element = options
+        ? html`<select
           .value=${valueStr}
           @input=${(ev: Event) => this._updateProps(ev, isCSS)}
           id=${elementId}
           name=${name}
           part=${parts.select}
-        >${
-          options.map(o => html`<option value="${o.value}" ?selected="${o.value === value}">${o.label}</option>`)
-        }</select>` :
-        html`<input
+        >${options.map(
+          (o) =>
+            html`<option value="${o.value}" ?selected="${o.value === value}">${
+              o.label
+            }</option>`
+        )}</select>`
+        : html`<input
           ?checked=${type === 'boolean' && Boolean(valueStr)}
           @input=${(ev: Event) => this._updateProps(ev, isCSS)}
           id=${elementId}
@@ -314,12 +371,15 @@ export class CodeConfigurator extends LitElement {
   }
 
   private _updateProps(ev: Event, isCSS: boolean) {
-    const currentTarget = ev.currentTarget as HTMLInputElement | HTMLSelectElement;
+    const currentTarget = ev.currentTarget as
+      | HTMLInputElement
+      | HTMLSelectElement;
     const propertyName = currentTarget.getAttribute('name') as string;
     const properties = isCSS ? this._cssProperties : this._properties;
-    const val = currentTarget.tagName === 'INPUT' && currentTarget.type === 'checkbox' ?
-      (currentTarget as HTMLInputElement).checked :
-      currentTarget.value;
+    const val =
+      currentTarget.tagName === 'INPUT' && currentTarget.type === 'checkbox'
+        ? (currentTarget as HTMLInputElement).checked
+        : currentTarget.value;
 
     const updatedProperties = properties.map((n) => {
       if (n.name === propertyName) {
@@ -332,27 +392,37 @@ export class CodeConfigurator extends LitElement {
 
     this[propName] = updatedProperties;
     this.requestUpdate(propName);
-    this.dispatchEvent(new CustomEvent<CodeConfiguratorCustomEventPropertyChangeDetail>('property-changed', {
-      bubbles: true,
-      detail: {
-        eventFrom: ev.currentTarget as HTMLElement,
-        isCSS,
-        propertyName,
-        propertyValue: toFunctionType(properties.find(n => n.name === propertyName)?.type)(val),
-      },
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent<CodeConfiguratorCustomEventPropertyChangeDetail>(
+        'property-changed',
+        {
+          bubbles: true,
+          detail: {
+            eventFrom: ev.currentTarget as HTMLElement,
+            isCSS,
+            propertyName,
+            propertyValue: toFunctionType(
+              properties.find((n) => n.name === propertyName)?.type
+            )(val),
+          },
+          composed: true,
+        }
+      )
+    );
   }
 
   private _copyCode(ev: Event) {
     const currentTarget = ev.currentTarget as HTMLElement;
     const attrFor = currentTarget.getAttribute('for');
-    const copiedProp = attrFor?.startsWith('propertiesFor') ? '_propsCopied' : '_cssPropsCopied';
+    const copiedProp = attrFor?.startsWith('propertiesFor')
+      ? '_propsCopied'
+      : '_cssPropsCopied';
 
     if (this[copiedProp]) return;
 
-    const copyNode =
-      this.shadowRoot?.querySelector<HTMLElement>(`#${attrFor}`) as HTMLElement;
+    const copyNode = this.shadowRoot?.querySelector<HTMLElement>(
+      `#${attrFor}`
+    ) as HTMLElement;
 
     const selection = getSelection();
     const range = document.createRange();
@@ -371,5 +441,4 @@ export class CodeConfigurator extends LitElement {
       this[copiedProp] = false;
     }, this.copiedDuration);
   }
-
 }

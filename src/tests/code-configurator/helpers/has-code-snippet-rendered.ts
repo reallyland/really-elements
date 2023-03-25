@@ -4,5 +4,7 @@ export function hasCodeSnippetRendered(node: HTMLElement): boolean {
   const h3Properties = $('.all-code-snippets-container h3.properties');
   const h3CssProperties = $('.all-code-snippets-container h3.css-properties');
 
-  return h2CodeSnippet != null && h3Properties != null && h3CssProperties != null;
+  return (
+    h2CodeSnippet != null && h3Properties != null && h3CssProperties != null
+  );
 }

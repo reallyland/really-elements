@@ -9,13 +9,11 @@ export function browserPermissions() {
   return {
     name: commandName,
     async executeCommand({ command, payload, session }) {
-      if (command !== commandName || session.browser.type !== 'playwright') return;
+      if (command !== commandName || session.browser.type !== 'playwright')
+        return;
 
       try {
-        const {
-          permissions,
-          options,
-        } = payload;
+        const { permissions, options } = payload;
 
         const page = session.browser.getPage(session.id);
         const context = page.context();
