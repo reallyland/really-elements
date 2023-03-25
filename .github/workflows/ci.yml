@@ -135,7 +135,7 @@ jobs:
 
       - name: Setup Playwright
         run: |
-          $(npm bin)/playwright install-deps
+          npx playwright install-deps
 
       - name: Test
         if: env.IS_UBUNTU == 'false'
