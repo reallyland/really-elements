@@ -78,7 +78,8 @@
     "prepublishOnly": "npm run lint:build && npm run build",
     "serve": "npm x -y @web/dev-server@latest -- wds --node-resolve -dw -p 3030",
     "test": "wtr --config wtr.config.mjs --update-snapshots",
-    "watch": "npm run clean && tsc --watch"
+    "watch": "npm run clean && tsc --watch",
+    "wtr": "wtr --config wtr.config.mjs"
   },
   "dependencies": {
     "@material/mwc-button": "^0.26.1",
