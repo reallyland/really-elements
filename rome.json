@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/rome/configuration_schema.json",
+  "files": {
+    "ignore": [
+      ".git",
+      "dist",
+      "node_modules",
+      "tmp"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentSize": 2,
+    "indentStyle": "space",
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingComma": "es5"
+    }
+  },
+  "linter": {
+    "enabled": false
+  }
+}

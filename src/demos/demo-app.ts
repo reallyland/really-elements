@@ -28,43 +28,45 @@ export class DemoApp extends LitElement {
         ] as PropertyValue[]
       }
       .customElement=${reallyCodeConfiguratorLocalName}
-      .properties="${[
-        {
-          name: 'forSlot',
-          value: 'copy-for',
-          type: 'string',
-        },
-        {
-          name: 'idSlot',
-          value: 'copy-id',
-          type: 'string',
-        },
-        {
-          name: 'test-boolean',
-          value: false,
-          type: 'boolean',
-        },
-        {
-          name: 'test-number',
-          value: 0,
-          type: 'number',
-        },
-        {
-          name: 'test-options',
-          value: '1',
-          type: 'string',
-          options: [
-            {
-              label: '1',
-              value: '1',
-            },
-            {
-              label: '2',
-              value: '2',
-            },
-          ],
-        },
-      ] as PropertyValue[]}"
+      .properties="${
+        [
+          {
+            name: 'forSlot',
+            value: 'copy-for',
+            type: 'string',
+          },
+          {
+            name: 'idSlot',
+            value: 'copy-id',
+            type: 'string',
+          },
+          {
+            name: 'test-boolean',
+            value: false,
+            type: 'boolean',
+          },
+          {
+            name: 'test-number',
+            value: 0,
+            type: 'number',
+          },
+          {
+            name: 'test-options',
+            value: '1',
+            type: 'string',
+            options: [
+              {
+                label: '1',
+                value: '1',
+              },
+              {
+                label: '2',
+                value: '2',
+              },
+            ],
+          },
+        ] as PropertyValue[]
+      }"
       @property-changed=${console.debug}
     >
       <really-clipboard-copy>

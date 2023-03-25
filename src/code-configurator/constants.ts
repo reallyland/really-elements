@@ -12,4 +12,5 @@ export const parts = {
   slot: 'slot',
 } as const;
 
-export const reallyCodeConfiguratorLocalName  = 'really-code-configurator' as const;
+export const reallyCodeConfiguratorLocalName =
+  'really-code-configurator' as const;

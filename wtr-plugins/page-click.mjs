@@ -11,7 +11,8 @@ export function pageClick() {
   return {
     name: commandName,
     async executeCommand({ command, payload, session }) {
-      if (command !== commandName || session.browser.type !== 'playwright') return;
+      if (command !== commandName || session.browser.type !== 'playwright')
+        return;
 
       const page = session.browser.getPage(session.id);
       const { options, selector } = payload ?? {};

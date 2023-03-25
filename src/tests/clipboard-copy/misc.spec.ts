@@ -17,7 +17,10 @@ describe('misc', () => {
     const el = await fixture<ReallyClipboardCopy>(content);
 
     const copyTask = new Promise<Error>((resolve) => {
-      const copyTimer = window.setTimeout(() => resolve(new Error('timeout')), 3e3);
+      const copyTimer = window.setTimeout(
+        () => resolve(new Error('timeout')),
+        3e3
+      );
 
       el.addEventListener('copy-error', (ev) => {
         window.clearTimeout(copyTimer);
@@ -44,17 +47,16 @@ describe('misc', () => {
         [null, copyText],
       ],
       [
-        () => html`<textarea copy-id="${copyKey}" .value="${copyText}"></textarea>`,
+        () =>
+          html`<textarea copy-id="${copyKey}" .value="${copyText}"></textarea>`,
         [null, copyText],
       ],
       [
-        () => html`<a copy-id="${copyKey}" href="/#${copyText}">${copyText}</a>`,
+        () =>
+          html`<a copy-id="${copyKey}" href="/#${copyText}">${copyText}</a>`,
         [null, '/#Hello,%20World!'],
       ],
-      [
-        () => html`<div copy-id="${copyKey}"></div>`,
-        [null, ''],
-      ],
+      [() => html`<div copy-id="${copyKey}"></div>`, [null, '']],
     ];
 
     const result: A[] = [];
@@ -68,7 +70,10 @@ describe('misc', () => {
       const el = await fixture<ReallyClipboardCopy>(content);
 
       const copyTask = new Promise<A>((resolve) => {
-        const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+        const copyTimer = window.setTimeout(
+          () => resolve([new Error('timeout'), null]),
+          3e3
+        );
 
         el.addEventListener('copy-error', (ev) => {
           window.clearTimeout(copyTimer);
@@ -84,9 +89,10 @@ describe('misc', () => {
       await pageClick('button[copy-for]');
 
       const [copyError, copyResult] = await copyTask;
-      const copyExpectedResult = copyResult && expected?.startsWith('/') ?
-        `/${new URL(copyResult).hash}` :
-        copyResult;
+      const copyExpectedResult =
+        copyResult && expected?.startsWith('/')
+          ? `/${new URL(copyResult).hash}`
+          : copyResult;
 
       result.push([copyError, copyExpectedResult]);
 
@@ -110,5 +116,4 @@ describe('misc', () => {
       assert.deepStrictEqual(webkitCopyResult, '');
     }
   });
-
 });

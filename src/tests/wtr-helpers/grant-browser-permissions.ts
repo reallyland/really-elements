@@ -19,7 +19,9 @@ export type BrowserPermissionName =
   | 'clipboard-write'
   | 'payment-handler';
 
-export type BrowserPermissionsOption = Parameters<BrowserContext['grantPermissions']>[1];
+export type BrowserPermissionsOption = Parameters<
+  BrowserContext['grantPermissions']
+>[1];
 
 export async function grantBrowserPermissions(
   permissions: BrowserPermissionName[],

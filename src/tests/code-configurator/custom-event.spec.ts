@@ -34,7 +34,10 @@ describe('custom event', () => {
     const copiedText = 'copied';
     for (const copyButtonSelector of copyButtonSelectors) {
       const eventFired = new Promise<A>((resolve) => {
-        const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+        const copyTimer = window.setTimeout(
+          () => resolve([new Error('timeout'), null]),
+          3e3
+        );
 
         el.addEventListener('content-copied', () => {
           window.clearTimeout(copyTimer);
@@ -48,21 +51,18 @@ describe('custom event', () => {
       assert.isNull(copyError);
       assert.strictEqual(copyResult, copiedText);
 
-      const copyButtonEl = el.shadowRoot?.querySelector<HTMLButtonElement>(copyButtonSelector);
+      const copyButtonEl =
+        el.shadowRoot?.querySelector<HTMLButtonElement>(copyButtonSelector);
 
-      expect(copyButtonEl).lightDom.equal([
-        '<span class="copy-text">',
-        'Copied',
-        '</span>',
-      ].join(''));
+      expect(copyButtonEl).lightDom.equal(
+        ['<span class="copy-text">', 'Copied', '</span>'].join('')
+      );
 
-      await new Promise(resolve => window.setTimeout(resolve, 3e3));
+      await new Promise((resolve) => window.setTimeout(resolve, 3e3));
 
-      expect(copyButtonEl).lightDom.equal([
-        '<span class="copy-text">',
-        'Copy',
-        '</span>',
-      ].join(''));
+      expect(copyButtonEl).lightDom.equal(
+        ['<span class="copy-text">', 'Copy', '</span>'].join('')
+      );
     }
   });
 
@@ -94,7 +94,10 @@ describe('custom event', () => {
     const copyButtonSelector = '.copy-btn[for^="propertiesFor"]';
     const copiedText = 'copied';
     const eventFired = new Promise<A>((resolve) => {
-      const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+      const copyTimer = window.setTimeout(
+        () => resolve([new Error('timeout'), null]),
+        3e3
+      );
 
       el.addEventListener('content-copied', () => {
         window.clearTimeout(copyTimer);
@@ -105,26 +108,23 @@ describe('custom event', () => {
     await pageClick(copyButtonSelector);
     const [copyError, copyResult] = await eventFired;
 
-    const copyButtonEl = el.shadowRoot?.querySelector<HTMLButtonElement>(copyButtonSelector);
+    const copyButtonEl =
+      el.shadowRoot?.querySelector<HTMLButtonElement>(copyButtonSelector);
 
-    expect(copyButtonEl).lightDom.equal([
-      '<span class="copy-text">',
-      'Copied',
-      '</span>',
-    ].join(''));
+    expect(copyButtonEl).lightDom.equal(
+      ['<span class="copy-text">', 'Copied', '</span>'].join('')
+    );
 
     await pageClick(copyButtonSelector);
-    await new Promise(resolve => window.setTimeout(resolve, 3e3));
+    await new Promise((resolve) => window.setTimeout(resolve, 3e3));
 
     assert.isNull(copyError);
     assert.strictEqual(copyResult, copiedText);
     assert.strictEqual(calls, 1);
 
-    expect(copyButtonEl).lightDom.equal([
-      '<span class="copy-text">',
-      'Copy',
-      '</span>',
-    ].join(''));
+    expect(copyButtonEl).lightDom.equal(
+      ['<span class="copy-text">', 'Copy', '</span>'].join('')
+    );
 
     Object.assign(document, { execCommand: originalDocumentExecCommand });
   });
@@ -132,7 +132,9 @@ describe('custom event', () => {
   it('fires property-changed when input changes', async () => {
     type A = [
       error: Error | undefined,
-      result: CodeConfiguratorCustomEventMap['property-changed']['detail'] | undefined
+      result:
+        | CodeConfiguratorCustomEventMap['property-changed']['detail']
+        | undefined
     ];
 
     const content: TemplateResult = html`
@@ -154,20 +156,19 @@ describe('custom event', () => {
        */
       if (property.options?.length) continue;
 
-      const propertySelector = `${property.options?.length ? 'select' : 'input'}[name="${property.name}"]`;
+      const propertySelector = `${
+        property.options?.length ? 'select' : 'input'
+      }[name="${property.name}"]`;
       const propertyElement = el.shadowRoot?.querySelector<
-        | HTMLInputElement
-        | HTMLSelectElement
-      >(
-        propertySelector
-      );
+        HTMLInputElement | HTMLSelectElement
+      >(propertySelector);
 
       propertyElement?.focus();
 
       const eventFired = new Promise<A>((resolve) => {
         const propertyTimer = globalThis.setTimeout(
-          () =>
-            resolve([new Error('timeout'), undefined]), 3e3
+          () => resolve([new Error('timeout'), undefined]),
+          3e3
         );
 
         el.addEventListener('property-changed', (e) => {
@@ -198,7 +199,6 @@ describe('custom event', () => {
             // await sendKeys({ press: ' ' });
             // await sendKeys({ press: 'ArrowDown' });
             // await sendKeys({ press: 'Enter' });
-
             // expectedPropertyValue = '2';
           } else {
             await pageFill(propertySelector, 'a');
@@ -209,7 +209,7 @@ describe('custom event', () => {
           break;
         }
         default:
-          // Do nothing
+        // Do nothing
       }
 
       const [propertyError, propertyResult] = await eventFired;

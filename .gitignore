@@ -7,7 +7,7 @@
 .firebase/
 .nyc_output
 .tmp/
-.vscode
+.vscode/*
 *.env
 *.idea
 *.local
@@ -22,3 +22,5 @@ node_modules/
 web_modules/
 
 # Do not ignore
+!.vscode/extensions.json
+!.vscode/settings.json

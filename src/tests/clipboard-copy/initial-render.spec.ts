@@ -1,6 +1,12 @@
 import '../../clipboard-copy/really-clipboard-copy.js';
 
-import { assert, expect, fixture, fixtureCleanup, html } from '@open-wc/testing';
+import {
+  assert,
+  expect,
+  fixture,
+  fixtureCleanup,
+  html,
+} from '@open-wc/testing';
 import type { TemplateResult } from 'lit';
 
 import type { ReallyClipboardCopy } from '../../clipboard-copy/really-clipboard-copy.js';
@@ -28,10 +34,12 @@ describe('initial render', () => {
     `;
     const el = await fixture<ReallyClipboardCopy>(content);
 
-    expect(el).lightDom.equal([
-      '<div copy-id="test">Hello, World!</div>',
-      '<button copy-for="test">Copy</button>',
-    ].join(''));
+    expect(el).lightDom.equal(
+      [
+        '<div copy-id="test">Hello, World!</div>',
+        '<button copy-for="test">Copy</button>',
+      ].join('')
+    );
     assert.strictEqual(getAssignedNodes(el).length, 2);
   });
 
@@ -128,5 +136,4 @@ describe('initial render', () => {
   //   assert.isTrue(el.hasAttribute('sync'));
   //   assert.strictEqual(getAssignedNodes(el).length, 2);
   // });
-
 });

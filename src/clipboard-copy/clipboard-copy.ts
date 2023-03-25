@@ -1,9 +1,5 @@
 import type { TemplateResult } from 'lit';
-import {
-  css,
-  html,
-  LitElement,
-} from 'lit';
+import { css, html, LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';
 
 import type { CopyError, CopySuccess, Slotted } from './types';
@@ -68,34 +64,39 @@ export class ClipboardCopy extends LitElement {
       const idSlot = this.idSlot;
       const nodes = slot.assignedNodes() as HTMLElement[];
 
-      const slotted = nodes.reduce((p, n) => {
-        if (
-          (p.for && p.id) ||
-          n.nodeType !== Node.ELEMENT_NODE
-        ) return p;
+      const slotted = nodes.reduce(
+        (p, n) => {
+          if ((p.for && p.id) || n.nodeType !== Node.ELEMENT_NODE) return p;
 
-        const isIdSlot = n.hasAttribute(idSlot);
-        const isForSlot = n.hasAttribute(forSlot);
-        const isIdSlotNull = p.id == null;
-        const isForSlotNull = p.for == null;
+          const isIdSlot = n.hasAttribute(idSlot);
+          const isForSlot = n.hasAttribute(forSlot);
+          const isIdSlotNull = p.id == null;
+          const isForSlotNull = p.for == null;
 
-        if (isIdSlot && isIdSlotNull) {
-          p.id = n;
-        } else if (isForSlot && isForSlotNull) {
-          p.for = n;
-        } else {
-          const forElement = isForSlotNull ? n.querySelector<HTMLElement>(`[${forSlot}]`) : null;
-          const idElement = isIdSlotNull ? n.querySelector<HTMLElement>(`[${idSlot}]`) : null;
+          if (isIdSlot && isIdSlotNull) {
+            p.id = n;
+          } else if (isForSlot && isForSlotNull) {
+            p.for = n;
+          } else {
+            const forElement = isForSlotNull
+              ? n.querySelector<HTMLElement>(`[${forSlot}]`)
+              : null;
+            const idElement = isIdSlotNull
+              ? n.querySelector<HTMLElement>(`[${idSlot}]`)
+              : null;
 
-          if (forElement) p.for = forElement;
-          if (idElement) p.id = idElement;
-        }
+            if (forElement) p.for = forElement;
+            if (idElement) p.id = idElement;
+          }
 
-        return p;
-      }, { id: null, for: null } as Slotted);
+          return p;
+        },
+        { id: null, for: null } as Slotted
+      );
       const forSlotted = slotted.for;
 
-      if (forSlotted) forSlotted.addEventListener('click', () => this._copyText());
+      if (forSlotted)
+        forSlotted.addEventListener('click', () => this._copyText());
 
       this._idElement = slotted.id;
     }
@@ -116,9 +117,12 @@ export class ClipboardCopy extends LitElement {
       const isTextareaElement = idElement instanceof HTMLTextAreaElement;
       const isAnchorElement = idElement instanceof HTMLAnchorElement;
 
-      contentValue = (isInputElement || isTextareaElement ?
-        (idElement as HTMLInputElement).value :
-        (isAnchorElement ? idElement.href : idElement.textContent)) || '';
+      contentValue =
+        (isInputElement || isTextareaElement
+          ? (idElement as HTMLInputElement).value
+          : isAnchorElement
+          ? idElement.href
+          : idElement.textContent) || '';
 
       /**
        * FIXME(motss): Temporarily disable Clipboard API due to incomplete implementation in
@@ -134,7 +138,8 @@ export class ClipboardCopy extends LitElement {
       const nodeObj = toCopyNode(
         idElement,
         contentValue,
-        isInputElement || isTextareaElement || isAnchorElement);
+        isInputElement || isTextareaElement || isAnchorElement
+      );
       const copyNode = nodeObj.node;
 
       const selection = getSelection();
@@ -160,23 +165,26 @@ export class ClipboardCopy extends LitElement {
       if (nodeObj.temporary) document.body.removeChild(copyNode);
       if (!copySuccess) throw new Error('Failed to copy');
     } catch (reason) {
-      this.dispatchEvent(new CustomEvent<CopyError>('copy-error', {
-        /**
-         * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
-         */
-        detail: { reason: reason as Error },
-        bubbles: true,
-        composed: true,
-      }));
-    } finally {
-      if (copySuccess) {
-        this.dispatchEvent(new CustomEvent<CopySuccess>('copy-success', {
-          detail: { value: contentValue },
+      this.dispatchEvent(
+        new CustomEvent<CopyError>('copy-error', {
+          /**
+           * NOTE(motss): On Firefox, `undefined` is returned when Clipboard API fails to copy.
+           */
+          detail: { reason: reason as Error },
           bubbles: true,
           composed: true,
-        }));
+        })
+      );
+    } finally {
+      if (copySuccess) {
+        this.dispatchEvent(
+          new CustomEvent<CopySuccess>('copy-success', {
+            detail: { value: contentValue },
+            bubbles: true,
+            composed: true,
+          })
+        );
       }
     }
   }
-
 }

@@ -81,5 +81,4 @@ describe('attributes', () => {
     assert.deepStrictEqual(el.customElement, testElement);
     assert.isFalse(hasPropertiesRendered(el));
   });
-
 });

@@ -91,25 +91,35 @@ describe('initial render', () => {
     el.customElement = testElement;
     await el.updateComplete;
 
-    const propertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.properties + .code-container > pre');
-    const cssPropertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>('.css-properties + .code-container > pre');
+    const propertiesCodeSnippet = el.shadowRoot?.querySelector<HTMLPreElement>(
+      '.properties + .code-container > pre'
+    );
+    const cssPropertiesCodeSnippet =
+      el.shadowRoot?.querySelector<HTMLPreElement>(
+        '.css-properties + .code-container > pre'
+      );
 
-    assert.strictEqual(propertiesCodeSnippet?.textContent, [
-      '<test-element',
-      '  propertystring="property"',
-      '  propertynumber="0"',
-      '  propertyboolean',
-      '  propertywithselectableoptions="option-1"',
-      '></test-element>',
-    ].join('\n'));
-    assert.strictEqual(cssPropertiesCodeSnippet?.textContent, [
-      'test-element {',
-      '  --test-element-width: 2px;',
-      '  --test-element-height: 2px;',
-      '  --test-element-color: green;',
-      '  --test-element-background-color: red;',
-      '}',
-    ].join('\n'));
+    assert.strictEqual(
+      propertiesCodeSnippet?.textContent,
+      [
+        '<test-element',
+        '  propertystring="property"',
+        '  propertynumber="0"',
+        '  propertyboolean',
+        '  propertywithselectableoptions="option-1"',
+        '></test-element>',
+      ].join('\n')
+    );
+    assert.strictEqual(
+      cssPropertiesCodeSnippet?.textContent,
+      [
+        'test-element {',
+        '  --test-element-width: 2px;',
+        '  --test-element-height: 2px;',
+        '  --test-element-color: green;',
+        '  --test-element-background-color: red;',
+        '}',
+      ].join('\n')
+    );
   });
-
 });

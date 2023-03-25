@@ -52,8 +52,11 @@ describe('custom events', () => {
      * Here attempt to test for 2 different custom events and see if any of these fires.
      * As long as any of these fulfills, the tests should pass.
      */
-    const eventFired = new Promise<[Error|null, string|null]>((resolve) => {
-      const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+    const eventFired = new Promise<[Error | null, string | null]>((resolve) => {
+      const copyTimer = window.setTimeout(
+        () => resolve([new Error('timeout'), null]),
+        3e3
+      );
 
       el.addEventListener('copy-success', (ev) => {
         window.clearTimeout(copyTimer);
@@ -90,15 +93,19 @@ describe('custom events', () => {
     `;
     const el = await fixture<ReallyClipboardCopy>(content);
 
-    const copyButtonEl = el.querySelector<HTMLButtonElement>('button[copy-for]');
+    const copyButtonEl =
+      el.querySelector<HTMLButtonElement>('button[copy-for]');
 
     /**
      * NOTE: Some browsers prohibit user-generated event handler.
      * Here attempt to test for 2 different custom events and see if any of these fires.
      * As long as any of these fulfills, the tests should pass.
      */
-    const eventFired = new Promise<[Error|null, string|null]>((resolve) => {
-      const copyTimer = window.setTimeout(() => resolve([new Error('timeout'), null]), 3e3);
+    const eventFired = new Promise<[Error | null, string | null]>((resolve) => {
+      const copyTimer = window.setTimeout(
+        () => resolve([new Error('timeout'), null]),
+        3e3
+      );
 
       el.addEventListener('copy-error', (ev) => {
         window.clearTimeout(copyTimer);
@@ -113,11 +120,12 @@ describe('custom events', () => {
 
     assert.instanceOf(copyError, Error);
     /** NOTE: Timeout on FF */
-    assert.isTrue(['Failed to copy', 'timeout'].some(n => n === copyError?.message));
+    assert.isTrue(
+      ['Failed to copy', 'timeout'].some((n) => n === copyError?.message)
+    );
     assert.isNull(copyResult);
 
     /** Restore document.execCommand(...) */
     Object.assign(document, { execCommand: originalExecCommand });
   });
-
 });

@@ -43,5 +43,4 @@ describe('attributes', () => {
     assert.strictEqual(el.innerHTML, '');
     assert.lengthOf(getAssignedNodes(el), 0);
   });
-
 });
