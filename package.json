@@ -82,10 +82,10 @@
     "wtr": "wtr --config wtr.config.mjs"
   },
   "dependencies": {
-    "@material/mwc-button": "^0.26.1",
+    "@material/mwc-button": "^0.27.0",
     "@reallyland/esm": "^0.0.8",
-    "lit": "^2.2.4",
-    "tslib": "^2.4.0"
+    "lit": "^2.7.0",
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@open-wc/testing": "^3.1.7",
