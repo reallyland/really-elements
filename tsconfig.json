@@ -3,7 +3,8 @@
   "compilerOptions": {
     "declarationDir": "dist",
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "useDefineForClassFields": false
   },
   "include": ["src/**/*.ts"],
   "exclude": ["dist", "node_modules"]
